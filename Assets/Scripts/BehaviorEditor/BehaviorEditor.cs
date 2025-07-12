@@ -202,28 +202,28 @@ namespace DATN2.Scripts.BehaviorEditor
             windows.Add(transitionNode);
             return transitionNode;
         }
-        public static void DrawNodeCurve(Rect start, Rect end, bool left, Color curveColor)
-        {
-            Vector3 startPos = new Vector3(
-                (left) ? start.x + start.width : start.x,
-                 start.y + (start.height * .5f),
-                 0
-            );
-            Vector3 endPos = new Vector3(
-                end.x + (end.width * .5f),
-                 end.y + (end.height * .5f),
-                 0
-            );
-            Vector3 startTan = startPos + Vector3.right * 50;
-            Vector3 endTan = endPos + Vector3.left * 50;
-            Color shadow = new Color(0, 0, 0, 1);
-            for (int i = 0; i < 1; i++)
-            {
-                Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, (i + 1) * .5f);
-            }
+        // public static void DrawNodeCurve(Rect start, Rect end, bool left, Color curveColor)
+        // {
+        //     Vector3 startPos = new Vector3(
+        //         (left) ? start.x + start.width : start.x,
+        //          start.y + (start.height * .5f),
+        //          0
+        //     );
+        //     Vector3 endPos = new Vector3(
+        //         end.x + (end.width * .5f),
+        //          end.y + (end.height * .5f),
+        //          0
+        //     );
+        //     Vector3 startTan = startPos + Vector3.right * 50;
+        //     Vector3 endTan = endPos + Vector3.left * 50;
+        //     Color shadow = new Color(0, 0, 0, 1);
+        //     for (int i = 0; i < 1; i++)
+        //     {
+        //         Handles.DrawBezier(startPos, endPos, startTan, endTan, shadow, null, (i + 1) * .5f);
+        //     }
 
-            Handles.DrawBezier(startPos, endPos, startTan, endTan, curveColor, null, 1);
-        }
+        //     Handles.DrawBezier(startPos, endPos, startTan, endTan, curveColor, null, 1);
+        // }
 
         public static void ClearWindowsFromList(List<BaseNode> l)
         {

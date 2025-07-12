@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.BehaviorEditor.Interfaces;
 using DATN2.Scripts.BehaviorEditor.Models;
