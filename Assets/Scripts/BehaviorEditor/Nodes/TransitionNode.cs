@@ -46,7 +46,7 @@ namespace DATN2.Scripts.BehaviorEditor
                 rect.width = 1;
                 rect.height = 1;
 
-                BehaviorEditor.DrawNodeCurve(rect, _enterNode.windowRect, true, Color.cyan);
+                // BehaviorEditor.DrawNodeCurve(rect, _enterNode.windowRect, true, Color.cyan);
             }
         }
 
