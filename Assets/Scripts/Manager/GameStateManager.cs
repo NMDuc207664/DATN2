@@ -6,7 +6,7 @@ public class GameStateManager : MonoBehaviour
 {
 
     public static GameStateManager Instance { get; set; }
-    private StateType _currentState;
+    private StateType _currentState = StateType.Ingame;
     // Sự kiện được gọi khi trạng thái thay đổi
     public event Action<StateType> OnStateChanged;
     // Start is called before the first frame update
@@ -31,8 +31,8 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    public string GetCurrentState()
+    public StateType GetCurrentState()
     {
-        return _currentState.ToString();
+        return _currentState;
     }
 }
