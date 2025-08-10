@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0202a3095b7477a4091d56344f0af6b3, type: 3}
+  m_Name: TestDialogueGraph
+  m_EditorClassIdentifier: 
+  <FileName>k__BackingField: TestDialogue
+  <Groups>k__BackingField:
+  - <ID>k__BackingField: 8c89e0a3-e3d0-463c-9917-2056d787ba34
+    <Name>k__BackingField: DialogueGroup
+    <Position>k__BackingField: {x: 1267.2, y: 4.799984}
+  <Nodes>k__BackingField:
+  - <ID>k__BackingField: 9694dc0c-79ea-4783-8707-1ba53c542af4
+    <Name>k__BackingField: Greeting
+    <Text>k__BackingField: "Xin ch\xE0o, ch\xE0o m\u1EEBng \u0111\u1EBFn v\u1EDBi
+      ng\xF4i l\xE0ng!"
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: a3f63b7d-5376-4322-947f-cd3f0e9a7151
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 514.4, y: 64.8}
+  - <ID>k__BackingField: a3f63b7d-5376-4322-947f-cd3f0e9a7151
+    <Name>k__BackingField: Question
+    <Text>k__BackingField: "\u0110i\u1EC1u g\xEC \u0111\u01B0a b\u1EA1n \u0111\u1EBFn
+      \u0111\xE2y?"
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: 104e0425-d8f0-4410-9f9d-bb0c80aa808b
+    <GroupID>k__BackingField: 8c89e0a3-e3d0-463c-9917-2056d787ba34
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 1292.8, y: 64.8}
+  - <ID>k__BackingField: 104e0425-d8f0-4410-9f9d-bb0c80aa808b
+    <Name>k__BackingField: Farewell
+    <Text>k__BackingField: "Ch\xFAc b\u1EA1n th\u01B0\u1EE3ng l\u1ED9 b\xECnh an!"
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: Next Dialogue
+      <NodeID>k__BackingField: 
+    <GroupID>k__BackingField: 8c89e0a3-e3d0-463c-9917-2056d787ba34
+    <DialogueType>k__BackingField: 0
+    <Position>k__BackingField: {x: 1292.8, y: 316.80002}
+  <OldGroupNames>k__BackingField:
+  - DialogueGroup
+  <OldUngroupedNodeNames>k__BackingField:
+  - Greeting
+  <OldGroupedNodeNames>k__BackingField:
+    list:
+    - Key: DialogueGroup
+      Value:
+      - Question
+      - Farewell
