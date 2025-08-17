@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using DS.Utilities;
 using UnityEditor;
@@ -17,6 +18,7 @@ namespace DATN2.Editor.DialogueEditor
         private Button saveButton;
         private Button miniMapButton;
         private VisualElement warningContainer;
+        private readonly SerializableDictionary<string, string> warnings = new SerializableDictionary<string, string>();
 
         [MenuItem("DTS/TESTING")]
         public static void Open()
@@ -113,22 +115,52 @@ namespace DATN2.Editor.DialogueEditor
         {
             saveButton.SetEnabled(false);
         }
-        public void ShowWarning(string message)
-        {
-            warningContainer.Clear();
-            var helpBox = new HelpBox(message, HelpBoxMessageType.Error);
-            warningContainer.Add(helpBox);
-        }
+        // public void ShowWarning(string message)
+        // {
+        //     warningContainer.Clear();
+        //     var helpBox = new HelpBox(message, HelpBoxMessageType.Error);
+        //     warningContainer.Add(helpBox);
+        // }
 
-        public void HideWarning()
-        {
-            warningContainer.Clear();
-        }
+        // public void HideWarning()
+        // {
+        //     warningContainer.Clear();
+        // }
         private void AddWarningContainer()
         {
             warningContainer = new VisualElement();
             warningContainer.style.marginTop = 4;
             rootVisualElement.Add(warningContainer);
+        }
+        public void SetWarning(string key, string message)
+        {
+            warnings[key] = message;   // cập nhật/ghi đè theo key
+            UpdateWarnings();
+        }
+
+        public void ClearWarning(string key)
+        {
+            if (warnings.Remove(key))
+                UpdateWarnings();
+        }
+
+        private void UpdateWarnings()
+        {
+            warningContainer.Clear();
+
+            if (warnings.Count > 0)
+            {
+                foreach (var kv in warnings)
+                {
+                    var helpBox = new HelpBox(kv.Value, HelpBoxMessageType.Error);
+                    warningContainer.Add(helpBox);
+                }
+                DisableSaving();
+            }
+            else
+            {
+                EnableSaving();
+            }
         }
     }
 }

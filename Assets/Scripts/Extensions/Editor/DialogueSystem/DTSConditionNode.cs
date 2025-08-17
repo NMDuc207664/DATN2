@@ -29,15 +29,37 @@ namespace DATN2.Editor.DialogueSystem
             HasInputPort = false;
         }
 
+        // public void SetParentNode(DTSNode parent)
+        // {
+        //     ParentNode = parent;
+        //     if (parentNodeLabel != null)
+        //     {
+        //         parentNodeLabel.text = parent != null ? $"Parent: {parent.DialogueName}" : "Parent: None";
+        //     }
+        // }
         public void SetParentNode(DTSNode parent)
         {
+            if (ParentNode != null)
+            {
+                ParentNode.ConditionChildren?.Remove(this);
+            }
+
             ParentNode = parent;
+
+            if (ParentNode != null)
+            {
+                if (ParentNode.ConditionChildren == null)
+                    ParentNode.ConditionChildren = new List<DTSConditionNode>();
+
+                if (!ParentNode.ConditionChildren.Contains(this))
+                    ParentNode.ConditionChildren.Add(this);
+            }
+
             if (parentNodeLabel != null)
             {
                 parentNodeLabel.text = parent != null ? $"Parent: {parent.DialogueName}" : "Parent: None";
             }
         }
-
         public override void Draw()
         {
             base.Draw();

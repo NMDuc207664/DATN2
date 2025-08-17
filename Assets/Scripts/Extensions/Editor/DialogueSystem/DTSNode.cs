@@ -15,6 +15,7 @@ namespace DATN2.Editor.DialogueSystem
         public List<string> Choices { get; set; }
         public string Text { get; set; }
         public bool HaveConditions { get; set; }
+        public List<DTSConditionNode> ConditionChildren { get; set; }
 
         public override void Initialize(string nodeName, DTSGraphView dsGraphView, Vector2 position)
         {
@@ -25,7 +26,6 @@ namespace DATN2.Editor.DialogueSystem
             Text = "Dialogue text.";
             HaveConditions = false;
         }
-
 
         public override void Draw()
         {
@@ -40,6 +40,7 @@ namespace DATN2.Editor.DialogueSystem
             {
                 HaveConditions = evt.newValue;
                 ToggleConditionPort(HaveConditions);
+
             });
 
 
@@ -83,6 +84,7 @@ namespace DATN2.Editor.DialogueSystem
                 Port conditionPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
                 conditionPort.name = "Condition Port"; // Đặt tên để dễ tìm khi xóa
                 conditionPort.portName = "Condition Port";
+                conditionPort.userData = "Condition Port";
                 inputContainer.Add(conditionPort);
             }
             else
@@ -98,6 +100,7 @@ namespace DATN2.Editor.DialogueSystem
 
             RefreshExpandedState();
             RefreshPorts();
+            graphView.CheckConditionConnections();
         }
     }
 }

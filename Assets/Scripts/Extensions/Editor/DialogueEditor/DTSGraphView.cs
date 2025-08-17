@@ -127,6 +127,8 @@ namespace DATN2.Editor.DialogueEditor
                 }
                 DebugLogElementCounts();
                 CheckForDuplicateNames();
+                CheckConditionConnections();
+                CheckOrphanConditionNodes();
             };
         }
         // Wrap AddElement để gọi CheckForDuplicateNames
@@ -135,6 +137,8 @@ namespace DATN2.Editor.DialogueEditor
             AddElement(element);
             DebugLogElementCounts();
             CheckForDuplicateNames();
+            CheckConditionConnections();
+            CheckOrphanConditionNodes();
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -171,25 +175,28 @@ namespace DATN2.Editor.DialogueEditor
                     compatiblePorts.Add(port);
                 }
             });
-
             return compatiblePorts;
         }
         private GraphViewChange OnGraphViewChanged(GraphViewChange change)
         {
+            bool needsCheck = false;
+
+            // Xử lý khi tạo edge mới
             if (change.edgesToCreate != null)
             {
                 foreach (var edge in change.edgesToCreate)
                 {
-                    // Lấy port xuất phát (ConditionNode output)
                     if (edge.output.node is DTSConditionNode conditionNode &&
                         edge.input.node is DTSNode targetNode)
                     {
                         conditionNode.SetParentNode(targetNode);
-                        Debug.Log($"[Connect] ConditionNode {conditionNode.NodeID} parent set to Node {targetNode.NodeID}");
+                        Debug.Log($"[Connect] ConditionNode {conditionNode.NodeID} connected to Node {targetNode.NodeID}");
+                        needsCheck = true;
                     }
                 }
             }
 
+            // Xử lý khi xóa elements
             if (change.elementsToRemove != null)
             {
                 foreach (var element in change.elementsToRemove)
@@ -199,15 +206,22 @@ namespace DATN2.Editor.DialogueEditor
                         if (edge.output.node is DTSConditionNode conditionNode &&
                             edge.input.node is DTSNode targetNode)
                         {
-                            // Ngắt kết nối => clear parent
                             if (conditionNode.ParentNode == targetNode)
                             {
                                 conditionNode.SetParentNode(null);
-                                Debug.Log($"[Disconnect] ConditionNode {conditionNode.NodeID} parent cleared");
+                                Debug.Log($"[Disconnect] ConditionNode {conditionNode.NodeID} disconnected from Node {targetNode.NodeID}");
+                                needsCheck = true;
                             }
                         }
                     }
                 }
+            }
+
+            // Chỉ kiểm tra khi cần thiết để tránh spam
+            if (needsCheck)
+            {
+                CheckConditionConnections();
+                CheckOrphanConditionNodes();
             }
 
             return change;
@@ -268,6 +282,7 @@ namespace DATN2.Editor.DialogueEditor
             Type nodeType = Type.GetType($"DATN2.Editor.DialogueSystem.DTS{dialogueType}Node");//để lấy type của node kết thừa từ dsnode
             DTSBaseNode node = (DTSBaseNode)Activator.CreateInstance(nodeType);
             node.Initialize(nodeName, this, position);
+
             node.Draw();
             // AddElement(node);
 
@@ -388,18 +403,82 @@ namespace DATN2.Editor.DialogueEditor
                     group.style.backgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
                 }
             }
+            const string KEY = "duplicate_names";
 
             if (hasDuplicateNodeNames || hasDuplicateGroupNames)
+                editorWindow.SetWarning(KEY, "Duplicate names detected. Please rename Nodes/Groups before saving.");
+            else
+                editorWindow.ClearWarning(KEY);
+
+        }
+
+        public void CheckConditionConnections()
+        {
+            // Bước 1: Lấy tất cả DTSNode có HaveConditions = true
+            var nodesWithConditions = graphElements.OfType<DTSNode>()
+                                                   .Where(n => n.HaveConditions)
+                                                   .ToList();
+
+            if (nodesWithConditions.Count == 0)
             {
-                editorWindow.DisableSaving();
-                editorWindow.ShowWarning("Duplicate names detected. Please rename Nodes/Groups before saving.");
+                editorWindow.ClearWarning("condition_connections_missing");
+                return;
+            }
+
+            // Bước 2: Tìm node nào không có ConditionChildren
+            var invalidNodes = nodesWithConditions
+                .Where(node => node.ConditionChildren == null || node.ConditionChildren.Count == 0)
+                .ToList();
+
+            // Bước 3: Hiển thị / Ẩn warning
+            const string WARNING_KEY = "condition_connections_missing";
+
+            if (invalidNodes.Count > 0)
+            {
+                string warningMessage =
+                    "These nodes have 'Has Conditions = true' but no ConditionNodes assigned:\n" +
+                    string.Join(", ", invalidNodes.Select(n => n.DialogueName));
+
+                editorWindow.SetWarning(WARNING_KEY, warningMessage);
+
+                Debug.Log($"[Warning] {invalidNodes.Count} nodes missing condition children: " +
+                         string.Join(", ", invalidNodes.Select(n => n.DialogueName)));
             }
             else
             {
-                editorWindow.EnableSaving();
-                editorWindow.HideWarning();
+                editorWindow.ClearWarning(WARNING_KEY);
+                Debug.Log($"[OK] All {nodesWithConditions.Count} nodes with conditions have ConditionChildren assigned");
+            }
+
+            Debug.Log($"[Summary] Nodes with conditions: {nodesWithConditions.Count}, " +
+                     $"Valid connections: {nodesWithConditions.Count - invalidNodes.Count}, " +
+                     $"Invalid nodes: {invalidNodes.Count}");
+        }
+        public void CheckOrphanConditionNodes()
+        {
+            var conditionNodes = graphElements.OfType<DTSConditionNode>().ToList();
+
+            var orphanConditions = conditionNodes
+                .Where(cn => cn.ParentNode == null)
+                .ToList();
+
+            const string WARNING_KEY = "orphan_condition_nodes";
+
+            if (orphanConditions.Count > 0)
+            {
+                string warningMessage =
+                    "These ConditionNodes are not connected to any parent Node:\n" +
+                    string.Join(", ", orphanConditions.Select(cn => cn.DialogueName));
+
+                editorWindow.SetWarning(WARNING_KEY, warningMessage);
+                Debug.Log($"[Warning] {orphanConditions.Count} orphan ConditionNodes: " +
+                         string.Join(", ", orphanConditions.Select(cn => cn.DialogueName)));
+            }
+            else
+            {
+                editorWindow.ClearWarning(WARNING_KEY);
+                Debug.Log($"[OK] All {conditionNodes.Count} ConditionNodes are connected to parents");
             }
         }
     }
 }
-//mai viết checking xem số node có trong graph
