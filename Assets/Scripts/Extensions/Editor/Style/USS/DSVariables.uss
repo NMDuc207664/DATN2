@@ -25,6 +25,6 @@
   --ds-metrics-window-pixels-120: 120px;
   --ds-metrics-window-pixels-160: 160px;
   --ds-metrics-window-pixels-240: 240px;
-  --ds-metrics-window-pixels-600: 500px;
-  --ds-metrics-window-pixels-1000: 800px;
+  --ds-metrics-window-pixels-600: 600px;
+  --ds-metrics-window-pixels-1000: 1000px;
 }

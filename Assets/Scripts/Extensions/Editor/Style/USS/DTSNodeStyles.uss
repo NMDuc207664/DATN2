@@ -113,22 +113,3 @@ TextField {
 .unity-toggle__text {
   margin-left: var(--ds-metrics-window-pixels-2);
 }
-
-/* CONDITION */
-.condition-field-container {
-  margin-top: 1.5px;
-  margin-bottom: 2.5px;
-  /* border-bottom-color: 1px solid #3a3a3a; /* line ngăn cách nhẹ */
-}
-.ds-node__parent-label {
-  color: #9ecfff; /* xanh nhạt dễ nhìn */
-  font-size: 19px;
-  margin-bottom: 8px;
-  margin-top: 8px;
-}
-
-.ds-condition-wrapper {
-  /* background-color: rgba(35, 35, 35, 0.9); /* màu cố định */
-  padding: 4px;
-  border-radius: 4px;
-}
