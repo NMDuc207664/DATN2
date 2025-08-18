@@ -1,3 +1,5 @@
+using System;
+using DATN2.Editor.Data.SaveModal;
 using DATN2.Editor.DialogueEditor;
 using DATN2.Editor.DialogueSystem.Enum;
 using DATN2.Editor.Style;
@@ -15,13 +17,14 @@ namespace DATN2.Editor.DialogueSystem
 
             DialogueType = DTSDialogueType.MultipleChoice;
 
-            // DSChoiceSaveData choiceData = new DSChoiceSaveData()
-            // {
-            //     Text = "New Choice"
-            // };
+            DTSChoiceSaveData choiceData = new DTSChoiceSaveData()
+            {
+                ChoiceID = Guid.NewGuid().ToString(),
+                Text = "New Choice"
+            };
 
-            // Choices.Add(choiceData);
-            Choices.Add("New Choice");
+            Choices.Add(choiceData);
+            // Choices.Add("New Choice");
         }
 
         public override void Draw()
@@ -31,10 +34,14 @@ namespace DATN2.Editor.DialogueSystem
             /* MAIN CONTAINER */
             Button addChoiceButton = DTSElementUtility.CreateButton("Add Choice", () =>
             {
-                string newChoice = "New Choice";
-                Choices.Add(newChoice);
+                DTSChoiceSaveData choiceData = new DTSChoiceSaveData()
+                {
+                    ChoiceID = Guid.NewGuid().ToString(),
+                    Text = "New Choice"
+                };
+                Choices.Add(choiceData);
 
-                Port choicePort = CreateChoicePort(newChoice);
+                Port choicePort = CreateChoicePort(choiceData);
                 outputContainer.Add(choicePort);
             });
 
@@ -42,7 +49,7 @@ namespace DATN2.Editor.DialogueSystem
             mainContainer.Insert(1, addChoiceButton);
 
             /* OUTPUT CONTAINER */
-            foreach (string choice in Choices)
+            foreach (var choice in Choices)
             {
                 Port choicePort = CreateChoicePort(choice);
                 outputContainer.Add(choicePort);
@@ -51,12 +58,15 @@ namespace DATN2.Editor.DialogueSystem
             RefreshExpandedState();
         }
 
-        private Port CreateChoicePort(string choiceText)
+        private Port CreateChoicePort(object userData)
         {
             Port choicePort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
 
-            choicePort.portName = choiceText;
-            choicePort.userData = choiceText;
+            // choicePort.portName = choice.Text;
+            choicePort.userData = userData;
+            DTSChoiceSaveData choiceData = (DTSChoiceSaveData)userData;
+            int index = Choices.IndexOf(choiceData);
+            choicePort.portName = $"Choice {index}";
 
             Button deleteChoiceButton = DTSElementUtility.CreateButton("X", () =>
             {
@@ -66,17 +76,25 @@ namespace DATN2.Editor.DialogueSystem
                 if (choicePort.connected)
                     graphView.DeleteElements(choicePort.connections);
 
-                Choices.Remove(choiceText);
+                Choices.Remove(choiceData);
                 graphView.RemoveElement(choicePort);
+
+                for (int i = 0; i < Choices.Count; i++)
+                {
+                    if (outputContainer[i] is Port port)
+                        port.portName = $"Choice {i}";
+                }
             });
 
             deleteChoiceButton.AddToClassList("ds-node__button");
 
-            TextField choiceTextField = DTSElementUtility.CreateTextField(choiceText, null, callback =>
+            TextField choiceTextField = DTSElementUtility.CreateTextField(choiceData.Text, null, callback =>
             {
-                int index = Choices.IndexOf(choiceText);
-                if (index >= 0)
-                    Choices[index] = callback.newValue;
+                // int index = Choices.IndexOf(choiceText);
+                // if (index >= 0)
+                //     Choices[index] = callback.newValue;
+                choiceData.Text = callback.newValue;
+
             });
 
             choiceTextField.AddClasses(

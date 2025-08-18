@@ -6,6 +6,7 @@ namespace DATN2.Editor.Data.SaveModal
     public class DTSChoiceSaveData
     {
         [field: SerializeField] public string Text { get; set; }
+        [field: SerializeField] public string ChoiceID { get; set; }
         [field: SerializeField] public string NodeID { get; set; }
     }
 }

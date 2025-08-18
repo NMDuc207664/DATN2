@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DATN2.Editor.Data.SaveModal;
 using DATN2.Editor.DialogueSystem;
 using DATN2.Editor.DialogueSystem.Enum;
 using DS.Utilities;
@@ -14,6 +15,7 @@ namespace DATN2.Editor.DialogueEditor
     {
         private DTSEditor editorWindow;
         private MiniMap miniMap;
+        private SerializableDictionary<string, List<string>> GraphConnections = new();
         public DTSGraphView(DTSEditor dsEditor)
         {
             editorWindow = dsEditor;
@@ -24,6 +26,17 @@ namespace DATN2.Editor.DialogueEditor
             AddStyles();
             OnElementsDeleted();
             graphViewChanged = OnGraphViewChanged;
+        }
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            // Nếu click vào Edge thì không add option Delete
+            if (evt.target is Edge)
+            {
+                evt.menu.ClearItems(); // Xóa hết menu
+                return;
+            }
+
+            base.BuildContextualMenu(evt);
         }
         public void DebugLogElementCounts()
         {
@@ -193,6 +206,21 @@ namespace DATN2.Editor.DialogueEditor
                         Debug.Log($"[Connect] ConditionNode {conditionNode.NodeID} connected to Node {targetNode.NodeID}");
                         needsCheck = true;
                     }
+                    if (edge.output.node is DTSNode fromNode && edge.input.node is DTSNode toNode)
+                    {
+                        if (edge.output.userData is DTSChoiceSaveData choiceData)
+                        {
+                            if (!GraphConnections.ContainsKey(choiceData.ChoiceID))
+                            {
+                                GraphConnections[choiceData.ChoiceID] = new List<string>();
+                            }
+
+                            GraphConnections[choiceData.ChoiceID].Add(toNode.NodeID);
+
+                            Debug.Log($"[Connect] Choice {choiceData.ChoiceID} leads to Node {toNode.NodeID}");
+                            LogChoiceConnections(choiceData.ChoiceID);
+                        }
+                    }
                 }
             }
 
@@ -214,7 +242,24 @@ namespace DATN2.Editor.DialogueEditor
                             }
                         }
                     }
+                    if (element is Edge edges && edges.output.userData is DTSChoiceSaveData choiceData && edges.input.node is DTSNode toNode)
+                    {
+                        if (GraphConnections.ContainsKey(choiceData.ChoiceID))
+                        {
+                            GraphConnections[choiceData.ChoiceID].Remove(toNode.NodeID);
+
+                            if (GraphConnections[choiceData.ChoiceID].Count == 0)
+                            {
+                                GraphConnections.Remove(choiceData.ChoiceID);
+                            }
+
+                            Debug.Log($"[Disconnect] Choice {choiceData.ChoiceID} no longer leads to Node {toNode.NodeID}");
+                            LogChoiceConnections(choiceData.ChoiceID);
+                        }
+                    }
+
                 }
+
             }
 
             // Chỉ kiểm tra khi cần thiết để tránh spam
@@ -432,7 +477,13 @@ namespace DATN2.Editor.DialogueEditor
 
             // Bước 3: Hiển thị / Ẩn warning
             const string WARNING_KEY = "condition_connections_missing";
-
+            foreach (var node in nodesWithConditions)
+            {
+                if (invalidNodes.Contains(node))
+                    node.SetErrorStyle(new Color(1f, 0f, 0f));  // 👈 highlight đỏ
+                else
+                    node.ResetStyle();                          // 👈 reset lại bình thường
+            }
             if (invalidNodes.Count > 0)
             {
                 string warningMessage =
@@ -463,7 +514,13 @@ namespace DATN2.Editor.DialogueEditor
                 .ToList();
 
             const string WARNING_KEY = "orphan_condition_nodes";
-
+            foreach (var node in conditionNodes)
+            {
+                if (orphanConditions.Contains(node))
+                    node.SetErrorStyle(new Color(1f, 0f, 0f));  // 👈 đỏ
+                else
+                    node.ResetStyle();                          // 👈 reset
+            }
             if (orphanConditions.Count > 0)
             {
                 string warningMessage =
@@ -478,6 +535,18 @@ namespace DATN2.Editor.DialogueEditor
             {
                 editorWindow.ClearWarning(WARNING_KEY);
                 Debug.Log($"[OK] All {conditionNodes.Count} ConditionNodes are connected to parents");
+            }
+        }
+        private void LogChoiceConnections(string choiceID)
+        {
+            if (GraphConnections.ContainsKey(choiceID))
+            {
+                string connectedNodes = string.Join(", ", GraphConnections[choiceID]);
+                Debug.Log($"Choice {choiceID} has connected: [{connectedNodes}]");
+            }
+            else
+            {
+                Debug.Log($"Choice {choiceID} has connected: []");
             }
         }
     }

@@ -8,11 +8,12 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using DS.Utilities;
+using DATN2.Editor.Data.SaveModal;
 namespace DATN2.Editor.DialogueSystem
 {
     public class DTSNode : DTSBaseNode
     {
-        public List<string> Choices { get; set; }
+        public List<DTSChoiceSaveData> Choices { get; set; }
         public string Text { get; set; }
         public bool HaveConditions { get; set; }
         public List<DTSConditionNode> ConditionChildren { get; set; }
@@ -22,7 +23,7 @@ namespace DATN2.Editor.DialogueSystem
 
 
             base.Initialize(nodeName, dsGraphView, position);
-            Choices = new List<string>();
+            Choices = new List<DTSChoiceSaveData>();
             Text = "Dialogue text.";
             HaveConditions = false;
         }

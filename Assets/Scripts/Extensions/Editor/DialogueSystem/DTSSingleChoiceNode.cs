@@ -1,3 +1,5 @@
+using System;
+using DATN2.Editor.Data.SaveModal;
 using DATN2.Editor.DialogueEditor;
 using DATN2.Editor.DialogueSystem.Enum;
 using UnityEditor.Experimental.GraphView;
@@ -11,13 +13,13 @@ namespace DATN2.Editor.DialogueSystem
             base.Initialize(nodeName, dsGraphView, position);
 
             DialogueType = DTSDialogueType.SingleChoice;
+            DTSChoiceSaveData choiceData = new DTSChoiceSaveData()
+            {
+                ChoiceID = Guid.NewGuid().ToString(),
+                Text = "New Choice"
+            };
 
-            // DSChoiceSaveData choiceData = new DSChoiceSaveData()
-            // {
-            //     Text = "Next Dialogue"
-            // };
-
-            Choices.Add("Next Dialogue");
+            Choices.Add(choiceData);
         }
 
         public override void Draw()
@@ -34,10 +36,11 @@ namespace DATN2.Editor.DialogueSystem
 
             //     outputContainer.Add(choicePort);
             // }
-            foreach (string choice in Choices)
+            foreach (var choice in Choices)
             {
                 Port choicePort = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(bool));
-                choicePort.portName = choice;
+                choicePort.userData = choice;
+                choicePort.portName = choice.Text;
                 outputContainer.Add(choicePort);
             }
             RefreshExpandedState();

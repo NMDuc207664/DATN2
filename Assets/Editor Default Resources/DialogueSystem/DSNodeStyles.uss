@@ -116,8 +116,9 @@ TextField {
 
 /* CONDITION */
 .condition-field-container {
-  margin-top: 2px;
-  border-bottom-color: 1px solid #3a3a3a; /* line ngăn cách nhẹ */
+  margin-top: 1.5px;
+  margin-bottom: 2.5px;
+  /* border-bottom-color: 1px solid #3a3a3a; /* line ngăn cách nhẹ */
 }
 .ds-node__parent-label {
   color: #9ecfff; /* xanh nhạt dễ nhìn */
@@ -127,7 +128,7 @@ TextField {
 }
 
 .ds-condition-wrapper {
-  background-color: rgba(35, 35, 35, 0.9); /* màu cố định */
+  /* background-color: rgba(35, 35, 35, 0.9); /* màu cố định */
   padding: 4px;
   border-radius: 4px;
 }

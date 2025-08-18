@@ -9,12 +9,13 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using DS.Utilities;
 using UnityEditor.UIElements;
+using DATN2.Editor.Data.SaveModal.SO;
 namespace DATN2.Editor.DialogueSystem
 {
     public class DTSConditionNode : DTSBaseNode
     {
         public DTSNode ParentNode { get; set; }
-        public List<ScriptableObject> ConditionData { get; set; }
+        public List<DTSConditionSO> ConditionData { get; set; }
         // public DSDialogueType DialogueType { get; set; }
 
         public DTSConditionType ConditionType { get; set; }
@@ -104,12 +105,12 @@ namespace DATN2.Editor.DialogueSystem
             RefreshPorts();
         }
 
-        private void AddConditionField(ScriptableObject initialValue, VisualElement parentContainer = null)
+        private void AddConditionField(DTSConditionSO initialValue, VisualElement parentContainer = null)
         {
             // Đảm bảo ConditionData không null
             if (ConditionData == null)
             {
-                ConditionData = new List<ScriptableObject>();
+                ConditionData = new List<DTSConditionSO>();
             }
             // Tạo container cho ObjectField và nút xóa
             VisualElement conditionContainer = new VisualElement();
@@ -119,11 +120,11 @@ namespace DATN2.Editor.DialogueSystem
             // Tạo ObjectField cho ScriptableObject
             ObjectField conditionField = new ObjectField
             {
-                objectType = typeof(ScriptableObject),
+                objectType = typeof(DTSConditionSO),
                 allowSceneObjects = false,
                 value = initialValue
             };
-            conditionField.style.flexGrow = 1; // Chiếm không gian tối đa
+            conditionField.style.flexGrow = 1f; // Chiếm không gian tối đa
             conditionField.RegisterValueChangedCallback(evt =>
              {
                  int index = conditionFieldContainers.IndexOf(conditionContainer);
@@ -131,11 +132,11 @@ namespace DATN2.Editor.DialogueSystem
                  {
                      if (index < ConditionData.Count)
                      {
-                         ConditionData[index] = evt.newValue as ScriptableObject;
+                         ConditionData[index] = evt.newValue as DTSConditionSO;
                      }
                      else
                      {
-                         ConditionData.Add(evt.newValue as ScriptableObject);
+                         ConditionData.Add(evt.newValue as DTSConditionSO);
                      }
                  }
              });
@@ -184,3 +185,5 @@ namespace DATN2.Editor.DialogueSystem
         }
     }
 }
+// AddConditionField thêm null vào
+//  ConditionData khi tạo field mới, nhưng không có cơ chế nhắc người dùng gán SO hợp lệ, có thể dẫn đến lỗi khi lưu.
