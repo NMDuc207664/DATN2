@@ -16,6 +16,7 @@ namespace DATN2.Editor.DialogueSystem
             DTSChoiceSaveData choiceData = new DTSChoiceSaveData()
             {
                 ChoiceID = Guid.NewGuid().ToString(),
+                NodeID = this.NodeID,
                 Text = "New Choice"
             };
 

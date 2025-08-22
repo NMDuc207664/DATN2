@@ -37,11 +37,54 @@ namespace DATN2.Editor.DialogueSystem
             {
                 value = HaveConditions
             };
+            // haveConditionsToggle.RegisterValueChangedCallback(evt =>
+            // {
+            //     HaveConditions = evt.newValue;
+            //     ToggleConditionPort(HaveConditions);
+
+            // });
+            haveConditionsToggle.RegisterCallback<MouseOverEvent>(evt =>
+            {
+                if (HaveConditions)
+                {
+                    var conditionPort = inputContainer.Children()
+                        .FirstOrDefault(x => x.name == "Condition Port") as Port;
+                    if (conditionPort != null && conditionPort.connected)
+                    {
+                        haveConditionsToggle.SetEnabled(false);
+                        haveConditionsToggle.tooltip = "Cannot uncheck 'Has Conditions' while Condition Port is connected. Disconnect all conditions first.";
+                    }
+                    else
+                    {
+                        haveConditionsToggle.SetEnabled(true);
+                        haveConditionsToggle.tooltip = "";
+                    }
+                }
+                else
+                {
+                    haveConditionsToggle.SetEnabled(true);
+                    haveConditionsToggle.tooltip = "";
+                }
+            });
+
             haveConditionsToggle.RegisterValueChangedCallback(evt =>
             {
+                if (evt.newValue == false)
+                {
+                    var conditionPort = inputContainer.Children()
+                        .FirstOrDefault(x => x.name == "Condition Port") as Port;
+                    if (conditionPort != null && conditionPort.connected)
+                    {
+                        haveConditionsToggle.value = true; // Ngăn không cho bỏ tích
+                        graphView.editorWindow.SetWarning("cannot_uncheck_has_conditions",
+                            $"Cannot uncheck 'Has Conditions' for node '{DialogueName}'. Disconnect all conditions first.");
+                        return;
+                    }
+                }
+
                 HaveConditions = evt.newValue;
                 ToggleConditionPort(HaveConditions);
-
+                graphView.editorWindow.ClearWarning("cannot_uncheck_has_conditions");
             });
 
 
@@ -53,6 +96,7 @@ namespace DATN2.Editor.DialogueSystem
             textTextField.style.width = StyleKeyword.Auto; // Tự tính theo nội dung
             textTextField.RegisterValueChangedCallback(evt =>
             {
+                Text = evt.newValue;
                 if (evt.newValue.Length > 75)
                 {
                     textTextField.multiline = true;
@@ -62,9 +106,6 @@ namespace DATN2.Editor.DialogueSystem
                     textTextField.multiline = false;
                 }
             });
-            // textTextField.multiline = true;
-            // textTextField.style.whiteSpace = WhiteSpace.Normal;
-            // textTextField.style.flexWrap = Wrap.NoWrap; // Bắt đầu không wrap
             textTextField.AddClasses(
                "ds-node__text-field",
                "ds-node__quote-text-field"
@@ -101,7 +142,13 @@ namespace DATN2.Editor.DialogueSystem
 
             RefreshExpandedState();
             RefreshPorts();
-            graphView.CheckConditionConnections();
+            graphView.validator.CheckConditionConnections(graphView);
+        }
+        public bool IsStartingNode()
+        {
+            Port inputPort = (Port)inputContainer.Children().First();
+
+            return !inputPort.connected;
         }
     }
 }

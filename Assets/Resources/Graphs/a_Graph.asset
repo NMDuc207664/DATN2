@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc6bccf99b605047a224d2be96ff16f, type: 3}
+  m_Name: a_Graph
+  m_EditorClassIdentifier: 
+  <GraphName>k__BackingField: a
+  <Groups>k__BackingField: []
+  <Nodes>k__BackingField:
+  - <NodeID>k__BackingField: 1bead887-c39c-435a-ac52-8121a961e38b
+    <Name>k__BackingField: Node Name
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <ChoiceID>k__BackingField: 6f449722-aa80-4792-a177-6c75c1d7eb3f
+      <NodeID>k__BackingField: 
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 248, y: 191.2}
+    <IsStartingNode>k__BackingField: 0
+  - <NodeID>k__BackingField: 77e3f5b3-5ebc-4ade-a1a4-3eaee495f1c7
+    <Name>k__BackingField: s
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <Text>k__BackingField: New Choice
+      <ChoiceID>k__BackingField: 5715eab7-61c5-4de6-a91c-63a74326fe98
+      <NodeID>k__BackingField: 
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <DialogueType>k__BackingField: 0
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 595.2, y: 204}
+    <IsStartingNode>k__BackingField: 0
+  <Choices>k__BackingField:
+  - <Text>k__BackingField: New Choice
+    <ChoiceID>k__BackingField: 6f449722-aa80-4792-a177-6c75c1d7eb3f
+    <NodeID>k__BackingField: 1bead887-c39c-435a-ac52-8121a961e38b
+    <ConnectedNodeIDs>k__BackingField: []
+  - <Text>k__BackingField: New Choice
+    <ChoiceID>k__BackingField: 5715eab7-61c5-4de6-a91c-63a74326fe98
+    <NodeID>k__BackingField: 77e3f5b3-5ebc-4ade-a1a4-3eaee495f1c7
+    <ConnectedNodeIDs>k__BackingField: []
+  <Conditions>k__BackingField: []

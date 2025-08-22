@@ -61,7 +61,7 @@ namespace DATN2.Editor.DialogueSystem
             base.title = Title;
 
             // gọi check duplicate
-            _graphView.CheckForDuplicateNames();
+            _graphView.validator.CheckForDuplicateNames(_graphView);
         }
         public void SetErrorStyle(Color color)
         {

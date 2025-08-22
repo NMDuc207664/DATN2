@@ -8,11 +8,14 @@ namespace DATN2.Editor.Data.SaveModal.SO
         public string FileName { get; set; }
         public List<DTSDialogueSO> Dialogues { get; set; }
         public SerializableDictionary<DTSDialogueGroupSO, List<DTSDialogueSO>> DialogueGroups { get; set; }
+        public SerializableDictionary<string, List<DTSConditionSO>> Conditions { get; set; }
+        [field: SerializeField] public List<DTSDialogueSO> UngroupedDialogues { get; set; }
         public void Initialize(string fileName)
         {
             FileName = fileName;
             Dialogues = new List<DTSDialogueSO>();
             DialogueGroups = new SerializableDictionary<DTSDialogueGroupSO, List<DTSDialogueSO>>();
+            Conditions = new SerializableDictionary<string, List<DTSConditionSO>>();
         }
     }
 }

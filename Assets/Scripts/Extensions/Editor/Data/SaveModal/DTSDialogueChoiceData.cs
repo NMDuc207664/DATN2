@@ -10,3 +10,4 @@ namespace DATN2.Editor.Data.SaveModal
         [field: SerializeField] public DTSDialogueSO NextDialogue { get; set; }
     }
 }
+

@@ -15,8 +15,9 @@ namespace DATN2.Editor.DialogueSystem
         public string NodeID { get; set; }
         public string DialogueName { get; set; }
         public DTSDialogueType DialogueType { get; set; }
+        public DTSGroup Group { get; set; }
         protected DTSGraphView graphView;
-        private Color defaultBackgroundColor;
+        public Color defaultBackgroundColor;
         public bool HasInputPort { get; set; }
 
         public virtual void Initialize(string nodeName, DTSGraphView dsGraphView, Vector2 position)
@@ -47,7 +48,7 @@ namespace DATN2.Editor.DialogueSystem
             dialogueNameTextField.RegisterValueChangedCallback(evt =>
                      {
                          DialogueName = evt.newValue;
-                         graphView.CheckForDuplicateNames(); // Kiểm tra trùng tên khi thay đổi
+                         graphView.validator.CheckForDuplicateNames(graphView); // Kiểm tra trùng tên khi thay đổi
                      });
             titleContainer.Insert(0, dialogueNameTextField);
             dialogueNameTextField.AddClasses(

@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using DATN2.Editor.Applications;
+using DATN2.Editor.Data.SaveModal;
 using DS.Utilities;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DATN2.Editor.DialogueEditor
@@ -11,6 +14,7 @@ namespace DATN2.Editor.DialogueEditor
     public class DTSEditor : EditorWindow
     {
         private DTSGraphView graphView;
+        private DTSReadRuntime readRuntime;
 
         private readonly string defaultFileName = "DialoguesFileName";
 
@@ -29,9 +33,19 @@ namespace DATN2.Editor.DialogueEditor
         private void OnEnable()
         {
             AddGraphView();
+            AddExtension();
             AddToolbar();
             AddStyles();
             AddWarningContainer();
+        }
+        private void OnDisable()//cần test thêm
+        {
+            if (graphView != null)
+            {
+                graphView.Dispose();
+                rootVisualElement.Remove(graphView);
+                graphView = null;
+            }
         }
 
         private void AddGraphView()
@@ -41,6 +55,11 @@ namespace DATN2.Editor.DialogueEditor
             graphView.StretchToParentSize();
 
             rootVisualElement.Add(graphView);
+        }
+        private void AddExtension()
+        {
+            readRuntime = new DTSReadRuntime();
+            readRuntime.Initialize(graphView);
         }
 
 
@@ -59,7 +78,7 @@ namespace DATN2.Editor.DialogueEditor
 
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
-            // Button loadButton = DSElementUtility.CreateButton("Load", () => Load());
+            Button loadButton = DSElementUtility.CreateButton("Load", () => Load());
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
             Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
@@ -67,7 +86,7 @@ namespace DATN2.Editor.DialogueEditor
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
-            // toolbar.Add(loadButton);
+            toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
             toolbar.Add(miniMapButton);
@@ -76,10 +95,43 @@ namespace DATN2.Editor.DialogueEditor
 
             rootVisualElement.Add(toolbar);
         }
+        private void Load()
+        {
+            string filePath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Resources/Graphs", "asset");
+            Debug.Log(Path.GetFileNameWithoutExtension(filePath).Replace("_Graph", ""));
+            DTSLoadGraphSO.Initialize(graphView, Path.GetFileNameWithoutExtension(filePath));
+            DTSLoadGraphSO.Load();
 
+            // if (string.IsNullOrEmpty(filePath))
+            // {
+            //     return;
+            // }
+
+            // DTSLoadSO.LoadGraph(graphView, filePath);
+            // UpdateFileName(Path.GetFileNameWithoutExtension(filePath).Replace("_Graph", ""));
+        }
         private void Save()
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(fileNameTextField.value))
+            {
+                EditorUtility.DisplayDialog("Invalid file name.", "Please ensure the file name you've typed in is valid.", "Roger!");
+
+                return;
+            }
+            DTSSaveSO.SaveGraph(graphView, fileNameTextField.value);
+
+
+            // readRuntime.GetAllChoiceInformation();
+            // foreach (var choice in allChoices)
+            // {
+            //     Debug.Log($"Choice {choice.ChoiceID} (Node {choice.NodeID}) -> Connected to: {string.Join(", ", choice.ConnectedNodeIDs)}");
+            // }
+
+
+            // DTSSaveLogic.Initialize(graphView, fileNameTextField.value);
+            // DTSSaveLogic.Save();
+            // readRuntime.Initialize(graphView);
+            // readRuntime.DebugGraph();
         }
 
         private void Clear()

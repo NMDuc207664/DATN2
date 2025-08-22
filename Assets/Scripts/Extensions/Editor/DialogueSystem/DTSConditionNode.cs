@@ -15,7 +15,7 @@ namespace DATN2.Editor.DialogueSystem
     public class DTSConditionNode : DTSBaseNode
     {
         public DTSNode ParentNode { get; set; }
-        public List<DTSConditionSO> ConditionData { get; set; }
+        public List<DTSConditionAbstract> ConditionData { get; set; }
         // public DSDialogueType DialogueType { get; set; }
 
         public DTSConditionType ConditionType { get; set; }
@@ -105,12 +105,12 @@ namespace DATN2.Editor.DialogueSystem
             RefreshPorts();
         }
 
-        private void AddConditionField(DTSConditionSO initialValue, VisualElement parentContainer = null)
+        private void AddConditionField(DTSConditionAbstract initialValue, VisualElement parentContainer = null)
         {
             // Đảm bảo ConditionData không null
             if (ConditionData == null)
             {
-                ConditionData = new List<DTSConditionSO>();
+                ConditionData = new List<DTSConditionAbstract>();
             }
             // Tạo container cho ObjectField và nút xóa
             VisualElement conditionContainer = new VisualElement();
@@ -120,7 +120,7 @@ namespace DATN2.Editor.DialogueSystem
             // Tạo ObjectField cho ScriptableObject
             ObjectField conditionField = new ObjectField
             {
-                objectType = typeof(DTSConditionSO),
+                objectType = typeof(DTSConditionAbstract),
                 allowSceneObjects = false,
                 value = initialValue
             };
@@ -132,11 +132,11 @@ namespace DATN2.Editor.DialogueSystem
                  {
                      if (index < ConditionData.Count)
                      {
-                         ConditionData[index] = evt.newValue as DTSConditionSO;
+                         ConditionData[index] = evt.newValue as DTSConditionAbstract;
                      }
                      else
                      {
-                         ConditionData.Add(evt.newValue as DTSConditionSO);
+                         ConditionData.Add(evt.newValue as DTSConditionAbstract);
                      }
                  }
              });
