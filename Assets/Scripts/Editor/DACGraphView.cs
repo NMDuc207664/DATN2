@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Modals.Enum;
-using DATN2.Editor.Nodes;
+using DATN2.GraphviewEditor.Nodes;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DATN2.Editor
+namespace DATN2.GraphviewEditor
 {
     public class DACGraphView : GraphView
     {
@@ -111,7 +111,7 @@ namespace DATN2.Editor
         }
         private DACNode CreateNode(Vector2 position, DACDialogueType dialogType)
         {
-            Type nodeType = Type.GetType($"DATN2.Editor.Nodes.{dialogType}Node");//DS.Elements là namespace
+            Type nodeType = Type.GetType($"DATN2.GraphviewEditor.Nodes.{dialogType}Node");//DS.Elements là namespace
             DACNode node = (DACNode)Activator.CreateInstance(nodeType);
             node.Initialize(position);
             node.Draw();

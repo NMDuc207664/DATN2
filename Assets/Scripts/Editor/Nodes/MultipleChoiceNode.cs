@@ -2,7 +2,7 @@ using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-namespace DATN2.Editor.Nodes
+namespace DATN2.GraphviewEditor.Nodes
 {
     public class MultipleChoiceNode : DACNode
     {
