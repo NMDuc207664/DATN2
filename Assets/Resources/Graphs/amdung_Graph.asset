@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc6bccf99b605047a224d2be96ff16f, type: 3}
+  m_Name: amdung_Graph
+  m_EditorClassIdentifier: 
+  <GraphName>k__BackingField: amdung
+  <Groups>k__BackingField:
+  - <GroupID>k__BackingField: f7055747-1c05-4d83-aa1d-a061b72051e6
+    <GroupName>k__BackingField: Dialogue Group
+    <Position>k__BackingField: {x: 535.2, y: 77.59999}
+  - <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+    <GroupName>k__BackingField: nnn
+    <Position>k__BackingField: {x: 405.6, y: -329.6}
+  <Nodes>k__BackingField:
+  - <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+    <Name>k__BackingField: p
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 343e1a5f-eef9-4351-b5aa-6aa5567232f6
+      <Text>k__BackingField: h
+      <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+      <ConnectedNodeIDs>k__BackingField: []
+    - <ChoiceID>k__BackingField: d3c03075-0abc-40b1-ad4f-70db88395692
+      <Text>k__BackingField: i
+      <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+      <ConnectedNodeIDs>k__BackingField: []
+    - <ChoiceID>k__BackingField: 6b2af059-9ac3-4f06-9424-78a1d435c52e
+      <Text>k__BackingField: p
+      <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: f7055747-1c05-4d83-aa1d-a061b72051e6
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: f7055747-1c05-4d83-aa1d-a061b72051e6
+      <GroupName>k__BackingField: Dialogue Group
+      <Position>k__BackingField: {x: 535.2, y: 77.59999}
+    <DialogueType>k__BackingField: 1
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 560.8, y: 137.59999}
+    <IsStartingNode>k__BackingField: 1
+  - <NodeID>k__BackingField: e71916c7-09fc-4007-8a19-396dbbbcfed8
+    <Name>k__BackingField: pupupu
+    <Text>k__BackingField: Dialogue hhhhn.
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 43eacc6c-24f4-4839-afc2-a52440066b7d
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: e71916c7-09fc-4007-8a19-396dbbbcfed8
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+      <GroupName>k__BackingField: nnn
+      <Position>k__BackingField: {x: 405.6, y: -329.6}
+    <DialogueType>k__BackingField: 0
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 952, y: -269.6}
+    <IsStartingNode>k__BackingField: 0
+  - <NodeID>k__BackingField: 78b3aaa0-0273-46cf-bbd1-1232cd310c0b
+    <Name>k__BackingField: pooop
+    <Text>k__BackingField: ohohi
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: ebc2252d-8527-4615-88e3-91f2672ff926
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 78b3aaa0-0273-46cf-bbd1-1232cd310c0b
+      <ConnectedNodeIDs>k__BackingField:
+      - e71916c7-09fc-4007-8a19-396dbbbcfed8
+    <Conditions>k__BackingField:
+    - <NodeID>k__BackingField: bc1e771e-bc6f-4ea1-baeb-4d1295a0014d
+      <ParentNodeID>k__BackingField: 78b3aaa0-0273-46cf-bbd1-1232cd310c0b
+      <DialogueName>k__BackingField: pp
+      <Conditions>k__BackingField: []
+      <DialogueType>k__BackingField: 2
+      <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+      <Position>k__BackingField: {x: 431.2, y: -269.6}
+    <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+      <GroupName>k__BackingField: nnn
+      <Position>k__BackingField: {x: 405.6, y: -329.6}
+    <DialogueType>k__BackingField: 0
+    <HasConditions>k__BackingField: 1
+    <Position>k__BackingField: {x: 668.8, y: -237.6}
+    <IsStartingNode>k__BackingField: 1
+  - <NodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+    <Name>k__BackingField: Node Name
+    <Text>k__BackingField: ooooo
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 33b1500b-1db7-4be6-bdd0-4315c3d069b3
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField:
+    - <NodeID>k__BackingField: 121ea333-e0aa-48c1-8820-0b6d1f29ec93
+      <ParentNodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+      <DialogueName>k__BackingField: i
+      <Conditions>k__BackingField: []
+      <DialogueType>k__BackingField: 2
+      <GroupID>k__BackingField: 
+      <Position>k__BackingField: {x: 16.8, y: 29.600002}
+    - <NodeID>k__BackingField: e73c075f-47b4-4c6e-aa67-622a8841d1a4
+      <ParentNodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+      <DialogueName>k__BackingField: h
+      <Conditions>k__BackingField: []
+      <DialogueType>k__BackingField: 2
+      <GroupID>k__BackingField: 
+      <Position>k__BackingField: {x: 16.8, y: 195.2}
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+    <DialogueType>k__BackingField: 0
+    <HasConditions>k__BackingField: 1
+    <Position>k__BackingField: {x: 276, y: 98.399994}
+    <IsStartingNode>k__BackingField: 1
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: 343e1a5f-eef9-4351-b5aa-6aa5567232f6
+    <Text>k__BackingField: h
+    <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: d3c03075-0abc-40b1-ad4f-70db88395692
+    <Text>k__BackingField: i
+    <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: 6b2af059-9ac3-4f06-9424-78a1d435c52e
+    <Text>k__BackingField: p
+    <NodeID>k__BackingField: 8036d575-a256-42d0-b8d1-c4cb0c63f3a7
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: 43eacc6c-24f4-4839-afc2-a52440066b7d
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: e71916c7-09fc-4007-8a19-396dbbbcfed8
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: ebc2252d-8527-4615-88e3-91f2672ff926
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 78b3aaa0-0273-46cf-bbd1-1232cd310c0b
+    <ConnectedNodeIDs>k__BackingField:
+    - e71916c7-09fc-4007-8a19-396dbbbcfed8
+  - <ChoiceID>k__BackingField: 33b1500b-1db7-4be6-bdd0-4315c3d069b3
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+    <ConnectedNodeIDs>k__BackingField: []
+  <Conditions>k__BackingField:
+  - <NodeID>k__BackingField: 121ea333-e0aa-48c1-8820-0b6d1f29ec93
+    <ParentNodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+    <DialogueName>k__BackingField: i
+    <Conditions>k__BackingField: []
+    <DialogueType>k__BackingField: 2
+    <GroupID>k__BackingField: 
+    <Position>k__BackingField: {x: 16.8, y: 29.600002}
+  - <NodeID>k__BackingField: e73c075f-47b4-4c6e-aa67-622a8841d1a4
+    <ParentNodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
+    <DialogueName>k__BackingField: h
+    <Conditions>k__BackingField: []
+    <DialogueType>k__BackingField: 2
+    <GroupID>k__BackingField: 
+    <Position>k__BackingField: {x: 16.8, y: 195.2}
+  - <NodeID>k__BackingField: bc1e771e-bc6f-4ea1-baeb-4d1295a0014d
+    <ParentNodeID>k__BackingField: 78b3aaa0-0273-46cf-bbd1-1232cd310c0b
+    <DialogueName>k__BackingField: pp
+    <Conditions>k__BackingField: []
+    <DialogueType>k__BackingField: 2
+    <GroupID>k__BackingField: 50e9ec3b-ae60-4a61-8933-1ddaa912ecbb
+    <Position>k__BackingField: {x: 431.2, y: -269.6}

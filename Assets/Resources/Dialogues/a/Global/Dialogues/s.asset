@@ -15,9 +15,11 @@ MonoBehaviour:
   <DialogueName>k__BackingField: s
   <Text>k__BackingField: Dialogue text.
   <Choices>k__BackingField:
-  - <Text>k__BackingField: New Choice
-    <NextDialogue>k__BackingField: {fileID: 0}
+  - <ChoiceID>k__BackingField: 5715eab7-61c5-4de6-a91c-63a74326fe98
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 77e3f5b3-5ebc-4ade-a1a4-3eaee495f1c7
+    <ConnectedNodeIDs>k__BackingField: []
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
-  <IsStartingDialogue>k__BackingField: 0
+  <IsStartingDialogue>k__BackingField: 1
   <HasConditions>k__BackingField: 0

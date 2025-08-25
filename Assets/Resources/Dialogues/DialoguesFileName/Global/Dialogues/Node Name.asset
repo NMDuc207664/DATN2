@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Node Name
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: Node Name
-  <Text>k__BackingField: Dialogue text.
+  <Text>k__BackingField: ooooo
   <Choices>k__BackingField:
-  - <ChoiceID>k__BackingField: b2e350d1-cdfb-4c01-bd1b-fd431305392b
+  - <ChoiceID>k__BackingField: 33b1500b-1db7-4be6-bdd0-4315c3d069b3
     <Text>k__BackingField: New Choice
-    <NodeID>k__BackingField: acf6e16b-3fb4-4eb7-97c0-777c33cdc8b6
+    <NodeID>k__BackingField: f1d32336-01b4-4517-ba27-247029bd19a8
     <ConnectedNodeIDs>k__BackingField: []
   <Conditions>k__BackingField:
-  - {fileID: 11400000, guid: 7a2812f42c9fa844988f5d788c8550dd, type: 2}
-  - {fileID: 11400000, guid: 2e8ac57862510494c8ccb75ad07f3669, type: 2}
+  - {fileID: 11400000, guid: 5244cdd21e44ab041aee998820e87c6a, type: 2}
+  - {fileID: 11400000, guid: 96242e726ad771549a8ba9d349679ece, type: 2}
   <DialogueType>k__BackingField: 0
   <IsStartingDialogue>k__BackingField: 0
   <HasConditions>k__BackingField: 1

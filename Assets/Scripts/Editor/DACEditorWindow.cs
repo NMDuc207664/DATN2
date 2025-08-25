@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DATN2.Editor
+namespace DATN2.GraphviewEditor
 {
     public class DACEditorWindow : EditorWindow
     {
