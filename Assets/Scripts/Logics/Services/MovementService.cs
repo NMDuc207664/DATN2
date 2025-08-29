@@ -20,7 +20,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
             if (IsGrounded())
             {
                 _rigidbody.AddForce(Vector3.up * height, ForceMode.Impulse);
-                Debug.Log("Jumped!");
+                // Debug.Log("Jumped!");
             }
             // throw new System.NotImplementedException();
         }
@@ -34,7 +34,14 @@ namespace DATN2.Assets.Scripts.Logics.Services
         // [RequireGameState(StateType.Ingame)]
         public void Move(Vector3 direction, float speed)
         {
-            _playerTransform.Translate(direction * speed * Time.deltaTime, Space.World);
+            if (direction.magnitude >= 0.1f)
+            {
+                // Tính hướng di chuyển dựa vào hướng player đang nhìn
+                Vector3 moveDir = _playerTransform.right * direction.x + _playerTransform.forward * direction.z;
+                moveDir.y = 0f; // tránh đi chéo lên trời nếu player nghiêng
+
+                _rigidbody.MovePosition(_rigidbody.position + moveDir.normalized * speed * Time.deltaTime);
+            }
         }
 
         // public void Start()
