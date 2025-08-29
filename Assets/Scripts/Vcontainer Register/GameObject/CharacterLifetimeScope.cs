@@ -3,8 +3,6 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using DATN2.Assets.Scripts.Logics.Services;
-using System.Collections.Generic;
-using DATN2.Scripts.BehaviorEditor.Models;
 
 public class CharacterLifetimeScope : LifetimeScope
 {
