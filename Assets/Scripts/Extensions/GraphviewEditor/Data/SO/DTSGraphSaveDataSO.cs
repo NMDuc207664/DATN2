@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DATN2.GraphviewEditor.Data.SaveModal.SO;
 using UnityEngine;
 namespace DATN2.GraphviewEditor.Data.SaveModal
 {
@@ -18,6 +19,48 @@ namespace DATN2.GraphviewEditor.Data.SaveModal
             Groups = new List<DTSGroupSaveData>();
             Nodes = new List<DTSNodeSaveData>();
             Conditions = new List<DTSConditionSaveData>();
+        }
+        public List<string> GetGroupedDialogueNames(DTSDialogueGroupSO dialogueGroup, bool startingDialoguesOnly)
+        {
+            List<string> groupedDialogueNames = new List<string>();
+            Debug.Log("GetGroupedDialogueNames is running");
+
+            foreach (var node in Nodes)
+            {
+                if (node.Group != null && node.Group.GroupName == dialogueGroup.GroupName)
+                {
+                    if (startingDialoguesOnly && !node.IsStartingNode)
+                    {
+                        continue;
+                    }
+
+                    groupedDialogueNames.Add(node.Name);
+                }
+            }
+
+            return groupedDialogueNames;
+        }
+
+        public List<string> GetUngroupedDialogueNames(bool startingDialoguesOnly)
+        {
+            List<string> ungroupedDialogueNames = new List<string>();
+            Debug.Log("GetUngroupedDialogueNames is running");
+
+            foreach (var node in Nodes)
+            {
+                // Nếu GroupID rỗng hoặc null => coi như ungroup
+                if (string.IsNullOrEmpty(node.GroupID))
+                {
+                    if (startingDialoguesOnly && !node.IsStartingNode)
+                    {
+                        continue;
+                    }
+
+                    ungroupedDialogueNames.Add(node.Name);
+                }
+            }
+
+            return ungroupedDialogueNames;
         }
     }
 }
