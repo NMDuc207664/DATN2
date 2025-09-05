@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using DATN2.Assets.Scripts.Logics.Interface.UI_Interfaces;
 using DATN2.Assets.Scripts.Modals.Enum;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 namespace DATN2.Assets.Scripts.Logics.UI_Services
 {
     public class MenuService : IMenuService
@@ -10,6 +8,12 @@ namespace DATN2.Assets.Scripts.Logics.UI_Services
         public void HideMenu()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void NewGame()
+        {
+            GameStateManager.Instance.SetState(StateType.Ingame);
+            SceneManager.LoadScene("Testing");
         }
 
         public void ShowMenu()

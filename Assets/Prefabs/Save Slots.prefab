@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd6ff8bdf6910a49947295c16b1bb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profileId: Save_Slot_3
+  slotName: Save_Slot_3
   noDataContent: {fileID: 3580544089070985641}
   hasDataContent: {fileID: 6112458507279219325}
   saveName: {fileID: 8450512504984076213}
@@ -680,7 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd6ff8bdf6910a49947295c16b1bb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profileId: Save_Slot_1
+  slotName: Save_Slot_1
   noDataContent: {fileID: 5802844071485247991}
   hasDataContent: {fileID: 8532386768787409687}
   saveName: {fileID: 7499410362286559592}
@@ -1467,7 +1467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd6ff8bdf6910a49947295c16b1bb22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profileId: Save_Slot_2
+  slotName: Save_Slot_2
   noDataContent: {fileID: 2354601119748286956}
   hasDataContent: {fileID: 2074290990859556500}
   saveName: {fileID: 4527249240083022791}

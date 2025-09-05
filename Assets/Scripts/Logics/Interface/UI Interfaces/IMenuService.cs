@@ -8,9 +8,10 @@ namespace DATN2.Assets.Scripts.Logics.Interface.UI_Interfaces
     {
         void ShowMenu();
         void HideMenu();
-        [RequireGameState(StateType.Ingame)]
+        [RequireGameState(StateType.Ingame, StateType.OnLoad, StateType.OnSave)]
         void ToogleMenu();
         [RequireGameState(StateType.OnMenu)]
         void UnToogleMenu();
+        void NewGame();
     }
 }

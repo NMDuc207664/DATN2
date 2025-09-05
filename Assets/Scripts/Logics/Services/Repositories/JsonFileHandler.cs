@@ -22,56 +22,6 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 Directory.CreateDirectory(directoryPath);
         }
 
-        // public void Save(string folderName, T data)
-        // {
-        //     string folderPath = Path.Combine(directoryPath, folderName);
-        //     if (!Directory.Exists(folderPath))
-        //         Directory.CreateDirectory(folderPath);
-
-        //     string fullPath = Path.Combine(folderPath, defaultFileName + ".json");
-        //     try
-        //     {
-        //         string json = JsonUtility.ToJson(data, true);
-        //         Debug.Log($"[JsonFileHandler] Saving file: {fullPath}");
-        //         if (useEncryption)
-        //         {
-        //             json = EncryptDecrypt(json);
-        //         }
-        //         File.WriteAllText(fullPath, json);
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Debug.LogError($"Error saving file {fullPath}: {e}");
-        //     }
-        // }
-
-        // public T Load(string folderName)
-        // {
-        //     string folderPath = Path.Combine(directoryPath, folderName);
-        //     string fullPath = Path.Combine(folderPath, defaultFileName + ".json");
-        //     Debug.Log($"[JsonFileHandler] Loading file: {fullPath}");
-        //     if (!File.Exists(fullPath))
-        //     {
-        //         Debug.LogWarning($"[JsonFileHandler] File not found: {fullPath}");
-        //         return default;
-        //     }
-
-        //     try
-        //     {
-        //         string json = File.ReadAllText(fullPath);
-        //         if (useEncryption) json = EncryptDecrypt(json);
-
-        //         var obj = JsonUtility.FromJson<T>(json);
-        //         Debug.Log($"[JsonFileHandler] Loaded from: {fullPath}");
-        //         return obj;
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         Debug.LogError($"Error loading file {fullPath}: {e}");
-        //         return default;
-        //     }
-        // }
-
         public async Task SaveAsync(string folderName, T data)
         {
             string folderPath = Path.Combine(directoryPath, folderName);
@@ -122,15 +72,6 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 return default;
             }
         }
-        // public void Delete(string folderName)
-        // {
-        //     string folderPath = Path.Combine(directoryPath, folderName);
-        //     if (Directory.Exists(folderPath))
-        //     {
-        //         Directory.Delete(folderPath, true);
-        //         Debug.Log($"[JsonFileHandler] Deleted folder: {folderPath}");
-        //     }
-        // }
 
         private string EncryptDecrypt(string data)
         {
@@ -146,23 +87,6 @@ namespace DATN2.Assets.Scripts.Logics.Services
             return directoryPath;
         }
 
-        // public Dictionary<string, T> LoadAll()
-        // {
-        //     var dict = new Dictionary<string, T>();
-        //     var directories = Directory.GetDirectories(directoryPath);
-        //     foreach (var dir in directories)
-        //     {
-        //         string folderName = Path.GetFileName(dir);
-        //         var save = Load(folderName);
-        //         if (save != null)
-        //         {
-        //             dict[folderName] = save;
-        //         }
-        //     }
-
-        //     return dict;
-
-        // }
         public async Task DeleteAsync(string folderName)
         {
             string folderPath = Path.Combine(directoryPath, folderName);

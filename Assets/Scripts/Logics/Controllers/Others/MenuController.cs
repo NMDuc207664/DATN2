@@ -1,5 +1,5 @@
-using DATN2.Assets.Scripts.Logics.Controllers;
 using DATN2.Assets.Scripts.Logics.Interface.UI_Interfaces;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,32 +8,31 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 {
     public class Menu : MonoBehaviour
     {
+
         [Inject]
-        private SaveAndLoadController _controller;
+        public IMenuService _menuService;
         [Inject]
-        private IMenuService _menuService;
-        [Inject]
-        private ISaveSlotService _saveSlotService;
+        public ISaveSlotService _saveSlotService;
         // [SerializeField] private SaveSlotsMenu saveSlotsMenu;
         [SerializeField] private Button newGameButton;
-        [SerializeField] private Button continueGameButton;
-        [SerializeField] private SaveSlotMenu saveSlotsMenu;
-
-        // public void Awake()
-        // {
-        //     saveSlotsMenu.ActiveMenu();
-        // }
-        public void OnLoadButtonClicked(string saveId)
+        [SerializeField] public Button continueGameButton;
+        [SerializeField] public SaveSlotMenu saveSlotsMenu;
+        void Awake()
+        {
+            // GameStateManager.Instance.SetState(StateType.OnMenu);
+        }
+        public void OnLoadButtonClicked()
         {
             // saveSlotsMenu.OnLoadSlotClick();
+            GameStateInvoker.TryInvoke(_saveSlotService, nameof(_saveSlotService.ToogleLoadSaveSlot));
             saveSlotsMenu.ActiveMenu();
             DeactivateMenu();
         }
 
         // Similarly for save, delete, etc.
-        public void OnNewGameButtonClicked(string saveName)
+        public void OnNewGameButtonClicked()
         {
-            SceneManager.LoadScene("Testing");
+            GameStateInvoker.TryInvoke(_menuService, nameof(_menuService.NewGame));
         }
         public void DeactivateMenu()
         {
@@ -42,7 +41,9 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         public void ActivateMenu()
         {
             this.gameObject.SetActive(true);
+            saveSlotsMenu.DeactivateMenu();
         }
+
 
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using DATN2.Assets.Scripts.Logics.Interface;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 namespace DATN2.Assets.Scripts.Logics.Controllers
@@ -19,6 +21,8 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [SerializeField] private float jumpHeight = 2f;
         [SerializeField] private float sensitivity = 100f;
         private float _xRotation = 0f;
+        private bool isMenuOpen = false;
+
 
         private void Update()
         {

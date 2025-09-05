@@ -7,6 +7,11 @@ namespace DATN2.Assets.Scripts.Logics.UI_Services
 {
     public class SaveSlotService : ISaveSlotService
     {
+        public void BackToGame()
+        {
+            GameStateManager.Instance.SetState(StateType.Ingame);
+        }
+
         public void BackToMenu()
         {
             GameStateManager.Instance.SetState(StateType.OnMenu);
@@ -15,6 +20,11 @@ namespace DATN2.Assets.Scripts.Logics.UI_Services
         public void HideSaveSlots()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void LoadGame()
+        {
+            GameStateManager.Instance.SetState(StateType.Ingame);
         }
 
         public void ShowSaveSlots()

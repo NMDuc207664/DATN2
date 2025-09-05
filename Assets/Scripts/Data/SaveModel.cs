@@ -8,5 +8,7 @@ public class SaveModel
     [SerializeField] public string Time;
     [SerializeField] public string SceneName;
     [SerializeField] public Vector3 PlayerPosition;
+    [SerializeField] public Vector3 PlayerRotation;
+    [SerializeField] public Vector3 PlayerScale;
 
 }

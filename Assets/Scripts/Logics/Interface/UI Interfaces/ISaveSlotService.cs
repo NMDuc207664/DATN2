@@ -14,5 +14,8 @@ namespace DATN2.Assets.Scripts.Logics.Interface.UI_Interfaces
         void BackToMenu();
         [RequireGameState(StateType.OnMenu)]
         void ToogleSaveSlot();
+        [RequireGameState(StateType.OnLoad)]
+        void LoadGame();
+        void BackToGame();
     }
 }

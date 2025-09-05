@@ -95,7 +95,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
         //     saves[saveId] = loaded;
         //     return loaded;
         // }
-        public async Task<SaveModel> AddNewSaveAsync(SaveModel input)
+        public async Task<SaveModel> AddNewSaveAsync(SaveModel input, string slotName)
         {
             var saveModel = new SaveModel
             {
@@ -103,16 +103,18 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 SaveName = input.SaveName,
                 SceneName = input.SceneName,
                 PlayerPosition = input.PlayerPosition,
+                PlayerRotation = input.PlayerRotation,
+                PlayerScale = input.PlayerScale,
                 Time = DateTime.Now.ToString("O") // ISO string
             };
 
             saves[saveModel.SaveId] = saveModel;
-            await _fileHandler.SaveAsync(saveModel.SaveId, saveModel);
+            await _fileHandler.SaveAsync(slotName, saveModel);
 
             return saveModel;
         }
 
-        public async Task<SaveModel> OverwriteSaveAsync(SaveModel input)
+        public async Task<SaveModel> OverwriteSaveAsync(SaveModel input, string slotName)
         {
             var saveModel = new SaveModel
             {
@@ -120,11 +122,13 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 SaveName = input.SaveName,
                 SceneName = input.SceneName,
                 PlayerPosition = input.PlayerPosition,
+                PlayerRotation = input.PlayerRotation,
+                PlayerScale = input.PlayerScale,
                 Time = DateTime.Now.ToString("O")
             };
 
             saves[saveModel.SaveId] = saveModel;
-            await _fileHandler.SaveAsync(saveModel.SaveId, saveModel);
+            await _fileHandler.SaveAsync(slotName, saveModel);
 
             return saveModel;
         }
@@ -169,6 +173,17 @@ namespace DATN2.Assets.Scripts.Logics.Services
             saves[saveId] = loaded;
             return loaded;
         }
+        public async Task<SaveModel> GetSaveBySlotAsync(string slotName)
+        {
+            var loaded = await _fileHandler.LoadAsync(slotName);
+            if (loaded == null)
+            {
+                return null;
+            }
 
+            Debug.Log($"[SaveService] Loaded from slot: {loaded.SaveName} ({loaded.SaveId}) in slot {slotName}");
+            saves[loaded.SaveId] = loaded;
+            return loaded;
+        }
     }
 }

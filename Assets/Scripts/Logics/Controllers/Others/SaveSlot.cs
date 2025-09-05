@@ -6,7 +6,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 {
     public class SaveSlot : MonoBehaviour
     {
-        [SerializeField] private string profileId;
+        [SerializeField] private string slotName;
         // [SerializeField] private string date;
         // [SerializeField] private string playTime;
         [SerializeField] private GameObject noDataContent;
@@ -30,9 +30,9 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
                 // playTime.text = saveModel.PlayTime;
             }
         }
-        public string GetProfileId()
+        public string GetSlotName()
         {
-            return profileId;
+            return slotName;
         }
     }
 }
