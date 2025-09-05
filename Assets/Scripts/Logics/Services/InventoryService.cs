@@ -14,9 +14,9 @@ namespace DATN2.Assets.Scripts.Logics.Services
         {
             foreach (var slot in items)
             {
-                if (slot.itemData == item)
+                if (slot._itemData == item)
                 {
-                    slot.amount += amount;
+                    slot._amount += amount;
                     return slot;
                 }
             }

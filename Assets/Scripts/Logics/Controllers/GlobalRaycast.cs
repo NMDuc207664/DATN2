@@ -6,7 +6,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         public float raycastDistance = 10f;
         public LayerMask layerMask;
         // private Camera camera;
-        public GameObject gameObject;
+        public new GameObject gameObject;
 
         private ItemPickup _detectedItem;
 
@@ -40,7 +40,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
                     //         Debug.Log("Nhắt item: " + pickup.itemData.itemName);
                     //     }
                     // }
-                    _detectedItem = hit.collider.GetComponent<ItemPickup>();
+                    _detectedItem = target.GetComponent<ItemPickup>();
                 }
                 // if (hit.collider.CompareTag("Item"))
                 // {

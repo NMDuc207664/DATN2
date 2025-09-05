@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08268e073975024eac0f624cdb3db26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastDetector: {fileID: 0}
+  _raycastDetector: {fileID: 1073673950}
   moveSpeed: 5
   jumpHeight: 2
   sensitivity: 200

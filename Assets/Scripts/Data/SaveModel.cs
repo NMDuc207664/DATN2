@@ -1,0 +1,12 @@
+using System;
+using UnityEngine;
+[Serializable]
+public class SaveModel
+{
+    [SerializeField] public string SaveId;
+    [SerializeField] public string SaveName;
+    [SerializeField] public string Time;
+    [SerializeField] public string SceneName;
+    [SerializeField] public Vector3 PlayerPosition;
+
+}

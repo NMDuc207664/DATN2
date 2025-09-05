@@ -36,7 +36,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             {
                 var pickup = _raycastDetector.DetectedItem;
                 var added = _inventoryService.AddItem(pickup.itemData, pickup.amount);
-                Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added.amount}");
+                Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
                 pickup.OnPickedUp();
             }
         }

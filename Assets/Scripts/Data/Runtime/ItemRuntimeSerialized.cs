@@ -6,14 +6,14 @@ namespace DATN2.Assets.Scripts.Data.Runtime
     public class ItemRuntimeSerialized : MonoBehaviour
     {
         public string uniqueId;
-        public ItemModel itemData;
-        public int amount;
+        public ItemModel _itemData;
+        public int _amount;
 
         public ItemRuntimeSerialized(ItemModel itemData, int amount)
         {
-            this.uniqueId = Guid.NewGuid().ToString();
-            this.itemData = itemData;
-            this.amount = amount;
+            uniqueId = Guid.NewGuid().ToString();
+            _itemData = itemData;
+            _amount = amount;
         }
     }
 }
