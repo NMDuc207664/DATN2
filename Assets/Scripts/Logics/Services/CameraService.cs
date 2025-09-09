@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CameraService : ICameraService
 {
+    private float _xRotation = 0f;
     public Transform _playerTransform;   // thân nhân vật (để xoay ngang)
     public Camera _playerCamera;    // mắt (để xoay dọc)
     public CameraService(Transform playerTransform, Camera playerCamera)
@@ -17,13 +18,23 @@ public class CameraService : ICameraService
         Cursor.visible = !isLocked;
     }
 
-    public void RotateCamera(ref float xRotation, float mouseX, float mouseY, float sensitivity)
-    {
-        xRotation -= mouseY * sensitivity * Time.deltaTime;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        _playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+    // public void RotateCamera(ref float xRotation, float mouseX, float mouseY, float sensitivity)
+    // {
+    //     xRotation -= mouseY * sensitivity * Time.deltaTime;
+    //     xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+    //     _playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // xử lý yaw (xoay ngang) cho player body
+    //     // xử lý yaw (xoay ngang) cho player body
+    //     _playerTransform.Rotate(Vector3.up * mouseX * sensitivity * Time.deltaTime);
+    // }
+    public void RotateCamera(float mouseX, float mouseY, float sensitivity)
+    {
+        // xử lý pitch (xoay dọc)
+        _xRotation -= mouseY * sensitivity * Time.deltaTime;
+        _xRotation = Mathf.Clamp(_xRotation, -45f, 60f);
+        _playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+
+        // xử lý yaw (xoay ngang)
         _playerTransform.Rotate(Vector3.up * mouseX * sensitivity * Time.deltaTime);
     }
 }

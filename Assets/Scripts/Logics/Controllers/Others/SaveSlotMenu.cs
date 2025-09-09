@@ -24,6 +24,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private SaveSlot[] saveSlots;
         private readonly string[] SAVE_SLOTS = { "Save_Slot_1", "Save_Slot_2", "Save_Slot_3" };
         Dictionary<string, SaveModel> saveDict = new Dictionary<string, SaveModel>();
+        private bool _isDestroyed = false;
         // Start is called before the first frame update
         private void Awake()
         {
@@ -33,8 +34,13 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         {
             ActiveMenu();
         }
+        private void OnDestroy()
+        {
+            _isDestroyed = true;  // Set flag khi destroy
+        }
         public async void ActiveMenu()
         {
+            if (_isDestroyed) return;  // Early exit nếu đã destroy
             this.gameObject.SetActive(true);
             // GameStateInvoker.TryInvoke(_saveSlotService, nameof(_saveSlotService.ToogleLoadSaveSlot));
 
@@ -43,6 +49,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             saveDict.Clear();
             foreach (string slotName in SAVE_SLOTS)
             {
+                if (_isDestroyed) return;
                 var saveModel = await _saveService.GetSaveBySlotAsync(slotName);
                 if (saveModel != null)
                 {
@@ -57,6 +64,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             // Cập nhật từng save slot
             foreach (SaveSlot saveSlot in saveSlots)
             {
+                if (_isDestroyed) return;
                 string slotName = saveSlot.GetSlotName();
 
                 // Kiểm tra slotName có hợp lệ không
@@ -81,6 +89,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         }
         public void OnBackClick()
         {
+            if (_isDestroyed) return;
             menu.ActivateMenu();
             GameStateInvoker.TryInvoke(_menuService, nameof(_menuService.ToogleMenu));
             Task.Delay(50);
@@ -88,6 +97,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         }
         public void DeactivateMenu()
         {
+            if (_isDestroyed || this == null) return;
             this.gameObject.SetActive(false);
         }
         public async void OnSaveSlotOneClick()
@@ -106,48 +116,53 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         }
         private async Task HandleSaveSlotClick(string slotName)
         {
+            if (_isDestroyed || saveAndLoadController == null) return;  // Early check
 
-            var currentState = GameStateManager.Instance.GetCurrentState();
+            var currentState = GameStateManager.Instance?.GetCurrentState();  // Safe
+            if (currentState == null) return;
+
             if (currentState == StateType.OnSave)
             {
-                // Kiểm tra xem slot đã có save chưa
-                var existingSave = await saveAndLoadController.SaveSlotOneAsync(slotName, overwrite: false);
+                // Check existing save (không await ở đây để tránh delay destroy)
+                var existingSave = await (saveAndLoadController?.SaveSlotOneAsync(slotName, overwrite: false));
+                if (_isDestroyed) return;  // Check sau await
+
                 if (existingSave != null)
                 {
-                    // Nếu đã có save, ghi đè
-                    await saveAndLoadController.SaveSlotOneAsync(slotName, overwrite: true);
+                    await (saveAndLoadController?.SaveSlotOneAsync(slotName, overwrite: true));
                     Debug.Log($"[SaveSlotMenu] Overwritten save in slot: {slotName}");
                 }
                 else
                 {
-                    // Nếu chưa có save, lưu mới
-                    await saveAndLoadController.SaveSlotOneAsync(slotName);
+                    await (saveAndLoadController?.SaveSlotOneAsync(slotName));
                     Debug.Log($"[SaveSlotMenu] New save created in slot: {slotName}");
                 }
-                ActiveMenu(); // Cập nhật UI sau khi lưu
+
+                if (!_isDestroyed)
+                    ActiveMenu();  // Chỉ active nếu chưa destroy
             }
             else if (currentState == StateType.OnLoad)
             {
-                // Load save từ slot
-                var saveModel = await _saveService.GetSaveBySlotAsync(slotName);
-                if (saveModel != null)
+                var saveModel = await (_saveService?.GetSaveBySlotAsync(slotName));
+                if (saveModel == null || _isDestroyed)
                 {
-                    await saveAndLoadController.LoadGameAsync(saveModel.SaveId);
-                    GameStateInvoker.TryInvoke(_saveSlotService, nameof(_saveSlotService.LoadGame));
-                    Time.timeScale = 1f;
-                    this.gameObject.SetActive(false);
-                    // if (SceneManager.GetActiveScene().name != "MainMenu")
-                    // {
-                    //     this.gameObject.SetActive(false);
-                    // }
-                    // Debug.Log($"[SaveSlotMenu] Loaded save from slot: {slotName}");
+                    if (saveModel == null)
+                        Debug.LogWarning($"[SaveSlotMenu] No save found in slot: {slotName}");
+                    return;
                 }
-                else
-                {
-                    Debug.LogWarning($"[SaveSlotMenu] No save found in slot: {slotName}");
-                }
-            }
 
+                // **QUAN TRỌNG: Di chuyển tất cả code sau LoadGameAsync lên TRƯỚC await**
+                // Để tránh chạy sau khi scene load (destroy object)
+                GameStateInvoker.TryInvoke(_saveSlotService, nameof(_saveSlotService.LoadGame));  // Gọi trước
+                Time.timeScale = 1f;
+                this.gameObject.SetActive(false);  // Deactivate trước load
+
+                // Bây giờ mới load (sau khi đã setup xong)
+                await (saveAndLoadController?.LoadGameAsync(saveModel.SaveId));
+
+                // Không cần code sau await nữa, vì sau load scene, menu đã inactive/destroy
+                Debug.Log($"[SaveSlotMenu] Loaded save from slot: {slotName}");
+            }
         }
 
     }

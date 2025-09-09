@@ -6,7 +6,8 @@ public static class GameStateInvoker
 {
     public static void TryInvoke<T>(T target, string methodName, params object[] parameters)
     {
-        var method = typeof(T).GetMethod(methodName);
+        // var method = typeof(T).GetMethod(methodName);
+        var method = target.GetType().GetMethod(methodName);
         if (method == null)
         {
             Debug.LogError($"Method {methodName} not found on type {typeof(T).Name}");

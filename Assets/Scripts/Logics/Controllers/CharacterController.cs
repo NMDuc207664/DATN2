@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DATN2.Assets.Scripts.Logics.Interface;
 using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
@@ -20,8 +21,13 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float jumpHeight = 2f;
         [SerializeField] private float sensitivity = 100f;
-        private float _xRotation = 0f;
-        private bool isMenuOpen = false;
+        [SerializeField] private Transform groundCheck;
+        [SerializeField] private float groundDistance = 0.2f;
+        [SerializeField] private LayerMask groundMask;
+
+        private bool isPickingUp = false;
+        // private float _xRotation = 0f;
+        // private bool isMenuOpen = false;
 
 
         private void Update()
@@ -36,40 +42,73 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         {
             if (_raycastDetector == null || _raycastDetector.DetectedItem == null) return;
 
-            if (Input.GetKeyDown(KeyCode.E))
+            // if (Input.GetKeyDown(KeyCode.E))
+            // {
+            //     var pickup = _raycastDetector.DetectedItem;
+            //     var added = _inventoryService.AddItem(pickup.itemData, pickup.amount);
+            //     Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
+            //     pickup.OnPickedUp();
+            // }
+            if (Input.GetKeyDown(KeyCode.E) && !isPickingUp)
             {
-                var pickup = _raycastDetector.DetectedItem;
-                var added = _inventoryService.AddItem(pickup.itemData, pickup.amount);
-                Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
-                pickup.OnPickedUp();
+                StartCoroutine(DoPickup());
             }
         }
+        private IEnumerator DoPickup()
+        {
+            isPickingUp = true;
 
+            // Ngừng di chuyển khi nhặt
+
+            // Thực hiện logic nhặt item ngay khi bắt đầu
+            var pickup = _raycastDetector.DetectedItem;
+            var added = _inventoryService.AddItem(pickup.itemData, pickup.amount);
+            Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
+            pickup.OnPickedUp();
+
+            // Chờ hết animation
+            yield return StartCoroutine(_movementService.PickUp());
+
+            // Chỉ khi anim kết thúc mới cho di chuyển lại
+            isPickingUp = false;
+
+        }
         private void HandleMovementInput()
         {
+            if (isPickingUp) return;
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveZ = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(moveX, 0f, moveZ).normalized;
 
-            if (direction.magnitude >= 0.1f)
-            {
-                GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Move), direction, moveSpeed);
-            }
+            // if (direction.magnitude >= 0.1f)
+            // {
+            GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Move), direction, moveSpeed);
+            //}
         }
         private void HandleJumpInput()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
             {
                 GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Jump), jumpHeight);
             }
         }
+        private bool IsGrounded()
+        {
+            return Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        }
+        // private void HandleCameraInput()
+        // {
+        //     float mouseX = Input.GetAxis("Mouse X");
+        //     float mouseY = Input.GetAxis("Mouse Y");
+        //     GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), _xRotation, mouseX, mouseY, sensitivity);
+        //     // gọi service xoay camera
+        //     // _cameraService.RotateCamera(ref _xRotation, mouseX, mouseY, sensitivity);
+        // }
         private void HandleCameraInput()
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
-            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), _xRotation, mouseX, mouseY, sensitivity);
-            // gọi service xoay camera
-            // _cameraService.RotateCamera(ref _xRotation, mouseX, mouseY, sensitivity);
+            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, sensitivity);
         }
     }
 }
