@@ -96,14 +96,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         {
             return Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         }
-        // private void HandleCameraInput()
-        // {
-        //     float mouseX = Input.GetAxis("Mouse X");
-        //     float mouseY = Input.GetAxis("Mouse Y");
-        //     GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), _xRotation, mouseX, mouseY, sensitivity);
-        //     // gọi service xoay camera
-        //     // _cameraService.RotateCamera(ref _xRotation, mouseX, mouseY, sensitivity);
-        // }
+
         private void HandleCameraInput()
         {
             float mouseX = Input.GetAxis("Mouse X");
