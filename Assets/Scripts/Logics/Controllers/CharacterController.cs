@@ -24,20 +24,40 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundDistance = 0.2f;
         [SerializeField] private LayerMask groundMask;
+        [SerializeField] private GameObject head;
+        [SerializeField] private PhysicMaterial slipperyMaterial;
+
 
         private bool isPickingUp = false;
         // private float _xRotation = 0f;
         // private bool isMenuOpen = false;
+        private Collider _collider;
+        private PhysicMaterial _defaultMaterial;
 
-
-        private void Update()
+        private void Awake()
+        {
+            _collider = GetComponent<Collider>();
+            // // mặc định không gán material (dùng friction mặc định của Unity)
+            // _collider.material = null;
+            _defaultMaterial = _collider.material;
+        }
+        private void FixedUpdate()
         {
             HandleMovementInput();
-            HandleJumpInput();
             HandleCameraInput();
-            HandlePickupInput();
-        }
 
+        }
+        private void Update()
+        {
+            HandleJumpInput();
+
+            HandlePickupInput();
+            _movementService.UpdateDrag(IsGrounded());
+        }
+        private void LateUpdate()
+        {
+
+        }
         private void HandlePickupInput()
         {
             if (_raycastDetector == null || _raycastDetector.DetectedItem == null) return;
@@ -103,5 +123,28 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             float mouseY = Input.GetAxis("Mouse Y");
             GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, sensitivity);
         }
+        private void OnCollisionStay(Collision collision)
+        {
+            foreach (var contact in collision.contacts)
+            {
+                // Nếu mặt phẳng gần đứng (dot với Vector3.up nhỏ)
+                float dot = Vector3.Dot(contact.normal, Vector3.up);
+                if (dot < 0.5f) // tường dốc > ~60°
+                {
+                    _collider.material = slipperyMaterial;
+                    return;
+                }
+            }
+
+            // Nếu không có tiếp xúc với tường đứng thì quay về mặc định
+            _collider.material = _defaultMaterial;
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            // Rời khỏi va chạm -> reset về mặc định
+            _collider.material = _defaultMaterial;
+        }
+
     }
 }

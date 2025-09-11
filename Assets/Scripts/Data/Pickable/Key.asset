@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859a790bb76fec748875725513beded2, type: 3}
   m_Name: Key
   m_EditorClassIdentifier: 
-  itemName: Key
-  description: test
+  itemName: "Ch\xECa kh\xF3a nh\xE0 k\u1EB9o"
+  description: "Ch\xECa kh\xF3a d\xF9ng \u0111\u1EC3 m\u1EDF c\u1EEDa nh\xE0 K\u1EB9o,
+    n\xF3 c\xF3 m\xF9i ng\u1ECDt"
   interactTypes: 02000000

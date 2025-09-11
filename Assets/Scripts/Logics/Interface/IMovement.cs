@@ -12,5 +12,8 @@ namespace DATN2.Assets.Scripts.Logics.Interface
         void Jump(float height);
         [RequireGameState(StateType.Ingame)]
         IEnumerator PickUp();
+        public void UpdateDrag(bool isGrounded);
+
+
     }
 }
