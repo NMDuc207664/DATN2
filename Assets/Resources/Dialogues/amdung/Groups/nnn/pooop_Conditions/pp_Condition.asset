@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b934030bb26ed458116040cf577cbc, type: 3}
   m_Name: pp_Condition
   m_EditorClassIdentifier: 
-  <ConditionName>k__BackingField: bc1e771e-bc6f-4ea1-baeb-4d1295a0014d
+  <ConditionName>k__BackingField: pp
   <DialogueType>k__BackingField: 2
   <Conditions>k__BackingField: []

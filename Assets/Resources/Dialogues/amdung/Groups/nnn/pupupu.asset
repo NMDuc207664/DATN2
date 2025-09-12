@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <DialogueName>k__BackingField: pupupu
   <Text>k__BackingField: Dialogue hhhhn.
-  <Choices>k__BackingField: []
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: 43eacc6c-24f4-4839-afc2-a52440066b7d
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: e71916c7-09fc-4007-8a19-396dbbbcfed8
+    <ConnectedNodeIDs>k__BackingField: []
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
   <IsStartingDialogue>k__BackingField: 0

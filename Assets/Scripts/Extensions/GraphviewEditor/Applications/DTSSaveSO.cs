@@ -158,7 +158,7 @@ namespace DATN2.GraphviewEditor.Applications
 
                 // Create container SO for ConditionNode
                 var containerSO = ScriptableObject.CreateInstance<DTSConditionSO>();
-                containerSO.Initialize(cond.NodeID, cond.DialogueType);
+                containerSO.Initialize(cond.DialogueName, cond.DialogueType);
 
                 // Copy list Abstract from cond.Conditions
                 if (cond.Conditions != null)

@@ -1,6 +1,7 @@
 using System;
 using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -10,17 +11,33 @@ public class GameStateManager : MonoBehaviour
     // Sự kiện được gọi khi trạng thái thay đổi
     public event Action<StateType> OnStateChanged;
     // Start is called before the first frame update
-    void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+
+    // void Awake()
+    // {
+    //     if (Instance == null)
+    //     {
+    //         Instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    //     else
+    //     {
+    //         Destroy(gameObject);
+    //     }
+    // }
+    private static void Init()
     {
         if (Instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            var go = new GameObject("GameStateManager");
+            Instance = go.AddComponent<GameStateManager>();
+            DontDestroyOnLoad(go);
         }
-        else
+        if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            Destroy(gameObject);
+            Instance.SetState(StateType.OnMenu);
         }
+
     }
     public void SetState(StateType stateType)
     {

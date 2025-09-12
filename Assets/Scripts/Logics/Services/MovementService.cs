@@ -1,3 +1,6 @@
+
+using System.Collections;
+using System.Collections.Generic;
 using DATN2.Assets.Scripts.Logics.Interface;
 using UnityEngine;
 
@@ -7,39 +10,69 @@ namespace DATN2.Assets.Scripts.Logics.Services
     {
         private readonly Transform _playerTransform;
         private readonly Rigidbody _rigidbody;
-        public MovementService(Transform playerTransform, Rigidbody rigidbody)
-        {
-            _playerTransform = playerTransform;
-            _rigidbody = rigidbody;
+        private readonly Animator _animator;
+        private readonly float _groundDrag = 4f;
+        // private readonly float _jumpForce = 12f;
 
+        public MovementService(Dictionary<string, Transform> transforms, Rigidbody rigidbody, Animator animator)
+        {
+            _playerTransform = transforms["PlayerTransform"];
+            _rigidbody = rigidbody;
+            _animator = animator;
+
+            // Configure Rigidbody for better physics-based movement
+            _rigidbody.drag = _groundDrag;
+            _rigidbody.freezeRotation = true; // Prevent physics from rotating the player
+            _rigidbody.interpolation = RigidbodyInterpolation.Interpolate; // Smooth movement
         }
 
-        // [RequireGameState(StateType.Pause)]
         public void Jump(float height)
         {
-            if (IsGrounded())
+            _rigidbody.drag = 0f;
+            _rigidbody.AddForce(Vector3.up * height, ForceMode.Impulse);
+
+        }
+        public void UpdateDrag(bool isGrounded)
+        {
+            _rigidbody.drag = isGrounded ? _groundDrag : 0f;
+        }
+
+
+        public void Move(Vector3 direction, float speed, bool isGrounded, float airMultiplier)
+        {
+            if (direction.magnitude >= 0.1f)
             {
-                _rigidbody.AddForce(Vector3.up * height, ForceMode.Impulse);
-                Debug.Log("Jumped!");
+                _animator.SetBool("isWalking", true);
+
+                Vector3 moveDir = _playerTransform.right * direction.x + _playerTransform.forward * direction.z;
+                moveDir.y = 0f;
+                moveDir.Normalize();
+
+                float multiplier = isGrounded ? 1f : airMultiplier;
+
+                _rigidbody.AddForce(moveDir * speed * 10f * multiplier, ForceMode.Force);
             }
-            // throw new System.NotImplementedException();
+            else
+            {
+                _animator.SetBool("isWalking", false);
+            }
         }
 
-        private bool IsGrounded()
+        public void PickUp()
         {
-            return Physics.Raycast(_rigidbody.position, Vector3.down, 1.1f);
-            // throw new System.NotImplementedException();
-        }
+            // Dừng di chuyển ngang (giữ y velocity cho gravity)
+            Vector3 velocity = _rigidbody.velocity;
+            velocity.x = 0f;
+            velocity.z = 0f;
+            _rigidbody.velocity = velocity;
 
-        // [RequireGameState(StateType.Ingame)]
-        public void Move(Vector3 direction, float speed)
-        {
-            _playerTransform.Translate(direction * speed * Time.deltaTime, Space.World);
-        }
+            // Tắt walking state để vào Idle
+            _animator.SetBool("isWalking", false);
 
-        // public void Start()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+            // Kích hoạt animation Interact
+            _animator.SetTrigger("isPickUp");
+
+        }
     }
+
 }

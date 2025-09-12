@@ -6,6 +6,8 @@ namespace DATN2.Assets.Scripts.Modals.Enum
         Pause = 2,
         OnInteractDialogue = 3,
         OnMovieDialogue = 4,
-        OnMenu = 5
+        OnMenu = 5,
+        OnSave = 6,
+        OnLoad = 7,
     }
 }
