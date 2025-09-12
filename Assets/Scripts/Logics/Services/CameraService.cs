@@ -41,20 +41,22 @@
 
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Logics.Interface;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CameraService : ICameraService
 {
     private float _xRotation = 0f;
+    private float _yRotation = 0f;
     public Transform _playerTransform; // Root (xoay yaw)
     public Camera _playerCamera; // Camera (xoay pitch)
     private readonly GameObject _player;
     private readonly Rigidbody _rigidbody; // Inject thêm Rigidbody từ container
     private bool _hasCollision = false;
 
-    public CameraService(Transform playerTransform, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody)
+    public CameraService(Dictionary<string, Transform> transforms, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody)
     {
-        _playerTransform = playerTransform;
+        _playerTransform = transforms["PlayerTransform"];
         _playerCamera = playerCamera;
         _player = objects["Player"];
         _rigidbody = rigidbody;
@@ -76,35 +78,12 @@ public class CameraService : ICameraService
     public void RotateCamera(float mouseX, float mouseY, float sensitivity)
     {
         // Pitch (xoay dọc) - không ảnh hưởng physics
-        _xRotation -= mouseY * sensitivity * Time.deltaTime;
+        _xRotation -= mouseY;
+        _yRotation += mouseX;
         _xRotation = Mathf.Clamp(_xRotation, -45f, 60f);
-        _playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+        _playerCamera.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
+        _playerTransform.rotation = Quaternion.Euler(0f, _yRotation, 0f);
 
-        Transform head = _player.transform.Find("root/torso/head");
-        if (head != null)
-        {
-            head.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-        }
-
-        // Yaw (xoay ngang) - xử lý khác nhau tùy theo trạng thái collision
-        if (Mathf.Abs(mouseX) > 0.01f)
-        {
-            float yawDelta = mouseX * sensitivity * Time.deltaTime;
-
-            if (_hasCollision)
-            {
-                // Khi va chạm: sử dụng transform rotation trực tiếp để tránh jitter
-                _playerTransform.Rotate(0f, yawDelta, 0f);
-                // Sync lại rigidbody rotation
-                _rigidbody.rotation = _playerTransform.rotation;
-            }
-            else
-            {
-                // Khi không va chạm: dùng physics rotation bình thường
-                Quaternion yawRotation = Quaternion.Euler(0f, yawDelta, 0f);
-                _rigidbody.MoveRotation(_rigidbody.rotation * yawRotation);
-            }
-        }
     }
 
     public void LockCursor(bool isLocked)

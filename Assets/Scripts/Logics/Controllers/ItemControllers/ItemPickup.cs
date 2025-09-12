@@ -10,10 +10,24 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         public string displayInformation;
         public ItemModel itemData;
         public int amount = 1;
+
         public void OnPickedUp()
         {
+            GlobalRaycast raycastController = FindObjectOfType<GlobalRaycast>();
+            if (raycastController != null)
+            {
+                raycastController.ShowPickupMessage(displayInformation);
+            }
             // ẩn hoặc xóa khỏi scene
-            Destroy(gameObject);
+            // Destroy(gameObject);
+        }
+        public void OnInspected()
+        {
+            GlobalRaycast raycastController = FindObjectOfType<GlobalRaycast>();
+            if (raycastController != null)
+            {
+                raycastController.ShowPickupMessage(displayInformation);
+            }
         }
     }
 }

@@ -10,17 +10,20 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 {
     public class CharacterController : MonoBehaviour
     {
+
         [Inject]
         private readonly IMovement _movementService;
         [Inject]
         private readonly IInventoryService _inventoryService;
         [Inject]
-        private readonly ICameraService _cameraService;
+        private readonly Animator _animator;
+        // [Inject]
+        // private readonly Camera _playerCamera;
         [SerializeField] private GlobalRaycast _raycastDetector;
 
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float jumpHeight = 2f;
-        [SerializeField] private float sensitivity = 100f;
+        [SerializeField] private float airMultiplier = 0.4f;
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundDistance = 0.2f;
         [SerializeField] private LayerMask groundMask;
@@ -29,14 +32,16 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 
 
         private bool isPickingUp = false;
-        // private float _xRotation = 0f;
-        // private bool isMenuOpen = false;
+        // private float _xRotation;
+        // private float _yRotation;
+        // // private bool isMenuOpen = false;
         private Collider _collider;
         private PhysicMaterial _defaultMaterial;
 
+
         private void Awake()
         {
-            _collider = GetComponent<Collider>();
+            _collider = GetComponentInChildren<Collider>();
             // // mặc định không gán material (dùng friction mặc định của Unity)
             // _collider.material = null;
             _defaultMaterial = _collider.material;
@@ -44,41 +49,41 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private void FixedUpdate()
         {
             HandleMovementInput();
-            HandleCameraInput();
-
         }
         private void Update()
         {
             HandleJumpInput();
 
             HandlePickupInput();
+            //MoveCamera();
             _movementService.UpdateDrag(IsGrounded());
+            Debug.Log(IsGrounded());
         }
-        private void LateUpdate()
-        {
+        // private void LateUpdate()
+        // {
 
-        }
+        // }
         private void HandlePickupInput()
         {
             if (_raycastDetector == null || _raycastDetector.DetectedItem == null) return;
 
-            // if (Input.GetKeyDown(KeyCode.E))
-            // {
-            //     var pickup = _raycastDetector.DetectedItem;
-            //     var added = _inventoryService.AddItem(pickup.itemData, pickup.amount);
-            //     Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
-            //     pickup.OnPickedUp();
-            // }
-            if (Input.GetKeyDown(KeyCode.E) && !isPickingUp)
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                StartCoroutine(DoPickup());
+                if (_raycastDetector.DetectedItem.itemData.interactTypes.Contains(InteractType.Pickable) && !isPickingUp)
+                {
+                    StartCoroutine(DoPickup());
+                }
+                if (_raycastDetector.DetectedItem.itemData.interactTypes.Contains(InteractType.Interatable))
+                {
+                    var pickup = _raycastDetector.DetectedItem;
+                    pickup.OnInspected();
+                }
             }
         }
         private IEnumerator DoPickup()
         {
             isPickingUp = true;
-
-            // Ngừng di chuyển khi nhặt
 
             // Thực hiện logic nhặt item ngay khi bắt đầu
             var pickup = _raycastDetector.DetectedItem;
@@ -86,23 +91,27 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             Debug.Log($"[Inventory] Nhặt {pickup.amount} {pickup.itemData.itemName}. Tổng: {added._amount}");
             pickup.OnPickedUp();
 
-            // Chờ hết animation
-            yield return StartCoroutine(_movementService.PickUp());
+            // Chờ animation "Interact" hoàn tất
+            _movementService.PickUp();
+            yield return new WaitUntil(() => !_animator.GetCurrentAnimatorStateInfo(0).IsName("Interact"));
 
-            // Chỉ khi anim kết thúc mới cho di chuyển lại
+            // Cho phép di chuyển lại sau khi animation hoàn tất
             isPickingUp = false;
 
         }
         private void HandleMovementInput()
         {
-            if (isPickingUp) return;
+            if (isPickingUp || _animator.GetCurrentAnimatorStateInfo(0).IsName("Interact"))
+            {
+                return;
+            }
             float moveX = Input.GetAxisRaw("Horizontal");
             float moveZ = Input.GetAxisRaw("Vertical");
             Vector3 direction = new Vector3(moveX, 0f, moveZ).normalized;
 
             // if (direction.magnitude >= 0.1f)
             // {
-            GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Move), direction, moveSpeed);
+            GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Move), direction, moveSpeed, IsGrounded(), airMultiplier);
             //}
         }
         private void HandleJumpInput()
@@ -117,12 +126,6 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             return Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         }
 
-        private void HandleCameraInput()
-        {
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
-            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, sensitivity);
-        }
         private void OnCollisionStay(Collision collision)
         {
             foreach (var contact in collision.contacts)
@@ -145,6 +148,18 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             // Rời khỏi va chạm -> reset về mặc định
             _collider.material = _defaultMaterial;
         }
+        // private void SpeedControl()
+        // {
+        //     Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+
+        //     // limit velocity if needed
+        //     if (flatVel.magnitude > moveSpeed)
+        //     {
+        //         Vector3 limitedVel = flatVel.normalized * moveSpeed;
+        //         rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        //     }
+        // }
+
 
     }
 }
