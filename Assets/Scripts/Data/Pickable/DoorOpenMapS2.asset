@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 859a790bb76fec748875725513beded2, type: 3}
-  m_Name: Flower_map1_OS
+  m_Name: DoorOpenMapS2
   m_EditorClassIdentifier: 
-  itemId: f48a631c-e176-444d-bb5b-933224414bfe
-  itemName: Hoa tulip
-  description: "C\xF3 m\xF9i th\u01A1m"
-  interactTypes: 01000000
-  requiresKey: 0
-  requiredKey: {fileID: 0}
+  itemId: eb2fb6be-9030-4fbe-94b9-47e93089a753
+  itemName: Door_fence
+  description: No Des
+  interactTypes: 04000000
+  requiresKey: 1
+  requiredKey: {fileID: 11400000, guid: 748a41e3f6f32184f82cff91e7fc147d, type: 2}

@@ -39,8 +39,11 @@ namespace DATN2.Assets.Scripts.VContainerRegister
             builder.Register<InventoryService>(Lifetime.Scoped).As<IInventoryService>();
             builder.Register<CameraService>(Lifetime.Scoped).As<ICameraService>();
             // builder.Register<PlayerUltilitiesService>(Lifetime.Scoped).As<IPlayerUltilitiesService>();
+            //builder.RegisterComponentInHierarchy<DoorInteraction>();
             builder.RegisterComponentInHierarchy<Logics.Controllers.CharacterController>();
             builder.RegisterComponentInHierarchy<Logics.Controllers.CameraController>();
+
+            builder.RegisterEntryPoint<DoorEntryPoint>();
         }
     }
 }

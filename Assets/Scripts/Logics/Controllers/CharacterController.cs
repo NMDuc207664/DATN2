@@ -58,6 +58,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             //MoveCamera();
             _movementService.UpdateDrag(IsGrounded());
             Debug.Log(IsGrounded());
+            _inventoryService.DebugPrintInventory();
         }
         // private void LateUpdate()
         // {
@@ -70,14 +71,19 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 
             if (Input.GetKeyDown(KeyCode.E))
             {
+                var pickup = _raycastDetector.DetectedItem;
                 if (_raycastDetector.DetectedItem.itemData.interactTypes.Contains(InteractType.Pickable) && !isPickingUp)
                 {
                     StartCoroutine(DoPickup());
                 }
                 if (_raycastDetector.DetectedItem.itemData.interactTypes.Contains(InteractType.Interatable))
                 {
-                    var pickup = _raycastDetector.DetectedItem;
+
                     pickup.OnInspected();
+                }
+                if (_raycastDetector.DetectedItem.itemData.interactTypes.Contains(InteractType.Door))
+                {
+                    pickup.OnInteracted();
                 }
             }
         }

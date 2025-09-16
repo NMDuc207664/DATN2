@@ -4,6 +4,7 @@ namespace DATN2.Assets.Scripts.Modals.Enum
     {
         Interatable = 1,
         Pickable = 2,
-        CanInspect = 3
+        CanInspect = 3,
+        Door = 4
     }
 }
