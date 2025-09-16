@@ -2041,7 +2041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 529c02cf7cc3868488fca600026317eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayName: "C\u1EEDa"
+  displayName: "C\u1EEDa  [B\u1EA5m E \u0111\u1EC3 t\u01B0\u01A1ng t\xE1c]"
   displayInformation: 
   itemData: {fileID: 11400000, guid: 7fb845c1868389646a63acf05e2efad4, type: 2}
   amount: 1
