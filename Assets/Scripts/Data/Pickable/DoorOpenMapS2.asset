@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Door_fence
   description: No Des
   interactTypes: 04000000
-  requiresKey: 1
+  requiresKey: 0
   requiredKey: {fileID: 11400000, guid: 748a41e3f6f32184f82cff91e7fc147d, type: 2}

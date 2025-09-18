@@ -17,8 +17,6 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private readonly IInventoryService _inventoryService;
         [Inject]
         private readonly Animator _animator;
-        // [Inject]
-        // private readonly Camera _playerCamera;
         [SerializeField] private GlobalRaycast _raycastDetector;
 
         [SerializeField] private float moveSpeed = 5f;
@@ -27,7 +25,6 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundDistance = 0.2f;
         [SerializeField] private LayerMask groundMask;
-        [SerializeField] private GameObject head;
         [SerializeField] private PhysicMaterial slipperyMaterial;
 
 
@@ -129,7 +126,20 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         }
         private bool IsGrounded()
         {
-            return Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+            // Thêm kiểm tra raycast để đảm bảo bề mặt không quá dốc
+            if (isGrounded)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundDistance + 0.1f, groundMask))
+                {
+                    float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+                    // Chỉ coi là mặt đất nếu góc nghiêng < 45 độ
+                    return slopeAngle < 45f;
+                }
+            }
+            return isGrounded;
         }
 
         private void OnCollisionStay(Collision collision)

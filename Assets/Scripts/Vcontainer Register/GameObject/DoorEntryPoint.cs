@@ -7,11 +7,13 @@ using DATN2.Assets.Scripts.Logics.Interface;
 public class DoorEntryPoint : IStartable
 {
     private readonly IInventoryService inventoryService;
+    private readonly ISceneService sceneService;
 
     [Inject]
-    public DoorEntryPoint(IInventoryService inventoryService)
+    public DoorEntryPoint(IInventoryService inventoryService, ISceneService sceneService)
     {
         this.inventoryService = inventoryService;
+        this.sceneService = sceneService;
     }
 
     public void Start()
@@ -20,7 +22,7 @@ public class DoorEntryPoint : IStartable
         var doorInteractions = Object.FindObjectsOfType<DoorInteraction>();
         foreach (var door in doorInteractions)
         {
-            door.SetInventoryService(inventoryService);
+            door.SetInventoryService(inventoryService, sceneService);
         }
         Debug.Log($"[DoorEntryPoint] Injected InventoryService into {doorInteractions.Length} doors");
     }

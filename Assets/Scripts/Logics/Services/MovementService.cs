@@ -12,6 +12,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
         private readonly Rigidbody _rigidbody;
         private readonly Animator _animator;
         private readonly float _groundDrag = 4f;
+        private readonly float _maxJumpVelocity = 12.5f;
         // private readonly float _jumpForce = 12f;
 
         public MovementService(Dictionary<string, Transform> transforms, Rigidbody rigidbody, Animator animator)
@@ -51,6 +52,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 float multiplier = isGrounded ? 1f : airMultiplier;
 
                 _rigidbody.AddForce(moveDir * speed * 10f * multiplier, ForceMode.Force);
+                LimitVelocity();
             }
             else
             {
@@ -72,6 +74,16 @@ namespace DATN2.Assets.Scripts.Logics.Services
             // Kích hoạt animation Interact
             _animator.SetTrigger("isPickUp");
 
+        }
+        private void LimitVelocity()
+        {
+            Vector3 velocity = _rigidbody.velocity;
+            // Giới hạn vận tốc theo trục y
+            if (Mathf.Abs(velocity.y) > _maxJumpVelocity)
+            {
+                velocity.y = Mathf.Sign(velocity.y) * _maxJumpVelocity;
+                _rigidbody.velocity = velocity;
+            }
         }
     }
 
