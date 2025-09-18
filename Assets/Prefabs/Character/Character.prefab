@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5114606085332880561}
   m_Layer: 0
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 433690658782710526}
   m_Layer: 0
   m_Name: GroundCheck
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,6 +195,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7134394785105016132, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: -5151492872390713093, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: -5069531478518834764, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: -5017971254852617305, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 14.8088875
@@ -207,9 +219,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: character-b
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 1812433027226884373, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -14.808901
+      objectReference: {fileID: 0}
+    - target: {fileID: 3250163066507786643, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5788240856288092216, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
       propertyPath: m_Controller
@@ -219,9 +243,17 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8303906797054990637, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 8891244130364874969, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -88.45415
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908311948669537042, guid: a7681b02cfe152b449d41db7e45be017, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

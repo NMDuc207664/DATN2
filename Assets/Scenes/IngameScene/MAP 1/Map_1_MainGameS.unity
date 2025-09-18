@@ -1228,6 +1228,10 @@ PrefabInstance:
       value: CameraHolder
       objectReference: {fileID: 0}
     - target: {fileID: 1407393723593211810, guid: c15d617126fd2554c8f044a34184870a, type: 3}
+      propertyPath: useSmoothing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407393723593211810, guid: c15d617126fd2554c8f044a34184870a, type: 3}
       propertyPath: cameraPosition
       value: 
       objectReference: {fileID: 934041715}
@@ -3023,6 +3027,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dedbf5aec5fe8d479abb8352e0d583a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1621960015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1621960017}
+  - component: {fileID: 1621960016}
+  m_Layer: 0
+  m_Name: InGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1621960016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621960015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa87fddb7b1aae44a9d0a9a2b8bf026b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  teleportPairs: []
+  playerTag: Player
+--- !u!4 &1621960017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621960015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -28.252058, y: 20.025385, z: -13.572787}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1703198445 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3938077300456901110, guid: 5be4d2bd7be560f4790d207b313792aa, type: 3}
@@ -4708,3 +4758,4 @@ SceneRoots:
   - {fileID: 2016583541}
   - {fileID: 1344328909}
   - {fileID: 252766364}
+  - {fileID: 1621960017}

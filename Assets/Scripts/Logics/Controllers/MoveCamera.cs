@@ -52,7 +52,7 @@ public class MoveCamera : MonoBehaviour
     }
 
     // Sử dụng LateUpdate để đảm bảo camera được cập nhật sau tất cả movement
-    void LateUpdate()
+    void Update()
     {
         // Tính toán vị trí mong muốn
         Vector3 desiredPosition = cameraPosition.position + playerTransform.TransformDirection(cameraOffset);

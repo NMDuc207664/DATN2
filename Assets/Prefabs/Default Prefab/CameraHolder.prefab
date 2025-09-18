@@ -49,6 +49,8 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   playerCamera: {fileID: 3899936611915103994}
   cameraOffset: {x: 0, y: 0.6, z: -0.2}
+  followSmoothness: 10
+  useSmoothing: 1
 --- !u!1 &1528236291024373934
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senX: 400
   senY: 400
-  orientation: {fileID: 0}
+  rotationSmoothness: 9
 --- !u!114 &1412961129751721680
 MonoBehaviour:
   m_ObjectHideFlags: 0

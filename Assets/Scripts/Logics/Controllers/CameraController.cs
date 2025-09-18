@@ -12,9 +12,9 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 
         public float senX;
         public float senY;
-        public Transform orientation;
+        public float rotationSmoothness = 15f;
 
-        void LateUpdate()
+        void Update()
         {
             HandleCameraInput();
         }
@@ -22,7 +22,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         {
             float mouseX = Input.GetAxisRaw("Mouse X") * senX * Time.deltaTime;
             float mouseY = Input.GetAxisRaw("Mouse Y") * senY * Time.deltaTime;
-            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, senX);
+            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, senX, rotationSmoothness);
         }
 
     }

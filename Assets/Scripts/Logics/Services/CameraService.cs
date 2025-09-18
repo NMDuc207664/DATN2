@@ -89,7 +89,7 @@ public class CameraService : ICameraService
     // Smooth rotation parameters
     private float _targetXRotation = 0f;
     private float _targetYRotation = 0f;
-    private float _rotationSmoothness = 15f;
+    // private float _rotationSmoothness = 15f;
 
     public CameraService(Dictionary<string, Transform> transforms, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody)
     {
@@ -104,7 +104,7 @@ public class CameraService : ICameraService
         _yRotation = _targetYRotation = currentRotation.y;
     }
 
-    public void RotateCamera(float mouseX, float mouseY, float sensitivity)
+    public void RotateCamera(float mouseX, float mouseY, float sensitivity, float rotationSmoothness)
     {
         // Cập nhật target rotation
         _targetXRotation -= mouseY;
@@ -114,8 +114,8 @@ public class CameraService : ICameraService
         _targetXRotation = Mathf.Clamp(_targetXRotation, -60f, 54f);
 
         // Smooth interpolation đến target rotation
-        _xRotation = Mathf.LerpAngle(_xRotation, _targetXRotation, _rotationSmoothness * Time.deltaTime);
-        _yRotation = Mathf.LerpAngle(_yRotation, _targetYRotation, _rotationSmoothness * Time.deltaTime);
+        _xRotation = Mathf.LerpAngle(_xRotation, _targetXRotation, rotationSmoothness * Time.deltaTime);
+        _yRotation = Mathf.LerpAngle(_yRotation, _targetYRotation, rotationSmoothness * Time.deltaTime);
 
         // Apply rotations
         _playerCamera.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
