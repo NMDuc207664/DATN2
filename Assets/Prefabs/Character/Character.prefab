@@ -61,7 +61,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 221.2, y: 10.66, z: 277.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5114606085332880561}
@@ -114,8 +114,9 @@ MonoBehaviour:
   groundDistance: 0.2
   groundMask:
     serializedVersion: 2
-    m_Bits: 200
+    m_Bits: 72
   slipperyMaterial: {fileID: 13400000, guid: 332d42f7111ab42419396af3e19b0bba, type: 2}
+  _groundCheckCollider: {fileID: 0}
 --- !u!1 &4385890739886761601
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,9 +289,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2.673222
+  m_Height: 2.7430866
   m_Direction: 1
-  m_Center: {x: 0, y: 1.4851172, z: 0}
+  m_Center: {x: 0, y: 1.4501852, z: 0}
 --- !u!4 &7971409054032743248 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7681b02cfe152b449d41db7e45be017, type: 3}

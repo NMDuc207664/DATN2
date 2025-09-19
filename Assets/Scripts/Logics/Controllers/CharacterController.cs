@@ -17,21 +17,24 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private readonly IInventoryService _inventoryService;
         [Inject]
         private readonly Animator _animator;
+        [Inject]
+        private readonly Rigidbody _rigidbody;
         [SerializeField] private GlobalRaycast _raycastDetector;
 
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float jumpHeight = 2f;
         [SerializeField] private float airMultiplier = 0.4f;
         [SerializeField] private Transform groundCheck;
-        [SerializeField] private float groundDistance = 0.2f;
         [SerializeField] private LayerMask groundMask;
         [SerializeField] private PhysicMaterial slipperyMaterial;
+        [SerializeField] private BoxCollider _groundCheckCollider; // Reference to BoxCollider
 
+        [SerializeField] GameObject stepRayUpper;
+        [SerializeField] GameObject stepRayLower;
+        [SerializeField] float stepHeight = 0.3f;
+        [SerializeField] float stepSmooth = 2f;
 
-        private bool isPickingUp = false;
-        // private float _xRotation;
-        // private float _yRotation;
-        // // private bool isMenuOpen = false;
+        bool isPickingUp = false;
         private Collider _collider;
         private PhysicMaterial _defaultMaterial;
 
@@ -42,10 +45,13 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             // // mặc định không gán material (dùng friction mặc định của Unity)
             // _collider.material = null;
             _defaultMaterial = _collider.material;
+            //stepRayUpper.transform.position = new Vector3(stepRayUpper.transform.position.x, stepHeight, stepRayUpper.transform.position.z);
         }
         private void FixedUpdate()
         {
             HandleMovementInput();
+            StepClimb();
+
         }
         private void Update()
         {
@@ -124,21 +130,51 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
                 GameStateInvoker.TryInvoke(_movementService, nameof(_movementService.Jump), jumpHeight);
             }
         }
+        // private bool IsGrounded()
+        // {
+        //     bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        //     // Thêm kiểm tra raycast để đảm bảo bề mặt không quá dốc
+        //     if (isGrounded)
+        //     {
+        //         RaycastHit hit;
+        //         if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundDistance + 0.1f, groundMask))
+        //         {
+        //             float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+        //             // Chỉ coi là mặt đất nếu góc nghiêng < 45 độ
+        //             return slopeAngle < 45f;
+        //         }
+        //     }
+        //     return isGrounded;
+        // }
         private bool IsGrounded()
         {
-            bool isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            if (_groundCheckCollider == null) return false;
 
-            // Thêm kiểm tra raycast để đảm bảo bề mặt không quá dốc
+            // Get BoxCollider's world position and size
+            Vector3 boxCenter = groundCheck.position + _groundCheckCollider.center;
+            Vector3 boxHalfExtents = _groundCheckCollider.size * 0.5f * groundCheck.localScale.y; // Adjust for scale
+            Quaternion boxRotation = groundCheck.rotation;
+
+            // Check for overlapping colliders
+            Collider[] hits = Physics.OverlapBox(boxCenter, boxHalfExtents, boxRotation, groundMask);
+            bool isGrounded = hits.Length > 0;
+
+            Debug.Log($"Ground Check | Hits: {hits.Length} | Box Center: {boxCenter} | Half Extents: {boxHalfExtents}");
+
+            // Slope check using raycast from box center downward
             if (isGrounded)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(groundCheck.position, Vector3.down, out hit, groundDistance + 0.1f, groundMask))
+                float checkDistance = boxHalfExtents.y + 0.1f * transform.localScale.y; // Scale-adjusted
+                if (Physics.Raycast(boxCenter, Vector3.down, out hit, checkDistance, groundMask))
                 {
                     float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-                    // Chỉ coi là mặt đất nếu góc nghiêng < 45 độ
-                    return slopeAngle < 45f;
+                    Debug.Log($"Slope Angle: {slopeAngle} | Hit Point: {hit.point}");
+                    return slopeAngle < 45f; // Only ground if slope < 45°
                 }
             }
+
             return isGrounded;
         }
 
@@ -175,7 +211,40 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         //         rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         //     }
         // }
+        // --- Hàm StepClimb mới ---
+        void StepClimb()
+        {
+            RaycastHit hitLower;
+            if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(Vector3.forward), out hitLower, 0.1f))
+            {
+                RaycastHit hitUpper;
+                if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, 0.2f))
+                {
+                    _rigidbody.position -= new Vector3(0f, -stepSmooth * Time.deltaTime, 0f);
+                }
+            }
 
+            RaycastHit hitLower45;
+            if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(1.5f, 0, 1), out hitLower45, 0.1f))
+            {
 
+                RaycastHit hitUpper45;
+                if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(1.5f, 0, 1), out hitUpper45, 0.2f))
+                {
+                    _rigidbody.position -= new Vector3(0f, -stepSmooth * Time.deltaTime, 0f);
+                }
+            }
+
+            RaycastHit hitLowerMinus45;
+            if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-1.5f, 0, 1), out hitLowerMinus45, 0.1f))
+            {
+
+                RaycastHit hitUpperMinus45;
+                if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-1.5f, 0, 1), out hitUpperMinus45, 0.2f))
+                {
+                    _rigidbody.position -= new Vector3(0f, -stepSmooth * Time.deltaTime, 0f);
+                }
+            }
+        }
     }
 }

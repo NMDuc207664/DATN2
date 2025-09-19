@@ -15,10 +15,12 @@ namespace DATN2.Assets.Scripts.VContainerRegister
         [SerializeField] private Animator _animator;
         [SerializeField] private GameObject _player;
         [SerializeField] private Transform _orientationTransform;
+        [SerializeField] private Collider _playerCollider;
 
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponent(_animator);
+            builder.RegisterComponent(_playerCollider);
             // builder.RegisterComponent(_playerTransform);
             builder.RegisterComponent(_rigidbody);
             builder.RegisterComponent(_playerCamera);
