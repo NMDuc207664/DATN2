@@ -11575,7 +11575,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: stepHeight
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: stepRayLower
@@ -11588,6 +11588,10 @@ PrefabInstance:
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: groundDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
+      propertyPath: maxStepDistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: _raycastDetector
@@ -13095,8 +13099,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.82052106, y: 0.4064026, z: 0.37601608}
-  m_Center: {x: 0.0030186973, y: 0.2967987, z: 0.015638392}
+  m_Size: {x: 0.82052106, y: 0.4064026, z: 1.751807}
+  m_Center: {x: 0.0030186973, y: 0.2967987, z: 0.041577023}
 --- !u!114 &1862802188 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5503364703002963105, guid: 5be4d2bd7be560f4790d207b313792aa, type: 3}
