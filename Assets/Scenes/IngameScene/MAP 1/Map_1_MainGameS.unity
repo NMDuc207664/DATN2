@@ -728,6 +728,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bowl
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6086395ef356539458b9ae34a5eed0ef, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2741,37 +2745,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2678736332024080199, guid: ba50cb3414998ce4aaea6fd45ed3a4d4, type: 3}
   m_PrefabInstance: {fileID: 1499276045}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &900249406
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 900249407}
-  m_Layer: 8
-  m_Name: RayCastLower
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &900249407
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900249406}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1447973121}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &913143758
 GameObject:
   m_ObjectHideFlags: 0
@@ -11573,6 +11546,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 970468189493174378, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: stepHeight
       value: 5
@@ -11580,11 +11557,11 @@ PrefabInstance:
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: stepRayLower
       value: 
-      objectReference: {fileID: 900249406}
+      objectReference: {fileID: 0}
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: stepRayUpper
       value: 
-      objectReference: {fileID: 2097990595}
+      objectReference: {fileID: 0}
     - target: {fileID: 1824206819556987068, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       propertyPath: groundDistance
       value: 1
@@ -11647,13 +11624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3664473735492153007, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 900249407}
-    - targetCorrespondingSourceObject: {fileID: 3664473735492153007, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2097990596}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4385890739886761601, guid: 3c68529155aa8ca4392697b5a3fdbcea, type: 3}
       insertIndex: -1
@@ -13373,37 +13344,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 543859361}
   m_SourcePrefab: {fileID: 100100000, guid: 648776fa2c0a91b48b96cc04d73388dd, type: 3}
---- !u!1 &2097990595
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2097990596}
-  m_Layer: 8
-  m_Name: RayCastUpper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2097990596
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097990595}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1447973121}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2134984094 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -5787257137216538244, guid: b995066fcbfc2404ca27f8c30de7b0d9, type: 3}
