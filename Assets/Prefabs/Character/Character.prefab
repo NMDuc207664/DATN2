@@ -106,16 +106,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08268e073975024eac0f624cdb3db26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycastDetector: {fileID: 0}
-  moveSpeed: 7.3
-  jumpHeight: 12
-  airMultiplier: 0.1
+  _characterRegisterManager: {fileID: 0}
+  _moveInputMultiplier: 30
+  _isGrounded: 1
+  _groundCheckRadiusMultiplier: 1
+  _groundCheckDistance: 0.05
+  _gravityFallCurrent: -100
+  _gravityFallMin: -100
+  _gravityFallMax: -500
+  _gravityFallIncreaseAmount: -10
+  _gravityIncreaseTime: 0.05
+  _playerFallTimer: 0
+  _gravity: 0
   groundCheck: {fileID: 433690658782710526}
-  groundDistance: 0.2
   groundMask:
     serializedVersion: 2
     m_Bits: 72
-  slipperyMaterial: {fileID: 13400000, guid: 332d42f7111ab42419396af3e19b0bba, type: 2}
   _groundCheckCollider: {fileID: 0}
 --- !u!1 &4385890739886761601
 GameObject:

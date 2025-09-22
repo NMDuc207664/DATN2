@@ -12,8 +12,8 @@ namespace DATN2.Assets.Scripts.Logics.Interface
         void Jump(float height);
         [RequireGameState(StateType.Ingame)]
         void PickUp();
-        public void UpdateDrag(bool isGrounded);
-
-
+        void UpdateDrag(bool isGrounded);
+        void SetStepClimbingParameters(float maxStepHeight, float stepRayDistance, LayerMask stepLayerMask, float stepUpForce);
+        void SetStepRayTransforms(Transform lowerRay, Transform upperRay);
     }
 }
