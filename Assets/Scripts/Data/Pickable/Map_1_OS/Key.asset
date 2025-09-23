@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859a790bb76fec748875725513beded2, type: 3}
+  m_Name: Key
+  m_EditorClassIdentifier: 
+  itemId: 52f06291-57dc-4d65-b9e1-e918d070d98c
+  itemName: Main Door Key
+  description: "Ch\xECa kh\xF3a nh\xE0"
+  interactTypes: 02000000
+  requiresKey: 0
+  requiredKey: {fileID: 0}

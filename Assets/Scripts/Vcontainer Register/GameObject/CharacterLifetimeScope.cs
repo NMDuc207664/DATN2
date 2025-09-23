@@ -5,6 +5,7 @@ using VContainer.Unity;
 using DATN2.Assets.Scripts.Logics.Services;
 using DATN2.Assets.Scripts.Modals;
 using System.Collections.Generic;
+using CMF;
 namespace DATN2.Assets.Scripts.VContainerRegister
 {
     public class CharacterLifetimeScope : LifetimeScope
@@ -38,9 +39,13 @@ namespace DATN2.Assets.Scripts.VContainerRegister
             builder.Register<MovementService>(Lifetime.Scoped).As<IMovement>();
             builder.Register<InventoryService>(Lifetime.Scoped).As<IInventoryService>();
             builder.Register<CameraService>(Lifetime.Scoped).As<ICameraService>();
+            builder.Register<SceneService>(Lifetime.Scoped).As<ISceneService>();
             // builder.Register<PlayerUltilitiesService>(Lifetime.Scoped).As<IPlayerUltilitiesService>();
             builder.RegisterComponentInHierarchy<Logics.Controllers.CharacterController>();
             builder.RegisterComponentInHierarchy<Logics.Controllers.CameraController>();
+            builder.RegisterComponentInHierarchy<AdvancedWalkerController>();
+
+            builder.RegisterEntryPoint<DoorEntryPoint>();
         }
     }
 }
