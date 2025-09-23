@@ -229,9 +229,17 @@ namespace CMF
 			//Calculate (normalized) movement direction;
 			Vector3 _velocity = CalculateMovementDirection();
 			// bool isMovingForward = characterInput != null && characterInput.GetVerticalMovementInput() > 0.1f;
-			bool isMoving = _velocity.magnitude > 0.1f;
+			// bool isMoving = _velocity.magnitude > 0.1f;
 
+			// _animator.SetBool("isWalking", isMoving);
+
+
+			Vector3 actualVelocity = savedVelocity;  // hoặc GetVelocity()
+			Vector3 horizontal = Vector3.ProjectOnPlane(actualVelocity, tr.up);
+			bool isMoving = horizontal.magnitude > 0.1f;
 			_animator.SetBool("isWalking", isMoving);
+
+
 			//Multiply (normalized) velocity with movement speed;
 			_velocity *= movementSpeed;
 

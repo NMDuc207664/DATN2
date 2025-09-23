@@ -12,7 +12,8 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 
         public float senX;
         public float senY;
-        public Transform orientation;
+        public float rotationSmoothness = 15f;
+        [SerializeField] private bool smoothCamera = false;
         // [SerializeField] private float sensitivity = 100f;
 
         // Update is called once per frame
@@ -30,7 +31,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             // xRotation = Mathf.Clamp(xRotation, -45f, 60f);
             // transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
             // orientation.rotation = Quaternion.Euler(0, yRotation, 0);
-            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, senX);
+            GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, senX, smoothCamera, rotationSmoothness);
         }
 
     }
