@@ -65,7 +65,7 @@ namespace DATN2.GraphviewEditor.Applications
             foreach (var group in groups)
             {
                 var groupSO = ScriptableObject.CreateInstance<DTSDialogueGroupSO>();
-                groupSO.Initialize(group.GroupName);
+                groupSO.Initialize(group.GroupName, group.HasADialogueTalked);
 
                 CreateOrReplaceAsset(groupSO,
                     $"{containerFolderPath}/Groups/{group.GroupName}.asset");
@@ -84,7 +84,7 @@ namespace DATN2.GraphviewEditor.Applications
                 // Khởi tạo với danh sách Choices rỗng
                 dialogueSO.Initialize(node.Name, node.Text,
                     new List<DTSChoiceSaveData>(),
-                    node.DialogueType, node.IsStartingNode, node.HasConditions);
+                    node.DialogueType, node.IsStartingNode, node.HasConditions, node.HasTalked, node.ActiveKey);
                 string dialoguePath;
 
                 //case GroupId

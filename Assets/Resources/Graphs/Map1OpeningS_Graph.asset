@@ -1,0 +1,324 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc6bccf99b605047a224d2be96ff16f, type: 3}
+  m_Name: Map1OpeningS_Graph
+  m_EditorClassIdentifier: 
+  <GraphName>k__BackingField: Map1OpeningS
+  <Groups>k__BackingField: []
+  <Nodes>k__BackingField:
+  - <NodeID>k__BackingField: b76a53bc-3120-440b-93b0-b17fa1f85e54
+    <Name>k__BackingField: Map1_OS_TieuThu_D1_1
+    <Text>k__BackingField: "\u01A0\u2026 c\xE1i g\xEC d\xEDnh d\xEDnh th\u1EBF n\xE0y?
+      Tr\u1EDDi \u0111\u1EA5t\u2026 "
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: d648a7fe-1731-4fd4-a827-dc0838cf5b40
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: b76a53bc-3120-440b-93b0-b17fa1f85e54
+      <ConnectedNodeIDs>k__BackingField:
+      - 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 128.8, y: -208.8}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+    <Name>k__BackingField: Map1_OS_GaGiangHo_D1_2
+    <Text>k__BackingField: "\u1EE6a\u2026 c\xE1i\u2026 c\xE1i qu\xE1i g\xEC \u0111\xE2y?
+      Sao tay t\xF4i l\u1EA1i nh\u01B0\u2026 c\xE1i g\u1ED1i \xF4m th\u1EBF n\xE0y!? "
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: a96c7e94-9f7f-4b39-8b25-fd2f70a8e97c
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+      <ConnectedNodeIDs>k__BackingField:
+      - 49d98621-8170-4867-99ab-c7209fe3c12e
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -439.2, y: 91.2}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 49d98621-8170-4867-99ab-c7209fe3c12e
+    <Name>k__BackingField: Map1_OS_TieuThu_D1_2
+    <Text>k__BackingField: " Ttr\xF4ng anh d\u1EC5 th\u01B0\u01A1ng h\u01A1n l\xFAc
+      n\xE3y nhi\u1EC1u!? "
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 4ede4dfa-eb6e-4229-a509-1a8ac993b1ee
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 49d98621-8170-4867-99ab-c7209fe3c12e
+      <ConnectedNodeIDs>k__BackingField:
+      - b3ce3665-01d9-43a6-8bd9-097cc2b1c0e3
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 24, y: 91.2}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: b3ce3665-01d9-43a6-8bd9-097cc2b1c0e3
+    <Name>k__BackingField: Map1_OS_GaGiangHo_D1_3
+    <Text>k__BackingField: "C\xF2n c\xF4 c\xF3 kh\xE1c g\xEC \u0111\xE2u tr\xF4ng
+      y nh\u01B0 m\u1ED9t con th\u1ECF nh\u1ED3i b\xF4ng trong ti\u1EC7m l\u01B0u
+      ni\u1EC7m \u1EA5y. "
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 83a2f4b7-be69-4025-83d0-111b4f0c820a
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: b3ce3665-01d9-43a6-8bd9-097cc2b1c0e3
+      <ConnectedNodeIDs>k__BackingField:
+      - 0e431758-b5d8-4c9e-bed5-c90b3a361d71
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 372.8, y: 91.2}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 0e431758-b5d8-4c9e-bed5-c90b3a361d71
+    <Name>k__BackingField: Map1_OS_TieuThu_D1_3
+    <Text>k__BackingField: "Kh\xF4ng\u2026 kh\xF4ng th\u1EC3 n\xE0o! T\xF4i v\u1ED1n
+      d\u0129\u2026 v\u1ED1n d\u0129 l\xE0 ng\u01B0\u1EDDi c\u01A1 m\xE0\u2026"
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 70c1b2ab-7a1b-465c-ac55-fd4c5b31b60d
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 0e431758-b5d8-4c9e-bed5-c90b3a361d71
+      <ConnectedNodeIDs>k__BackingField:
+      - 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 962.4, y: 91.2}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
+    <Name>k__BackingField: Map1_OS__Main_D1_1
+    <Text>k__BackingField: "Tr\u1EDDi \u01A1i!! C\xF2n t\xF4i\u2026 t\xF4i c\xF3
+      tai th\u1ECF!?!"
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 8b010dcf-b617-47e8-b562-66895e20f6d3
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -439.2, y: 393.6}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 49c5459b-1b14-41d4-8692-ebefcc1485ce
+    <Name>k__BackingField: Map1_OS__Main_D2_1
+    <Text>k__BackingField: " \u2026Ch\xFAng ta \u0111\u1EC1u bi\u1EBFn th\xE0nh th\xFA
+      nh\u1ED3i b\xF4ng r\u1ED3i."
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: d34ccafc-30eb-45a7-8f16-1caa682f29bd
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 49c5459b-1b14-41d4-8692-ebefcc1485ce
+      <ConnectedNodeIDs>k__BackingField:
+      - 3b90bcca-a707-44ac-9b46-8d2f444f909e
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -439.2, y: 712}
+    <IsStartingNode>k__BackingField: 1
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 761cb135-8127-41d4-bd99-082ce33d5dbc
+    <Name>k__BackingField: Map1_OS_TieuThu_D2_2
+    <Text>k__BackingField: "C\u1EE9 nh\u01B0 l\xE0 m\u01A1 \u1EA5y nh\u1EC9?"
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 128768e9-5623-4cc0-a4df-41345bf307c2
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 761cb135-8127-41d4-bd99-082ce33d5dbc
+      <ConnectedNodeIDs>k__BackingField:
+      - eef735a5-2715-44f8-a43f-7ed2e23a2dab
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 240, y: 712}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 3b90bcca-a707-44ac-9b46-8d2f444f909e
+    <Name>k__BackingField: Map1_OS_TieuThu_D2_1
+    <Text>k__BackingField: "T\xF4i kh\xF4ng ng\u1EDD l\xE0 c\xF2n c\xF3 th\u1EC3
+      l\xE0m nh\u01B0 n\xE0y \u0111\u1EA5y."
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 06ffbe49-a530-4b47-9327-1236d56bcb75
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 3b90bcca-a707-44ac-9b46-8d2f444f909e
+      <ConnectedNodeIDs>k__BackingField:
+      - 761cb135-8127-41d4-bd99-082ce33d5dbc
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -103.2, y: 712}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: eef735a5-2715-44f8-a43f-7ed2e23a2dab
+    <Name>k__BackingField: Map1_OS_Main_D2_2
+    <Text>k__BackingField: " Kh\xF4ng... h\u1EB3n, ch\xFAng ta \u0111ang \u1EDF trong
+      m\u1ED9t kh\xF4ng gian \u0111\u01B0\u1EE3c t\u1EA1o b\u1EDFi ti\u1EC1m th\u1EE9c."
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 2702f83e-2023-446a-9a62-7858091d2595
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: eef735a5-2715-44f8-a43f-7ed2e23a2dab
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -439.2, y: 985.60004}
+    <IsStartingNode>k__BackingField: 0
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: 77e4fd17-a08b-4d25-a500-975477c97d7f
+    <Name>k__BackingField: Map1_OS_GaGiangHo_D1_1
+    <Text>k__BackingField: "T\xF4i ch\u1EBFt r\u1ED3i h\u1EA3? N\u1EBFu ch\u1EBFt
+      m\xE0 c\xF2n ng\u1EEDi m\xF9i k\u1EB9o ki\u1EC3u n\xE0y th\xEC ch\u1EAFc \u0111\u1ECBa
+      ng\u1EE5c l\xE0 ti\u1EC7m b\xE1nh m\u1EA5t..."
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 47b21d25-c06e-44af-9fa2-6cdc1f47562e
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: 77e4fd17-a08b-4d25-a500-975477c97d7f
+      <ConnectedNodeIDs>k__BackingField:
+      - b76a53bc-3120-440b-93b0-b17fa1f85e54
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: -439.2, y: -208.8}
+    <IsStartingNode>k__BackingField: 1
+    <HasTalked>k__BackingField: 0
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: d648a7fe-1731-4fd4-a827-dc0838cf5b40
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: b76a53bc-3120-440b-93b0-b17fa1f85e54
+    <ConnectedNodeIDs>k__BackingField:
+    - 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+  - <ChoiceID>k__BackingField: a96c7e94-9f7f-4b39-8b25-fd2f70a8e97c
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+    <ConnectedNodeIDs>k__BackingField:
+    - 49d98621-8170-4867-99ab-c7209fe3c12e
+  - <ChoiceID>k__BackingField: 4ede4dfa-eb6e-4229-a509-1a8ac993b1ee
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 49d98621-8170-4867-99ab-c7209fe3c12e
+    <ConnectedNodeIDs>k__BackingField:
+    - b3ce3665-01d9-43a6-8bd9-097cc2b1c0e3
+  - <ChoiceID>k__BackingField: 83a2f4b7-be69-4025-83d0-111b4f0c820a
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: b3ce3665-01d9-43a6-8bd9-097cc2b1c0e3
+    <ConnectedNodeIDs>k__BackingField:
+    - 0e431758-b5d8-4c9e-bed5-c90b3a361d71
+  - <ChoiceID>k__BackingField: 70c1b2ab-7a1b-465c-ac55-fd4c5b31b60d
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 0e431758-b5d8-4c9e-bed5-c90b3a361d71
+    <ConnectedNodeIDs>k__BackingField:
+    - 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
+  - <ChoiceID>k__BackingField: 8b010dcf-b617-47e8-b562-66895e20f6d3
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: d34ccafc-30eb-45a7-8f16-1caa682f29bd
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 49c5459b-1b14-41d4-8692-ebefcc1485ce
+    <ConnectedNodeIDs>k__BackingField:
+    - 3b90bcca-a707-44ac-9b46-8d2f444f909e
+  - <ChoiceID>k__BackingField: 128768e9-5623-4cc0-a4df-41345bf307c2
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 761cb135-8127-41d4-bd99-082ce33d5dbc
+    <ConnectedNodeIDs>k__BackingField:
+    - eef735a5-2715-44f8-a43f-7ed2e23a2dab
+  - <ChoiceID>k__BackingField: 06ffbe49-a530-4b47-9327-1236d56bcb75
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 3b90bcca-a707-44ac-9b46-8d2f444f909e
+    <ConnectedNodeIDs>k__BackingField:
+    - 761cb135-8127-41d4-bd99-082ce33d5dbc
+  - <ChoiceID>k__BackingField: 2702f83e-2023-446a-9a62-7858091d2595
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: eef735a5-2715-44f8-a43f-7ed2e23a2dab
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: 47b21d25-c06e-44af-9fa2-6cdc1f47562e
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 77e4fd17-a08b-4d25-a500-975477c97d7f
+    <ConnectedNodeIDs>k__BackingField:
+    - b76a53bc-3120-440b-93b0-b17fa1f85e54
+  <Conditions>k__BackingField: []

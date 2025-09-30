@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12aba092e64eb6a43a20018923b51153, type: 3}
+  m_Name: Map1_OS_GaGiangHo_D1_1
+  m_EditorClassIdentifier: 
+  <DialogueName>k__BackingField: Map1_OS_GaGiangHo_D1_1
+  <Text>k__BackingField: "T\xF4i ch\u1EBFt r\u1ED3i h\u1EA3? N\u1EBFu ch\u1EBFt m\xE0
+    c\xF2n ng\u1EEDi m\xF9i k\u1EB9o ki\u1EC3u n\xE0y th\xEC ch\u1EAFc \u0111\u1ECBa
+    ng\u1EE5c l\xE0 ti\u1EC7m b\xE1nh m\u1EA5t..."
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: 47b21d25-c06e-44af-9fa2-6cdc1f47562e
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: 77e4fd17-a08b-4d25-a500-975477c97d7f
+    <ConnectedNodeIDs>k__BackingField:
+    - b76a53bc-3120-440b-93b0-b17fa1f85e54
+  <Conditions>k__BackingField: []
+  <DialogueType>k__BackingField: 0
+  <ActiveKey>k__BackingField: []
+  <IsStartingDialogue>k__BackingField: 1
+  <HasConditions>k__BackingField: 0
+  <HasTalked>k__BackingField: 0

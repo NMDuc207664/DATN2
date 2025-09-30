@@ -3,20 +3,33 @@ using System.Collections.Generic;
 using DATN2.GraphviewEditor.Data.SaveModal;
 using DATN2.GraphviewEditor.Data.SaveModal.SO;
 using UnityEngine;
+using UnityEngine.Events;
 namespace DATN2.GraphviewEditor.Inspectors
 {
-    public class DTSDialogue : MonoBehaviour
+    [CreateAssetMenu(fileName = "DialogueConfig", menuName = "Dialogue/Dialogue Config")]
+    public class DTSDialogue : ScriptableObject
     {
-        [SerializeField] private DTSGraphSaveDataSO dialogueGraph;
-        [SerializeField] private DTSDialogueGroupSO dialogueGroup;
-        [SerializeField] private DTSDialogueSO dialogue;
-        [SerializeField] private List<DTSConditionSO> condition;
+        [SerializeField] public DTSGraphSaveDataSO dialogueGraph;
+        [SerializeField] public DTSDialogueGroupSO dialogueGroup;
+        [SerializeField] public DTSDialogueSO dialogue;
+        [SerializeField] public List<DTSConditionSO> condition;
 
         /* Filters */
-        [SerializeField] private bool groupedDialogues;
-        [SerializeField] private bool startingDialoguesOnly;
+        [SerializeField] public bool groupedDialogues;
+        [SerializeField] public bool startingDialoguesOnly;
 
-        [SerializeField] private int selectedDialogueGroupIndex;
-        [SerializeField] private int selectedDialogueIndex;
+        [SerializeField] public int selectedDialogueGroupIndex;
+        [SerializeField] public int selectedDialogueIndex;
+
+        public static event UnityAction<DTSDialogueSO> OnAnyDialogueFinished;
+        public void OnDialogueFinished()
+        {
+            if (dialogue != null)
+            {
+                dialogue.HasTalked = true;
+                OnAnyDialogueFinished?.Invoke(dialogue);
+
+            }
+        }
     }
 }

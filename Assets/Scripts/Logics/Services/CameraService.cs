@@ -52,7 +52,11 @@ public class CameraService : ICameraService
     public Camera _playerCamera; // Camera (xoay pitch)
     private readonly GameObject _player;
     private readonly Rigidbody _rigidbody; // Inject thêm Rigidbody từ container
-    private bool _hasCollision = false;
+
+
+    // Smooth rotation parameters
+    private float _targetXRotation = 0f;
+    private float _targetYRotation = 0f;
 
     public CameraService(Dictionary<string, Transform> transforms, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody)
     {
@@ -60,29 +64,54 @@ public class CameraService : ICameraService
         _playerCamera = playerCamera;
         _player = objects["Player"];
         _rigidbody = rigidbody;
-        RegisterCollisionEvents();
+        //RegisterCollisionEvents();
+        Vector3 currentRotation = _playerCamera.transform.eulerAngles;
+        _xRotation = _targetXRotation = currentRotation.x;
+        _yRotation = _targetYRotation = currentRotation.y;
     }
-    private void RegisterCollisionEvents()
-    {
-        // Thêm collision detector component nếu chưa có
-        var collisionDetector = _player.GetComponent<CollisionDetector>();
-        if (collisionDetector == null)
-        {
-            collisionDetector = _player.AddComponent<CollisionDetector>();
-        }
+    // private void RegisterCollisionEvents()
+    // {
+    //     // Thêm collision detector component nếu chưa có
+    //     var collisionDetector = _player.GetComponent<CollisionDetector>();
+    //     if (collisionDetector == null)
+    //     {
+    //         collisionDetector = _player.AddComponent<CollisionDetector>();
+    //     }
 
-        collisionDetector.OnCollisionDetected += (isColliding) => _hasCollision = isColliding;
-    }
+    //     collisionDetector.OnCollisionDetected += (isColliding) => _hasCollision = isColliding;
+    // }
     // ... (giữ nguyên LockCursor nếu có)
 
-    public void RotateCamera(float mouseX, float mouseY, float sensitivity)
+    public void RotateCamera(float mouseX, float mouseY, float sensitivity, bool smoothCamera, float rotationSmoothness)
     {
+
         // Pitch (xoay dọc) - không ảnh hưởng physics
-        _xRotation -= mouseY;
-        _yRotation += mouseX;
-        _xRotation = Mathf.Clamp(_xRotation, -45f, 60f);
-        _playerCamera.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
-        _playerTransform.rotation = Quaternion.Euler(0f, _yRotation, 0f);
+        if (smoothCamera)
+        {
+            // Cập nhật target rotation
+            _targetXRotation -= mouseY;
+            _targetYRotation += mouseX;
+
+            // Clamp pitch rotation
+            _targetXRotation = Mathf.Clamp(_targetXRotation, -60f, 54f);
+
+            // Smooth interpolation đến target rotation
+            _xRotation = Mathf.LerpAngle(_xRotation, _targetXRotation, rotationSmoothness * Time.deltaTime);
+            _yRotation = Mathf.LerpAngle(_yRotation, _targetYRotation, rotationSmoothness * Time.deltaTime);
+
+            // Apply rotations
+            _playerCamera.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
+            _playerTransform.rotation = Quaternion.Euler(0f, _yRotation, 0f);
+        }
+        else
+        {
+            _xRotation -= mouseY;
+            _yRotation += mouseX;
+            _xRotation = Mathf.Clamp(_xRotation, -45f, 60f);
+            _playerCamera.transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
+            _playerTransform.rotation = Quaternion.Euler(0f, _yRotation, 0f);
+
+        }
 
     }
 

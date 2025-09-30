@@ -30,7 +30,8 @@ namespace DATN2.GraphviewEditor.Applications
                 {
                     GroupID = group.ID,
                     GroupName = group.Title,
-                    Position = group.GetPosition().position
+                    Position = group.GetPosition().position,
+                    HasADialogueTalked = group.HasADialogueTalked
                 });
             }
             return results;
@@ -65,7 +66,9 @@ namespace DATN2.GraphviewEditor.Applications
                     Position = node.GetPosition().position,
                     Choices = nodeChoices, // Sử dụng nodeChoices thay vì node.Choices?.ToList()
                     Conditions = GetConditionByNodeID(node.NodeID),
-                    IsStartingNode = node.IsStartingNode()
+                    IsStartingNode = node.IsStartingNode(),
+                    HasTalked = node.HasTalked,
+                    ActiveKey = node.ActiveKey ?? new List<string>()
                 });
             }
 
@@ -197,11 +200,90 @@ namespace DATN2.GraphviewEditor.Applications
                 Position = node.GetPosition().position,
                 Choices = node.Choices?.ToList() ?? new List<DTSChoiceSaveData>(),
                 Conditions = GetConditionByNodeID(node.NodeID),
-                IsStartingNode = node.IsStartingNode()
+                IsStartingNode = node.IsStartingNode(),
+                HasTalked = node.HasTalked,
+                ActiveKey = node.ActiveKey ?? new List<string>()
             };
 
             Debug.Log($"[DTSReadRuntime] Retrieved node details for NodeID: {nodeID}, Name: {nodeData.Name}, HasConditions: {nodeData.HasConditions}, Choices: {nodeData.Choices.Count}, Conditions: {nodeData.Conditions.Count}");
             return nodeData;
+        }
+
+        // New method to get a single group by GroupID
+        public DTSGroupSaveData GetGroupByID(string groupID)
+        {
+            var group = _graphView.graphElements
+                .OfType<DTSGroup>()
+                .FirstOrDefault(g => g.ID == groupID);
+
+            if (group == null)
+            {
+                Debug.LogWarning($"[DTSReadRuntime] No group found with GroupID: {groupID}");
+                return null;
+            }
+
+            var groupData = new DTSGroupSaveData
+            {
+                GroupID = group.ID,
+                GroupName = group.Title,
+                Position = group.GetPosition().position,
+                HasADialogueTalked = group.HasADialogueTalked
+            };
+
+            Debug.Log($"[DTSReadRuntime] Retrieved group details for GroupID: {groupID}, Name: {groupData.GroupName}");
+            return groupData;
+        }
+
+        // New method to get all nodes where HasTalked is false
+        public List<DTSNodeSaveData> GetAllNodeByHasTalked()
+        {
+            var allChoices = GetAllChoiceInformation();
+            var nodes = _graphView.graphElements
+                .OfType<DTSNode>()
+                .Where(n => !n.HasTalked)
+                .Select(n => new DTSNodeSaveData
+                {
+                    NodeID = n.NodeID,
+                    Name = n.DialogueName,
+                    Text = n.Text,
+                    GroupID = n.Group != null ? n.Group.ID : null,
+                    Group = n.Group != null ? new DTSGroupSaveData
+                    {
+                        GroupID = n.Group.ID,
+                        GroupName = n.Group.Title,
+                        Position = n.Group.GetPosition().position,
+                    } : null,
+                    DialogueType = n.DialogueType,
+                    HasConditions = n.HaveConditions,
+                    Position = n.GetPosition().position,
+                    Choices = allChoices.Where(c => c.NodeID == n.NodeID).ToList(),
+                    Conditions = GetConditionByNodeID(n.NodeID),
+                    IsStartingNode = n.IsStartingNode(),
+                    HasTalked = n.HasTalked,
+                    ActiveKey = n.ActiveKey ?? new List<string>()
+                })
+                .ToList();
+
+            Debug.Log($"[DTSReadRuntime] Retrieved {nodes.Count} nodes with HasTalked = false");
+            return nodes;
+        }
+
+        public List<DTSGroupSaveData> GetAllGroupByHasTalked()
+        {
+            var groups = _graphView.graphElements
+                .OfType<DTSGroup>()
+                .Where(g => !g.HasADialogueTalked)
+                .Select(g => new DTSGroupSaveData
+                {
+                    GroupID = g.ID,
+                    GroupName = g.Title,
+                    Position = g.GetPosition().position,
+                    HasADialogueTalked = g.HasADialogueTalked
+                })
+                .ToList();
+
+            Debug.Log($"[DTSReadRuntime] Retrieved {groups.Count} groups with HasADialogueTalked = false");
+            return groups;
         }
     }
 }

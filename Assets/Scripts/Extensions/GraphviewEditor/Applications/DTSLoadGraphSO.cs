@@ -132,6 +132,8 @@ namespace DATN2.GraphviewEditor.Applications
                     dtsNode.Text = node.Text;
                     dtsNode.HaveConditions = node.HasConditions;
                     dtsNode.Choices = node.Choices;
+                    dtsNode.ActiveKey = node.ActiveKey ?? new List<string>();
+                    dtsNode.HasTalked = node.HasTalked;
                     //dtsNode.Group.ID = node.GroupID;
                     if (dtsNode.HaveConditions)
                     {
@@ -186,6 +188,25 @@ namespace DATN2.GraphviewEditor.Applications
             }
         }
 
+        // private static void LoadGroups(DTSGraphSaveDataSO graphData)
+        // {
+        //     foreach (var groupData in graphData.Groups)
+        //     {
+        //         var baseGroup = GraphElementFactory.CreateGroup(graphView, groupData.GroupName, groupData.Position, groupData.HasADialogueTalked);
+        //         if (baseGroup is DTSGroup dtsGroup)
+        //         {
+        //             dtsGroup.ID = groupData.GroupID;
+        //             dtsGroup.Title = groupData.GroupName;
+        //             dtsGroup.HasADialogueTalked = groupData.HasADialogueTalked;
+        //             graphView.AddElementCustom(dtsGroup);
+        //         }
+        //         else
+        //         {
+        //             // Debug.LogWarning($"[DTSLoadGraphSO] Group {groupData.GroupID} is not a DTSGroup (Type: {groupData.GroupName})");
+        //         }
+        //     }
+        // }
+
         private static void LoadGroups(DTSGraphSaveDataSO graphData)
         {
             foreach (var groupData in graphData.Groups)
@@ -195,15 +216,17 @@ namespace DATN2.GraphviewEditor.Applications
                 {
                     dtsGroup.ID = groupData.GroupID;
                     dtsGroup.Title = groupData.GroupName;
+                    dtsGroup.HasADialogueTalked = groupData.HasADialogueTalked;
+
+                    if (dtsGroup.hasDialogueTalkedToggle != null)
+                    {
+                        dtsGroup.hasDialogueTalkedToggle.value = dtsGroup.HasADialogueTalked;
+                    }
+
                     graphView.AddElementCustom(dtsGroup);
-                }
-                else
-                {
-                    // Debug.LogWarning($"[DTSLoadGraphSO] Group {groupData.GroupID} is not a DTSGroup (Type: {groupData.GroupName})");
                 }
             }
         }
-
         private static void RebuildConditionConnections(DTSGraphSaveDataSO graphData)
         {
             foreach (var conditionData in graphData.Conditions)
@@ -348,7 +371,6 @@ namespace DATN2.GraphviewEditor.Applications
                     }
                 }
             }
-
             // Assign DTSConditionNodes to groups
             foreach (var conditionNode in graphView.graphElements.OfType<DTSConditionNode>())
             {

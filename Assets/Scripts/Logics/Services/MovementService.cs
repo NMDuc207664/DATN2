@@ -12,6 +12,9 @@ namespace DATN2.Assets.Scripts.Logics.Services
         private readonly Rigidbody _rigidbody;
         private readonly Animator _animator;
         private readonly float _groundDrag = 4f;
+        private float _maxStepHeight;
+        private float _stepRayDistance;
+        private LayerMask _stepLayerMask;
         // private readonly float _jumpForce = 12f;
 
         public MovementService(Dictionary<string, Transform> transforms, Rigidbody rigidbody, Animator animator)
@@ -36,6 +39,11 @@ namespace DATN2.Assets.Scripts.Logics.Services
         {
             _rigidbody.drag = isGrounded ? _groundDrag : 0f;
         }
+        public void ConfigureStep(float maxStepHeight, LayerMask stepLayerMask)
+        {
+            _maxStepHeight = maxStepHeight;
+            _stepLayerMask = stepLayerMask;
+        }
 
 
         public void Move(Vector3 direction, float speed, bool isGrounded, float airMultiplier)
@@ -48,9 +56,22 @@ namespace DATN2.Assets.Scripts.Logics.Services
                 moveDir.y = 0f;
                 moveDir.Normalize();
 
-                float multiplier = isGrounded ? 1f : airMultiplier;
+                // Check for step climbing before applying movement
+                if (isGrounded)
+                {
+                    // Ưu tiên StepUp
 
+                    // Chỉ check StepDown khi không stepUp được và đang đi xuống/
+                    if (_rigidbody.velocity.y <= 0f && CanStepDown(moveDir))
+                    {
+                        StepDown(moveDir, speed * 1.25f);
+                        return;
+                    }
+                }
+
+                float multiplier = isGrounded ? 1f : airMultiplier;
                 _rigidbody.AddForce(moveDir * speed * 10f * multiplier, ForceMode.Force);
+                // LimitVelocity();
             }
             else
             {
@@ -72,6 +93,54 @@ namespace DATN2.Assets.Scripts.Logics.Services
             // Kích hoạt animation Interact
             _animator.SetTrigger("isPickUp");
 
+        }
+
+        private bool CanStepDown(Vector3 moveDirection)
+        {
+            if (!_rigidbody) return false;
+
+            Vector3 origin = _playerTransform.position + Vector3.up * 0.1f;
+            RaycastHit hit;
+
+            if (Physics.Raycast(origin, Vector3.down, out hit, _maxStepHeight + 0.2f, _stepLayerMask))
+            {
+                float stepHeight = _playerTransform.position.y - hit.point.y;
+
+                // Chỉ coi là stepDown nếu khoảng cách nằm trong ngưỡng
+                if (stepHeight > 0.05f && stepHeight <= _maxStepHeight)
+                {
+                    // Thêm điều kiện: phía trước không có vật cản cao (tránh nhầm stepUp)
+                    if (!Physics.Raycast(origin, moveDirection, 0.3f, _stepLayerMask))
+                    {
+                        Debug.DrawRay(origin, Vector3.down * (_maxStepHeight + 0.2f), Color.blue);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        private void StepDown(Vector3 moveDirection, float speed)
+        {
+            RaycastHit hit;
+            Vector3 origin = _playerTransform.position + Vector3.up * 0.1f;
+
+            if (Physics.Raycast(origin, Vector3.down, out hit, _maxStepHeight + 0.2f, _stepLayerMask))
+            {
+                Vector3 targetPosition = new Vector3(_playerTransform.position.x, hit.point.y, _playerTransform.position.z);
+
+                // Move xuống mượt bằng MovePosition
+                Vector3 newPos = Vector3.Lerp(_rigidbody.position, targetPosition, Time.fixedDeltaTime * 10f);
+                _rigidbody.MovePosition(newPos);
+
+                // Vẫn giữ momentum đi tới
+                Vector3 forwardForce = moveDirection * speed * 5f;
+                _rigidbody.AddForce(forwardForce, ForceMode.Force);
+
+                Debug.Log("Step Down Applied");
+            }
         }
     }
 

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12aba092e64eb6a43a20018923b51153, type: 3}
+  m_Name: Map1_OS_TieuThu_D1_1
+  m_EditorClassIdentifier: 
+  <DialogueName>k__BackingField: Map1_OS_TieuThu_D1_1
+  <Text>k__BackingField: "\u01A0\u2026 c\xE1i g\xEC d\xEDnh d\xEDnh th\u1EBF n\xE0y?
+    Tr\u1EDDi \u0111\u1EA5t\u2026 "
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: d648a7fe-1731-4fd4-a827-dc0838cf5b40
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: b76a53bc-3120-440b-93b0-b17fa1f85e54
+    <ConnectedNodeIDs>k__BackingField:
+    - 75183a88-b11c-4e30-9e75-89ebc0eb0bd5
+  <Conditions>k__BackingField: []
+  <DialogueType>k__BackingField: 0
+  <ActiveKey>k__BackingField: []
+  <IsStartingDialogue>k__BackingField: 0
+  <HasConditions>k__BackingField: 0
+  <HasTalked>k__BackingField: 0

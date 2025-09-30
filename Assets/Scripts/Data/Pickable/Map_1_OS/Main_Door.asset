@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859a790bb76fec748875725513beded2, type: 3}
+  m_Name: Main_Door
+  m_EditorClassIdentifier: 
+  itemId: c4178fdd-ba56-460f-a311-b5752794ce03
+  itemName: "C\u1EEDa Ch\xEDnh"
+  description: 
+  interactTypes: 04000000
+  requiresKey: 1
+  requiredKey: {fileID: 11400000, guid: 748a41e3f6f32184f82cff91e7fc147d, type: 2}

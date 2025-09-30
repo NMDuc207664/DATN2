@@ -8,9 +8,11 @@ namespace DATN2.Assets.Scripts.Logics.Interface
     public interface IInventoryService
     {
         ItemRuntimeSerialized AddItem(ItemModel item, int amount = 1);
-        bool RemoveItem(string uniqueId, int amount = 1);
+        bool HasItem(ItemModel item, int requiredAmount = 1);
+        bool RemoveItem(ItemModel item, int amount = 1);
         List<ItemRuntimeSerialized> GetAllItems();
-        ItemRuntimeSerialized GetItemById(int id);
+        ItemRuntimeSerialized GetItemById(string id);
         ItemRuntimeSerialized UpdateItems(ItemModel items, int amount);
+        void DebugPrintInventory();
     }
 }

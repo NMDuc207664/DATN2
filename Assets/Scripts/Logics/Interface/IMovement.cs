@@ -13,6 +13,7 @@ namespace DATN2.Assets.Scripts.Logics.Interface
         [RequireGameState(StateType.Ingame)]
         void PickUp();
         public void UpdateDrag(bool isGrounded);
+        void ConfigureStep(float maxStepHeight, LayerMask stepLayerMask);
 
 
     }

@@ -16,7 +16,9 @@ namespace DATN2.GraphviewEditor.DialogueSystem
     {
         public List<DTSChoiceSaveData> Choices { get; set; }
         public string Text { get; set; }
+        public List<string> ActiveKey { get; set; }
         public bool HaveConditions { get; set; }
+        public bool HasTalked { get; set; }
         public List<DTSConditionNode> ConditionChildren { get; set; }
 
         public override void Initialize(string nodeName, DTSGraphView dsGraphView, Vector2 position)
@@ -26,7 +28,9 @@ namespace DATN2.GraphviewEditor.DialogueSystem
             base.Initialize(nodeName, dsGraphView, position);
             Choices = new List<DTSChoiceSaveData>();
             Text = "Dialogue text.";
+            ActiveKey = new List<string>();
             HaveConditions = false;
+            HasTalked = false;
         }
 
         public override void Draw()
@@ -37,6 +41,10 @@ namespace DATN2.GraphviewEditor.DialogueSystem
             Toggle haveConditionsToggle = new Toggle("Has Conditions?")
             {
                 value = HaveConditions
+            };
+            Toggle hasTalkedToggle = new Toggle("Has Talked?")
+            {
+                value = HasTalked
             };
             // haveConditionsToggle.RegisterValueChangedCallback(evt =>
             // {
@@ -87,7 +95,15 @@ namespace DATN2.GraphviewEditor.DialogueSystem
                 ToggleConditionPort(HaveConditions);
                 graphView.editorWindow.ClearWarning("cannot_uncheck_has_conditions");
             });
+            hasTalkedToggle.RegisterValueChangedCallback(evt =>
+            {
+                HasTalked = evt.newValue;
 
+                if (Group != null && Group is DTSGroup dtsGroup)
+                {
+                    dtsGroup.UpdateHasDialogueTalkedStatus();
+                }
+            });
 
             VisualElement customDataContainer = new VisualElement();
             customDataContainer.AddToClassList("ds-node__custom-data-container");
@@ -95,6 +111,7 @@ namespace DATN2.GraphviewEditor.DialogueSystem
 
             TextField textTextField = DTSElementUtility.CreateTextField(Text);
             textTextField.style.width = StyleKeyword.Auto; // Tự tính theo nội dung
+
             textTextField.RegisterValueChangedCallback(evt =>
             {
                 Text = evt.newValue;
@@ -112,10 +129,81 @@ namespace DATN2.GraphviewEditor.DialogueSystem
                "ds-node__quote-text-field"
             );
 
+            Foldout activeKeyFoldout = DTSElementUtility.CreateFoldout("Active Keys");
+
+            // Render lại list ActiveKey
+            if (ActiveKey == null)
+                ActiveKey = new List<string>();
+
+            for (int i = 0; i < ActiveKey.Count; i++)
+            {
+                int index = i;
+                TextField keyField = new TextField($"Key {i + 1}")
+                {
+                    value = ActiveKey[i]
+                };
+
+                // keyField.style.flexGrow = 1;
+                // keyField.style.minWidth = 150; // hoặc to hơn nếu muốn
+                // keyField.style.maxWidth = 400; // tránh quá dài
+                keyField.RegisterValueChangedCallback(evt =>
+                {
+                    ActiveKey[index] = evt.newValue;
+                });
+
+                Button removeButton = new Button(() =>
+                {
+                    ActiveKey.RemoveAt(index);
+                    activeKeyFoldout.Remove(keyField.parent); // xóa cả row
+                })
+                { text = "X" };
+
+                VisualElement row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                row.Add(keyField);
+                row.Add(removeButton);
+
+                activeKeyFoldout.Add(row);
+            }
+
+            Button addButton = new Button(() =>
+            {
+                ActiveKey.Add(string.Empty);
+                // force refresh (simple cách: redraw lại node hoặc add row mới)
+                TextField newKeyField = new TextField($"Key {ActiveKey.Count}")
+                {
+                    value = ""
+                };
+                int newIndex = ActiveKey.Count - 1;
+                newKeyField.RegisterValueChangedCallback(evt =>
+                {
+                    ActiveKey[newIndex] = evt.newValue;
+                });
+
+                Button removeButton = new Button(() =>
+                {
+                    ActiveKey.RemoveAt(newIndex);
+                    activeKeyFoldout.Remove(newKeyField.parent);
+                })
+                { text = "X" };
+
+                VisualElement row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                row.Add(newKeyField);
+                row.Add(removeButton);
+                activeKeyFoldout.Add(row);
+
+            })
+            { text = "+ Add Key" };
+
+            activeKeyFoldout.Add(addButton);
+            customDataContainer.Add(activeKeyFoldout);
+
 
             textFoldout.Add(textTextField);
             customDataContainer.Add(textFoldout);
             customDataContainer.Add(haveConditionsToggle);
+            customDataContainer.Add(hasTalkedToggle);
             extensionContainer.Add(customDataContainer);
             RefreshExpandedState();
         }

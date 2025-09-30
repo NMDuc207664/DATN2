@@ -56,7 +56,7 @@ namespace DATN2.GraphviewEditor.Inspectors.Handler
             return selectedDialogue;
         }
 
-        private static DTSDialogueSO LoadDialogue(string dialogueName, string dialogueFolderPath)
+        public static DTSDialogueSO LoadDialogue(string dialogueName, string dialogueFolderPath)
         {
             string resourcePath = dialogueFolderPath.Replace("Assets/Resources/", "");
             string fullResourcePath = $"{resourcePath}/{dialogueName}";
