@@ -48,7 +48,7 @@ namespace DATN2.GraphviewEditor.Inspectors.Handler
             return selectedGroup;
         }
 
-        private static DTSDialogueGroupSO LoadDialogueGroup(string graphName, string groupName)
+        public static DTSDialogueGroupSO LoadDialogueGroup(string graphName, string groupName)
         {
             string resourcePath = $"Dialogues/{graphName}/Groups/{groupName}";
             DTSDialogueGroupSO group = Resources.Load<DTSDialogueGroupSO>(resourcePath);

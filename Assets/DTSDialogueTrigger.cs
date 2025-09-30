@@ -10,6 +10,32 @@ public class DTSDialogueTrigger : MonoBehaviour
     [SerializeField] private DTSGraphSaveDataSO graphSO; // The graph containing the dialogues
     [SerializeField] private string selectedNodeName; // Selected node name from dropdown
 
+    /// <summary>Đổi Graph trong runtime</summary>
+    public void SetGraph(DTSGraphSaveDataSO newGraph)
+    {
+        graphSO = newGraph;
+        // Reset node mỗi khi đổi graph
+        selectedNodeName = string.Empty;
+    }
+
+    /// <summary>Đổi Node trong runtime</summary>
+    public void SetNode(string nodeName)
+    {
+        if (graphSO == null)
+        {
+            Debug.LogError("[DialogueTrigger] Cannot set node, GraphSO is null!");
+            return;
+        }
+
+        if (!GetNodeNames().Contains(nodeName))
+        {
+            Debug.LogError($"[DialogueTrigger] Node '{nodeName}' does not exist in Graph '{graphSO.GraphName}'!");
+            return;
+        }
+
+        selectedNodeName = nodeName;
+    }
+
     public void TriggerDialogue()
     {
         if (DTSDialogueTest.Instance == null)
@@ -54,6 +80,14 @@ public class DTSDialogueTrigger : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        // Reset node mỗi khi đổi graph trong Inspector
+        if (graphSO != null)
+        {
+            selectedNodeName = string.Empty;
+        }
+    }
     // Public method to access NodeNames for the custom Inspector
     public string[] GetNodeNames()
     {

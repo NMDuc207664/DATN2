@@ -15,8 +15,10 @@ namespace DATN2.GraphviewEditor.Data.SaveModal
         [field: SerializeField] public string GroupID { get; set; }//1 Node có 1 group mối quan hệ 1 group - n node
         [field: SerializeField] public DTSGroupSaveData Group { get; set; }
         [field: SerializeField] public DTSDialogueType DialogueType { get; set; }
+        [field: SerializeField] public List<string> ActiveKey { get; set; }
         [field: SerializeField] public bool HasConditions { get; set; }
         [field: SerializeField] public Vector2 Position { get; set; }
         [field: SerializeField] public bool IsStartingNode { get; set; }
+        [field: SerializeField] public bool HasTalked { get; set; }
     }
 }

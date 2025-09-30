@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Dialogue Group
   m_EditorClassIdentifier: 
   <GroupName>k__BackingField: Dialogue Group
+  <HasADialogueTalked>k__BackingField: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using DATN2.Assets.Scripts.Logics.Interface;
+using DATN2.Assets.Scripts.Logics.Controllers;
 
 // Tạo một EntryPoint để inject services vào tất cả DoorInteraction dùng khi có 1 component dùng nhiều trong object trong scene
 public class DoorEntryPoint : IStartable

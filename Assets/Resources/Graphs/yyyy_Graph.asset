@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfc6bccf99b605047a224d2be96ff16f, type: 3}
+  m_Name: yyyy_Graph
+  m_EditorClassIdentifier: 
+  <GraphName>k__BackingField: yyyy
+  <Groups>k__BackingField: []
+  <Nodes>k__BackingField:
+  - <NodeID>k__BackingField: fdf363e7-74dc-44b6-9f9f-5407d7bcc0e2
+    <Name>k__BackingField: Node Name
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 772859c9-b55e-43b2-ac30-94158dea429b
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: fdf363e7-74dc-44b6-9f9f-5407d7bcc0e2
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField: []
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 375.2, y: 184}
+    <IsStartingNode>k__BackingField: 1
+    <HasTalked>k__BackingField: 0
+  - <NodeID>k__BackingField: adfe5806-3ab7-4c60-be6d-88b2204c78ab
+    <Name>k__BackingField: bvbhb
+    <Text>k__BackingField: Dialogue text.
+    <Choices>k__BackingField:
+    - <ChoiceID>k__BackingField: 768537c9-d760-416c-a7bf-569bb4e3a9a8
+      <Text>k__BackingField: New Choice
+      <NodeID>k__BackingField: adfe5806-3ab7-4c60-be6d-88b2204c78ab
+      <ConnectedNodeIDs>k__BackingField: []
+    <Conditions>k__BackingField: []
+    <GroupID>k__BackingField: 
+    <Group>k__BackingField:
+      <GroupID>k__BackingField: 
+      <GroupName>k__BackingField: 
+      <Position>k__BackingField: {x: 0, y: 0}
+      <HasADialogueTalked>k__BackingField: 0
+    <DialogueType>k__BackingField: 0
+    <ActiveKey>k__BackingField:
+    - ss
+    - eee
+    - ssss
+    <HasConditions>k__BackingField: 0
+    <Position>k__BackingField: {x: 884.8, y: 239.99998}
+    <IsStartingNode>k__BackingField: 1
+    <HasTalked>k__BackingField: 0
+  <Choices>k__BackingField:
+  - <ChoiceID>k__BackingField: 772859c9-b55e-43b2-ac30-94158dea429b
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: fdf363e7-74dc-44b6-9f9f-5407d7bcc0e2
+    <ConnectedNodeIDs>k__BackingField: []
+  - <ChoiceID>k__BackingField: 768537c9-d760-416c-a7bf-569bb4e3a9a8
+    <Text>k__BackingField: New Choice
+    <NodeID>k__BackingField: adfe5806-3ab7-4c60-be6d-88b2204c78ab
+    <ConnectedNodeIDs>k__BackingField: []
+  <Conditions>k__BackingField: []

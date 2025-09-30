@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DATN2.Assets.Scripts.Logics
+namespace DATN2.Assets.Scripts.Logics.Controllers
 {
     [System.Serializable]
     public struct TeleportPair

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DATN2.Assets.Scripts.Logics
+namespace DATN2.Assets.Scripts.Logics.Controllers
 {
     public class TeleportPoint : MonoBehaviour
     {
