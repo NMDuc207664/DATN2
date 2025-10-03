@@ -10,8 +10,8 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         public static KeyGameStateManager Instance { get; set; }
 
         [Header("Debug View")]
-        [SerializeField] private List<string> currentKeysActive = new List<string>();
-        [SerializeField] private List<string> passedKeysUnactive = new List<string>();
+        [SerializeField] public List<string> currentKeysActive = new List<string>();
+        [SerializeField] public List<string> passedKeysUnactive = new List<string>();
 
         public SerializableDictionary<string, QuestDataSO> allRegisterKeys = new SerializableDictionary<string, QuestDataSO>();
         void Awake()

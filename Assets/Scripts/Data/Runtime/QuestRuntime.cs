@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DATN2.Assets.Scripts.Modals.Enum;
 using DATN2.GraphviewEditor.Data.SaveModal;
 using DATN2.GraphviewEditor.Data.SaveModal.SO;
 using DATN2.GraphviewEditor.Inspectors;
@@ -17,7 +18,8 @@ namespace DATN2.Assets.Scripts.Data.Runtime
 
         // Dialogue System Integration
         [Header("Dialogue Settings")]
-        [SerializeField] public DTSDialogue dialogue;
+        [SerializeField] public DialogueTriggerType triggerType;
+        [SerializeField] public DTSDialogue dialogues;
 
 
         [Header("Default Dialogue Settings")]
