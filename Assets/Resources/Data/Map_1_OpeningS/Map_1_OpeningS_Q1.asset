@@ -17,6 +17,7 @@ MonoBehaviour:
   - currentNPCPosition:
       list: []
     targetPosition: []
+    triggerType: 1
     dialogues: {fileID: 11400000, guid: fd93acccd7559f24bab1f12915391b64, type: 2}
     HasDefaultDialogue: 0
     defaultDialogue: {fileID: 0}
