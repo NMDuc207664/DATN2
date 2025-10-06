@@ -13,8 +13,8 @@ namespace DATN2.Assets.Scripts.Data.Runtime
     {
 
         // Used to track the initial and current position of NPCs
-        [SerializeField] public SerializableDictionary<string, Transform> currentNPCPosition;
-        [SerializeField] public List<Vector3> targetPosition;
+        [SerializeField] public SerializableDictionary<string, Vector3> currentNPCPosition;
+        [SerializeField] public SerializableDictionary<string, Vector3> targetPosition;
 
         // Dialogue System Integration
         [Header("Dialogue Settings")]

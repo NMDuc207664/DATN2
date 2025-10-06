@@ -15,8 +15,33 @@ MonoBehaviour:
   Key: Map_1_OpeningS_Q1
   quests:
   - currentNPCPosition:
-      list: []
-    targetPosition: []
+      list:
+      - Key: TT
+        Value: {x: 309.3405, y: 5, z: 476}
+    targetPosition:
+      list:
+      - Key: NPC(s)_Move_Point_1
+        Value: {x: 309.3405, y: 3.09, z: 464}
+      - Key: NPC(s)_Move_Point_2
+        Value: {x: 271, y: 3.4, z: 456}
+      - Key: NPC(s)_Move_Point_3
+        Value: {x: 253, y: 3.3, z: 438}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: 
+        Value: {x: 0, y: 4.831724, z: 0}
     triggerType: 1
     dialogues: {fileID: 11400000, guid: fd93acccd7559f24bab1f12915391b64, type: 2}
     HasDefaultDialogue: 0
