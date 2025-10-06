@@ -233,17 +233,32 @@ namespace CMF
 
 			// _animator.SetBool("isWalking", isMoving);
 
+			///
+			bool hasInput = characterInput != null &&
+								(Mathf.Abs(characterInput.GetHorizontalMovementInput()) > 0.1f ||
+								 Mathf.Abs(characterInput.GetVerticalMovementInput()) > 0.1f);
 
-			Vector3 actualVelocity = savedVelocity;  // hoặc GetVelocity()
-			Vector3 horizontal = Vector3.ProjectOnPlane(actualVelocity, tr.up);
-			bool isMoving = horizontal.magnitude > 0.1f;
+			Vector3 horizontal = Vector3.ProjectOnPlane(savedVelocity, tr.up);
+			bool isMoving = hasInput && horizontal.magnitude > 0.1f;
+
+			// Update Animator
 			_animator.SetBool("isWalking", isMoving);
 
-
-			//Multiply (normalized) velocity with movement speed;
+			// Multiply (normalized) velocity with movement speed
 			_velocity *= movementSpeed;
-
 			return _velocity;
+			///
+
+			// Vector3 actualVelocity = savedVelocity;  // hoặc GetVelocity()
+			// Vector3 horizontal = Vector3.ProjectOnPlane(actualVelocity, tr.up);
+			// bool isMoving = horizontal.magnitude > 0.1f;
+			// _animator.SetBool("isWalking", isMoving);
+
+
+			// //Multiply (normalized) velocity with movement speed;
+			// _velocity *= movementSpeed;
+
+			// return _velocity;
 		}
 
 		//Returns 'true' if the player presses the jump key;

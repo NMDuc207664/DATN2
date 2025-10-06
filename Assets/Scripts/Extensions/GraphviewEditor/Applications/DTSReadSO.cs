@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DATN2.GraphviewEditor.Data.SaveModal;
 using DATN2.GraphviewEditor.Data.SaveModal.SO;
+using DATN2.GraphviewEditor.DialogueSystem.Enum;
 using UnityEditor;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ namespace DATN2.GraphviewEditor.Applications
                 }
             }
         }
-        public static void GetInformationFromNode(DTSDialogueSO dialogueSO)
+        public void GetInformationFromNode(DTSDialogueSO dialogueSO)
         {
             if (dialogueSO == null)
             {
@@ -107,6 +108,109 @@ namespace DATN2.GraphviewEditor.Applications
             {
                 Debug.Log($"[DialogueDebugger] Dialogue {dialogueSO.DialogueName} has no choices.");
             }
+        }
+        public DTSNodeSaveData GetNodeByID(DTSGraphSaveDataSO graphSO, string nodeID)
+        {
+            if (graphSO == null)
+            {
+                Debug.LogWarning("[DTSReadSO] GraphSaveDataSO is null!");
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(nodeID))
+            {
+                Debug.LogWarning("[DTSReadSO] NodeID is null or empty!");
+                return null;
+            }
+
+            // Tìm node trong danh sách Nodes của graphSO
+            var node = graphSO.Nodes.FirstOrDefault(n => n.NodeID == nodeID);
+
+            if (node == null)
+            {
+                Debug.LogWarning($"[DTSReadSO] No node found with NodeID: {nodeID}");
+                return null;
+            }
+
+            Debug.Log($"[DTSReadSO] Found Node: ID={node.NodeID}, Name={node.Name}, Text={node.Text}, DialogueType={node.DialogueType}");
+            return node;
+        }
+
+        public ReadSODto GetInformFromNode(DTSDialogueSO dialogueSO)
+        {
+            if (dialogueSO == null)
+            {
+                Debug.LogWarning("[DialogueDebugger] DialogueSO is null!");
+                return null;
+            }
+
+            // Khởi tạo đối tượng ReadSODto
+            var result = new ReadSODto
+            {
+                Dialogue = dialogueSO.Text,
+                NextNodeId = new List<string>()
+            };
+
+            // In thông tin cơ bản
+            //            Debug.Log($"[DialogueDebugger] Dialogue: {dialogueSO.DialogueName} | Text: {dialogueSO.Text}");
+
+            // 1. Kiểm tra điều kiện
+            if (dialogueSO.Conditions != null && dialogueSO.Conditions.Count > 0)
+            {
+                foreach (var condSO in dialogueSO.Conditions)
+                {
+                    Debug.Log($"   ConditionSO: {condSO.ConditionName}, Type: {condSO.DialogueType}");
+                    if (condSO.Conditions != null && condSO.Conditions.Count > 0)
+                    {
+                        foreach (var cond in condSO.Conditions)
+                        {
+                            Debug.Log($"      -> {cond.GetType().Name}: {cond}");
+                        }
+                    }
+                }
+            }
+            // else
+            // {
+            //     Debug.Log($"[DialogueDebugger] Dialogue {dialogueSO.DialogueName} has no conditions.");
+            // }
+
+            // 2. Kiểm tra choice và điền NextNodeId
+            if (dialogueSO.Choices != null && dialogueSO.Choices.Count > 0)
+            {
+                // Debug.Log($"[DialogueDebugger] Dialogue {dialogueSO.DialogueName} has {dialogueSO.Choices.Count} choice(s):");
+
+                if (dialogueSO.DialogueType == DTSDialogueType.SingleChoice)
+                {
+                    // Lấy NodeID đầu tiên từ choice đầu tiên (nếu có)
+                    var firstChoice = dialogueSO.Choices.FirstOrDefault();
+                    if (firstChoice != null && firstChoice.ConnectedNodeIDs != null && firstChoice.ConnectedNodeIDs.Count > 0)
+                    {
+                        result.NextNodeId.Add(firstChoice.ConnectedNodeIDs[0]);
+                        //Debug.Log($"   Choice: {firstChoice.Text} -> Next NodeID: {firstChoice.ConnectedNodeIDs[0]} (SingleNode)");
+                    }
+                    // else
+                    // {
+                    //     Debug.Log($"   Choice: {firstChoice?.Text} -> No connected nodes (end of dialogue)");
+                    // }
+                }
+                else if (dialogueSO.DialogueType == DTSDialogueType.MultipleChoice)
+                {
+                    // Lấy tất cả ConnectedNodeIDs từ tất cả choices
+                    foreach (var choice in dialogueSO.Choices)
+                    {
+                        if (choice.ConnectedNodeIDs != null && choice.ConnectedNodeIDs.Count > 0)
+                        {
+                            result.NextNodeId.AddRange(choice.ConnectedNodeIDs);
+                        }
+                        // else
+                        // {
+                        //     Debug.Log($"   Choice: {choice.Text} -> No connected nodes (end of dialogue)");
+                        // }
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
