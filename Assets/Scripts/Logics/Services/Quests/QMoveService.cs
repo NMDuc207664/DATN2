@@ -8,46 +8,23 @@ using UnityEngine;
 
 public class QMoveService : IQmoveService
 {
-    // [SerializeField] private GameEventSystem gameEventManager;
+    private List<Vector3> destinations = new List<Vector3>();
+    private float stopDistance = 1.5f;       // khoảng cách tính là "đã tới"
+    private float waitTimeAtPoint = 0.5f;    // thời gian dừng giữa các điểm
+    private float sampleRadius = 25f;
+    // private readonly MonoBehaviour _coroutineRunner;
 
-    // void Awake()
+    // public QMoveService(MonoBehaviour coroutineRunner)
     // {
-    //     // Find GameEventManager if not assigned
-    //     if (gameEventManager == null)
-    //     {
-    //         gameEventManager = FindObjectOfType<GameEventSystem>();
-    //         if (gameEventManager == null)
-    //         {
-    //             Debug.LogError("[NPCController] GameEventManager not found in scene!");
-    //         }
-    //     }
-
-    //     // Subscribe to key events
-    //     gameEventManager.OnKeyActivated += HandleKeyActivated;
+    //     _coroutineRunner = coroutineRunner;
     // }
 
-    // void OnDestroy()
+    // public void MoveAsync(Transform npc, Vector3 targetPosition, Action onComplete = null)
     // {
-    //     // Unsubscribe to prevent memory leaks
-    //     gameEventManager.OnKeyActivated -= HandleKeyActivated;
+    //     _coroutineRunner.StartCoroutine(MoveNPC(npc, targetPosition, onComplete));
     // }
 
-    // private void HandleKeyActivated(string key, QuestDataSO questData)
-    // {
-    //     foreach (var quest in questData.quests)
-    //     {
-    //         // Handle NPC movement
-    //         foreach (var npc in quest.currentNPCPosition)
-    //         {
-    //             if (npc.Value != null && quest.targetPosition.Count > 0)
-    //             {
-    //                 MoveNPC(npc.Value, quest.targetPosition[0]);
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private void MoveNPC(Transform npc, Vector3 targetPosition)
+    // private IEnumerator MoveNPC(Transform npc, Vector3 targetPosition, Action onComplete)
     // {
     //     while (Vector3.Distance(npc.position, targetPosition) > 0.1f)
     //     {
@@ -56,34 +33,13 @@ public class QMoveService : IQmoveService
     //             targetPosition,
     //             Time.deltaTime * 5f
     //         );
-
+    //         yield return null;
     //     }
     //     Debug.Log($"NPC {npc.name} reached target position: {targetPosition}");
-    // }
-    private readonly MonoBehaviour _coroutineRunner;
-
-    public QMoveService(MonoBehaviour coroutineRunner)
+    //     onComplete?.Invoke();
+    //}
+    public void StartMovement(List<Vector3> destinations)
     {
-        _coroutineRunner = coroutineRunner;
-    }
-
-    public void MoveAsync(Transform npc, Vector3 targetPosition, Action onComplete = null)
-    {
-        _coroutineRunner.StartCoroutine(MoveNPC(npc, targetPosition, onComplete));
-    }
-
-    private IEnumerator MoveNPC(Transform npc, Vector3 targetPosition, Action onComplete)
-    {
-        while (Vector3.Distance(npc.position, targetPosition) > 0.1f)
-        {
-            npc.position = Vector3.MoveTowards(
-                npc.position,
-                targetPosition,
-                Time.deltaTime * 5f
-            );
-            yield return null;
-        }
-        Debug.Log($"NPC {npc.name} reached target position: {targetPosition}");
-        onComplete?.Invoke();
+        throw new NotImplementedException();
     }
 }

@@ -26,22 +26,22 @@ MonoBehaviour:
         Value: {x: 271, y: 3.4, z: 456}
       - Key: NPC(s)_Move_Point_3
         Value: {x: 253, y: 3.3, z: 438}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
-      - Key: 
-        Value: {x: 0, y: 4.831724, z: 0}
+      - Key: NPC(s)_Move_Point_4
+        Value: {x: 257, y: 4.831724, z: 415}
+      - Key: NPC(s)_Move_Point_5
+        Value: {x: 281, y: 4.831724, z: 378}
+      - Key: NPC(s)_Move_Point_6
+        Value: {x: 269, y: 4.831724, z: 361}
+      - Key: NPC(s)_Move_Point_7
+        Value: {x: 238, y: 4.831724, z: 346}
+      - Key: NPC(s)_Move_Point_8
+        Value: {x: 220, y: 4.831724, z: 320}
+      - Key: NPC(s)_Move_Point_9
+        Value: {x: 221, y: 4.831724, z: 293}
+      - Key: NPC(s)_Move_Point_10
+        Value: {x: 221, y: 4.831724, z: 271}
+      - Key: NPC(s)_Move_Point_11
+        Value: {x: 221, y: 4.831724, z: 257}
     triggerType: 1
     dialogues: {fileID: 11400000, guid: fd93acccd7559f24bab1f12915391b64, type: 2}
     HasDefaultDialogue: 0
