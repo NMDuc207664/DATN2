@@ -200,7 +200,7 @@ public class NPCMover : MonoBehaviour
 {
     [Header("Waypoint Settings")]
     [SerializeField] private List<Vector3> destinations = new List<Vector3>();
-    [SerializeField] private List<Transform> destinations_debug; // các điểm di chuyển trong Scene
+    [SerializeField] private List<Transform> destinations_debug = new List<Transform>(); // các điểm di chuyển trong Scene
     [SerializeField] private float stopDistance = 1.5f;       // khoảng cách tính là "đã tới"
     [SerializeField] private float waitTimeAtPoint = 0.5f;    // thời gian dừng giữa các điểm
     [SerializeField] private float sampleRadius = 5f;         // bán kính để kiểm tra NavMesh hợp lệ
@@ -226,7 +226,7 @@ public class NPCMover : MonoBehaviour
         }
 
         LoadDestinationsFromQuest();
-        if (destinations.Count > 0)
+        if (destinations.Count > 0 && Debug_Mode == false)
         {
             StartCoroutine(MoveThroughPoints());
         }
@@ -236,8 +236,12 @@ public class NPCMover : MonoBehaviour
         }
         if (Debug_Mode)
         {
-            destinations_debug = new List<Transform>();
-            StartCoroutine(MoveThroughPoints_Debug_Mode());
+
+            if (destinations_debug.Count > 0)
+            {
+                StartCoroutine(MoveThroughPoints_Debug_Mode());
+            }
+
         }
     }
 

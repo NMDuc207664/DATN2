@@ -18,16 +18,16 @@ namespace DATN2.GraphviewEditor.Runtime
         [SerializeField] private Transform promptCanvas; // assign the World Space Canvas here
         [SerializeField] private TextMeshProUGUI promptText; // assign TMP text from Canvas
         [SerializeField] private string interactPrompt = "E: Interact";
-    [SerializeField] private Vector3 promptOffset = new Vector3(0f, 2f, 0f);
-    [Header("Screen-style Settings")]
-    [Tooltip("When true the prompt will scale with distance so it appears a constant size on the screen")]
-    [SerializeField] private bool scaleWithDistance = true;
-    [Tooltip("Multiplier used when scaling the prompt with distance. Tweak for desired screen size.")]
-    [SerializeField] private float scaleFactor = 0.12f;
-    [SerializeField] private float minScale = 0.05f;
-    [SerializeField] private float maxScale = 2f;
-    [Tooltip("If true, the prompt will only rotate around Y so it stays upright (good for pitched cameras)")]
-    [SerializeField] private bool billboardYOnly = true;
+        [SerializeField] private Vector3 promptOffset = new Vector3(0f, 2f, 0f);
+        [Header("Screen-style Settings")]
+        [Tooltip("When true the prompt will scale with distance so it appears a constant size on the screen")]
+        [SerializeField] private bool scaleWithDistance = true;
+        [Tooltip("Multiplier used when scaling the prompt with distance. Tweak for desired screen size.")]
+        [SerializeField] private float scaleFactor = 0.12f;
+        [SerializeField] private float minScale = 0.05f;
+        [SerializeField] private float maxScale = 2f;
+        [Tooltip("If true, the prompt will only rotate around Y so it stays upright (good for pitched cameras)")]
+        [SerializeField] private bool billboardYOnly = true;
 
         private Dictionary<string, IQuestService> _questControllers;
         private Transform _player;
@@ -93,8 +93,8 @@ namespace DATN2.GraphviewEditor.Runtime
                 // scale with distance so it appears as a flat UI element on the screen
                 if (scaleWithDistance && Camera.main != null)
                 {
-                    var dist = Vector3.Distance(Camera.main.transform.position, promptCanvas.position);
-                    var s = Mathf.Clamp(dist * scaleFactor, minScale, maxScale);
+                    var dist_2 = Vector3.Distance(Camera.main.transform.position, promptCanvas.position);
+                    var s = Mathf.Clamp(dist_2 * scaleFactor, minScale, maxScale);
                     promptCanvas.localScale = Vector3.one * s;
                 }
 
