@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CMF;
 using DATN2.Assets.Scripts.Data;
 using DATN2.Assets.Scripts.Data.Runtime;
 using DATN2.Assets.Scripts.Logics.Controllers;
@@ -16,6 +17,7 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
         [SerializeField] private NPCMover npc1_Mover;
         [SerializeField] private NPCMover npc2_Mover;
         [Inject] private IQdialogueService dialogueService;
+        [SerializeField] private AdvancedWalkerController playerController;
         public string MapKey => mapKey;
 
 
@@ -62,7 +64,24 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
                         };
                         npc1_Mover.StartMovementWithKeys(key, moveKeys, 0);
                         npc2_Mover.StartMovementWithKeys(key, moveKeys, 0);
+                        string[] playerMoveKeys = new[] {
+                            "NPC(s)_Move_Point_1",
+                            "NPC(s)_Move_Point_2",
+                            "NPC(s)_Move_Point_3",
+                            "NPC(s)_Move_Point_4",
+                            "NPC(s)_Move_Point_5",
+                        };
 
+                        playerController.OnReachMoveKey += (reachedKey) =>
+                        {
+                            if (reachedKey == "NPC(s)_Move_Point_3")
+                            {
+                                Debug.Log("[Player Trigger] Đến Point_3 → Bắt đầu Dialogue mới!");
+                                dialogueService.StartDialogueAsync(questData, null, 1);
+                            }
+                        };
+
+                        playerController.StartAutoMoveWithKeys(key, playerMoveKeys, 0, 3f);
                     }
                 }, 0);
 

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using DATN2.Assets.Scripts.Data;
+using DATN2.Assets.Scripts.Logics.Controllers;
 using UnityEngine;
+using UnityEngine.AI;
 using VContainer;
 
 namespace CMF
@@ -71,6 +74,22 @@ namespace CMF
 
 		[SerializeField, Tooltip("Độ cản khi leo dốc. 1 = mặc định, càng cao leo càng chậm.")]
 		private float slopeResistance = 1f;
+
+		[Header("NavMesh Settings")]
+		[SerializeField] private bool navMeshOnly = false;
+		[SerializeField] private float navMeshSampleRadius = 1.0f;
+
+		[Header("Auto Move Settings")]
+		private bool isAutoMoving = false;
+		private Vector3 autoMoveDirection = Vector3.zero;
+		private float autoMoveSpeed = 0f;
+		private Coroutine autoMoveWithKeysRoutine;
+		public System.Action<string> OnReachMoveKey;
+
+
+
+
+
 
 		//Enum describing basic controller states; 
 		public enum ControllerState
@@ -157,7 +176,13 @@ namespace CMF
 			Vector3 _velocity = Vector3.zero;
 			if (currentControllerState == ControllerState.Grounded)
 				_velocity = CalculateMovementVelocity();
-
+			// if (cameraTransform != null)
+			// {
+			// 	Vector3 camForward = cameraTransform.forward;
+			// 	camForward.y = 0f;
+			// 	if (camForward.sqrMagnitude > 0.001f)
+			// 		tr.forward = camForward.normalized;
+			// }
 			//If local momentum is used, transform momentum into world space first;
 			Vector3 _worldMomentum = momentum;
 			if (useLocalMomentum)
@@ -192,6 +217,10 @@ namespace CMF
 		//This function can be overridden by inheriting scripts to implement different player controls;
 		protected virtual Vector3 CalculateMovementDirection()
 		{
+			if (isAutoMoving)
+			{
+				return autoMoveDirection; // Return hướng tự động
+			}
 			//If no character input script is attached to this object, return;
 			if (characterInput == null)
 				return Vector3.zero;
@@ -234,9 +263,17 @@ namespace CMF
 			// _animator.SetBool("isWalking", isMoving);
 
 			///
-			bool hasInput = characterInput != null &&
-								(Mathf.Abs(characterInput.GetHorizontalMovementInput()) > 0.1f ||
-								 Mathf.Abs(characterInput.GetVerticalMovementInput()) > 0.1f);
+			bool hasInput;
+			if (isAutoMoving)
+			{
+				hasInput = _velocity.magnitude > 0.1f; // Dùng velocity từ auto move
+			}
+			else
+			{
+				hasInput = characterInput != null &&
+						   (Mathf.Abs(characterInput.GetHorizontalMovementInput()) > 0.1f ||
+							Mathf.Abs(characterInput.GetVerticalMovementInput()) > 0.1f);
+			}
 
 			Vector3 horizontal = Vector3.ProjectOnPlane(savedVelocity, tr.up);
 			bool isMoving = hasInput && horizontal.magnitude > 0.1f;
@@ -246,6 +283,18 @@ namespace CMF
 
 			// Multiply (normalized) velocity with movement speed
 			_velocity *= movementSpeed;
+			if (navMeshOnly)
+			{
+				// Kiểm tra điểm kế tiếp player muốn di chuyển tới có nằm trong NavMesh không
+				Vector3 nextPos = tr.position + _velocity * Time.fixedDeltaTime;
+				NavMeshHit hit;
+
+				// Nếu không có NavMesh gần đó trong bán kính navMeshSampleRadius, chặn di chuyển
+				if (!NavMesh.SamplePosition(nextPos, out hit, navMeshSampleRadius, NavMesh.AllAreas))
+				{
+					_velocity = Vector3.zero;
+				}
+			}
 			return _velocity;
 			///
 
@@ -732,6 +781,105 @@ namespace CMF
 				momentum = tr.worldToLocalMatrix * _newMomentum;
 			else
 				momentum = _newMomentum;
+		}
+
+		//hàm dùng cho auto run
+
+
+		public void StartAutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex = 0, float speed = 3f)
+		{
+			// Dừng nếu đang chạy
+			if (autoMoveWithKeysRoutine != null)
+				StopCoroutine(autoMoveWithKeysRoutine);
+
+			autoMoveWithKeysRoutine = StartCoroutine(AutoMoveWithKeys(questKey, moveKeys, questIndex, speed));
+		}
+
+		private IEnumerator AutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex, float speed)
+		{
+			if (moveKeys == null || moveKeys.Length == 0)
+			{
+				Debug.LogWarning($"{name}: moveKeys rỗng!");
+				yield break;
+			}
+
+			QuestDataSO questData = KeyGameStateManager.Instance.GetQuestData(questKey);
+			if (questData == null)
+			{
+				Debug.LogError($"{name}: QuestData không tồn tại cho key {questKey}");
+				yield break;
+			}
+
+			if (questData.quests.Count <= questIndex)
+			{
+				Debug.LogError($"{name}: Quest index {questIndex} out of range!");
+				yield break;
+			}
+
+			var quest = questData.quests[questIndex];
+			var targetPositions = new List<(string key, Vector3 pos)>();
+
+			foreach (string key in moveKeys)
+			{
+				if (quest.targetPosition.ContainsKey(key))
+				{
+					targetPositions.Add((key, quest.targetPosition[key]));
+				}
+				else
+				{
+					Debug.LogWarning($"{name}: MoveKey '{key}' không tồn tại trong QuestData!");
+				}
+			}
+
+			if (targetPositions.Count == 0)
+			{
+				Debug.LogWarning($"{name}: Không có điểm hợp lệ để di chuyển!");
+				yield break;
+			}
+
+			// ========== BẬT CHẾ ĐỘ AUTO MOVE ==========
+			isAutoMoving = true;
+			autoMoveSpeed = speed;
+			// ==========================================
+
+			foreach (var (moveKey, targetPos) in targetPositions)
+			{
+				// Di chuyển đến điểm
+				while (true)
+				{
+					Vector3 dir = (targetPos - tr.position);
+					dir.y = 0;
+					float distance = dir.magnitude;
+
+					if (distance < 0.3f) // Đã đến gần đủ
+						break;
+
+					dir.Normalize();
+
+					// ========== CẬP NHẬT HƯỚNG DI CHUYỂN ==========
+					autoMoveDirection = dir;
+					// =============================================
+
+					// Update hướng nhìn
+					if (dir.sqrMagnitude > 0.001f)
+						tr.forward = Vector3.Lerp(tr.forward, dir, Time.deltaTime * 10f);
+
+					yield return new WaitForFixedUpdate();
+				}
+
+				Debug.Log($"[AutoMoveWithKeys] Đến {moveKey}");
+				OnReachMoveKey?.Invoke(moveKey);
+
+				yield return new WaitForSeconds(0.3f); // Delay nhỏ giữa các điểm
+			}
+			// ========== TẮT CHẾ ĐỘ AUTO MOVE ==========
+			isAutoMoving = false;
+			autoMoveDirection = Vector3.zero;
+			autoMoveSpeed = 0f;
+			_animator.SetBool("isWalking", false);
+			// ==========================================
+
+			autoMoveWithKeysRoutine = null;
 		}
 	}
 }
