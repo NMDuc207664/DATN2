@@ -5,7 +5,7 @@ namespace DATN2.Assets.Scripts.Logics.Interface.NPC
 {
     public interface IQdialogueService
     {
-        void StartDialogueAsync(QuestDataSO questDataSO, Action onComplete = null);
+        void StartDialogueAsync(QuestDataSO questDataSO, Action onComplete = null, int questIndex = 0);
         void NextDialogueAsync(QuestDataSO questDataSO, string nodeId, Action onComplete = null);
     }
 }

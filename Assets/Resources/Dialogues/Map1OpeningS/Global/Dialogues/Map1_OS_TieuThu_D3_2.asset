@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12aba092e64eb6a43a20018923b51153, type: 3}
-  m_Name: Map1_OS__Main_D2_1
+  m_Name: Map1_OS_TieuThu_D3_2
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Map1_OS__Main_D2_1
-  <Text>k__BackingField: " \u2026Ch\xFAng ta \u0111\u1EC1u bi\u1EBFn th\xE0nh th\xFA
-    nh\u1ED3i b\xF4ng r\u1ED3i."
+  <DialogueName>k__BackingField: Map1_OS_TieuThu_D3_2
+  <Text>k__BackingField: "M\xE0 th\xF4i k\u1EC7 \u0111i."
   <Choices>k__BackingField:
-  - <ChoiceID>k__BackingField: d34ccafc-30eb-45a7-8f16-1caa682f29bd
+  - <ChoiceID>k__BackingField: 684dbf1e-ede0-48a9-9a4f-390b9c1bbe99
     <Text>k__BackingField: New Choice
-    <NodeID>k__BackingField: 49c5459b-1b14-41d4-8692-ebefcc1485ce
+    <NodeID>k__BackingField: 06cccd30-6e83-4056-ad72-9d6e5650f398
     <ConnectedNodeIDs>k__BackingField:
-    - 3b90bcca-a707-44ac-9b46-8d2f444f909e
+    - bc4ecc84-5b8c-4416-ad5d-972a6fb3d4e4
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
   <ActiveKey>k__BackingField: []

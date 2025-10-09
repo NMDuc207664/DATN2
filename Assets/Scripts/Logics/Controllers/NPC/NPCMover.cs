@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DATN2.Assets.Scripts.Data;
 using DATN2.Assets.Scripts.Logics.Controllers;
 using UnityEngine;
@@ -8,7 +9,7 @@ using UnityEngine.AI;
 public class NPCMover : MonoBehaviour
 {
     [Header("Waypoint Settings")]
-    [SerializeField] private float stopDistance = 1.5f;
+    [SerializeField] public float stopDistance = 1.5f;
     [SerializeField] private float waitTimeAtPoint = 0.5f;
     [SerializeField] private float sampleRadius = 5f;
 
@@ -17,6 +18,9 @@ public class NPCMover : MonoBehaviour
     [SerializeField] private List<Transform> destinations_debug = new List<Transform>();
     [Header("Độ lệch sang trái hoặc phải (theo hướng di chuyển)")]
     [SerializeField] private float lateralOffset = 0f;
+
+    public System.Action<string> OnReachMoveKey;
+    private List<string> moveKeyRefs = new List<string>();
 
     private NavMeshAgent agent;
     private List<Vector3> destinations = new List<Vector3>();
@@ -96,26 +100,36 @@ public class NPCMover : MonoBehaviour
         }
 
         // Bắt đầu di chuyển
-        StartMovement(loadedDestinations);
+        StartMovement(loadedDestinations, moveKeys.ToList());
     }
 
     /// <summary>
     /// Bắt đầu di chuyển với list Vector3 đã có sẵn
     /// </summary>
-    private void StartMovement(List<Vector3> newDestinations)
+    // private void StartMovement(List<Vector3> newDestinations)
+    // {
+    //     // Dừng movement hiện tại nếu có
+    //     StopMovement();
+
+    //     // Set destinations mới
+    //     destinations = new List<Vector3>(newDestinations);
+    //     currentIndex = 0;
+
+    //     // Bắt đầu di chuyển
+    //     currentMovementCoroutine = StartCoroutine(MoveThroughPoints());
+    //     Debug.Log($"{name}: Started movement with {destinations.Count} destinations");
+    // }
+    private void StartMovement(List<Vector3> newDestinations, List<string> newMoveKeys = null)
     {
-        // Dừng movement hiện tại nếu có
         StopMovement();
 
-        // Set destinations mới
         destinations = new List<Vector3>(newDestinations);
+        moveKeyRefs = newMoveKeys ?? new List<string>(newDestinations.Count);
         currentIndex = 0;
 
-        // Bắt đầu di chuyển
         currentMovementCoroutine = StartCoroutine(MoveThroughPoints());
         Debug.Log($"{name}: Started movement with {destinations.Count} destinations");
     }
-
     public void StopMovement()
     {
         if (currentMovementCoroutine != null)
@@ -191,6 +205,12 @@ public class NPCMover : MonoBehaviour
                 if (hasReached)
                 {
                     Debug.Log($"{name}: ✓ Reached destination {currentIndex}");
+                    if (moveKeyRefs != null && currentIndex < moveKeyRefs.Count)
+                    {
+                        string reachedKey = moveKeyRefs[currentIndex];
+                        OnReachMoveKey?.Invoke(reachedKey);
+                    }
+
                     break;
                 }
 

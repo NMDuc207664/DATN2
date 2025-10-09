@@ -19,7 +19,8 @@ MonoBehaviour:
   - <ChoiceID>k__BackingField: 8b010dcf-b617-47e8-b562-66895e20f6d3
     <Text>k__BackingField: New Choice
     <NodeID>k__BackingField: 7a4694be-6328-43a3-ab8b-b8e4f0b8d622
-    <ConnectedNodeIDs>k__BackingField: []
+    <ConnectedNodeIDs>k__BackingField:
+    - 49c5459b-1b14-41d4-8692-ebefcc1485ce
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
   <ActiveKey>k__BackingField: []

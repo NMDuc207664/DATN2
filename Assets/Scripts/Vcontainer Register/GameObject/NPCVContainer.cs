@@ -1,48 +1,40 @@
-using DATN2.Assets.Scripts.Logics.Interface;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using DATN2.Assets.Scripts.Logics.Services;
-using DATN2.Assets.Scripts.Modals;
 using System.Collections.Generic;
-using CMF;
 using DATN2.Assets.Scripts.Logics.Interface.NPC;
 using DATN2.Assets.Scripts.Logics.Quest_Manager;
 using System.Linq;
-using DATN2.GraphviewEditor.Runtime;
 namespace DATN2.Assets.Scripts.VContainerRegister
 {
     public class NPCVContainer : LifetimeScope
     {
-        [SerializeField] private Transform _NPCATransform;
-        [SerializeField] private Transform _NPCBTransform;
-        [SerializeField] private Rigidbody _NPCArigidbody;
-        [SerializeField] private Rigidbody _NPCBrigidbody;
+        [SerializeField] private GameObject _NPCA;
+        [SerializeField] private GameObject _NPCB;
+        [SerializeField] private GameObject _Player;
         [SerializeField] private Animator _NPCAanimator;
         [SerializeField] private Animator _NPCBanimator;
+        [SerializeField] private Animator _Playeranimator;
         protected override void Configure(IContainerBuilder builder)
         {
 
-            if (_NPCATransform == null || _NPCBTransform == null || _NPCArigidbody == null || _NPCBrigidbody == null || _NPCAanimator == null || _NPCBanimator == null)
+            if (_NPCA == null || _NPCB == null || _NPCAanimator == null || _NPCBanimator == null)
             {
-                var dictTransform = new Dictionary<string, Transform>
+                var dictGameObject = new Dictionary<string, GameObject>
             {
-                { "NPCA_Transform", _NPCATransform },
-                { "NPCB_Transform", _NPCBTransform },
+                { "NPCA_GO", _NPCA },
+                { "NPCB_GO", _NPCB },
+                {"Player_GO", _Player },
             };
-                var dictRigidbody = new Dictionary<string, Rigidbody>
-            {
-                { "NPCA_Rigidbody", _NPCArigidbody },
-                { "NPCB_Rigidbody", _NPCBrigidbody },
-            };
+
                 var dictAnimator = new Dictionary<string, Animator>
             {
                 { "NPCA_Animator", _NPCAanimator },
                 { "NPCB_Animator", _NPCBanimator },
+                {"Player_Animator", _Playeranimator },
             };
 
-                builder.RegisterInstance(dictTransform);
-                builder.RegisterInstance(dictRigidbody);
+                builder.RegisterInstance(dictGameObject);
                 builder.RegisterInstance(dictAnimator);
             }
 

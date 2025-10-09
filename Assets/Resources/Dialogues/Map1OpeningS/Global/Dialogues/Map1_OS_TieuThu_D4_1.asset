@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12aba092e64eb6a43a20018923b51153, type: 3}
-  m_Name: Map1_OS__Main_D2_1
+  m_Name: Map1_OS_TieuThu_D4_1
   m_EditorClassIdentifier: 
-  <DialogueName>k__BackingField: Map1_OS__Main_D2_1
-  <Text>k__BackingField: " \u2026Ch\xFAng ta \u0111\u1EC1u bi\u1EBFn th\xE0nh th\xFA
-    nh\u1ED3i b\xF4ng r\u1ED3i."
+  <DialogueName>k__BackingField: Map1_OS_TieuThu_D4_1
+  <Text>k__BackingField: "C\xE1c anh c\xF3 ngh\u0129 \u1EDF b\xEAn ngo\xE0i ng\u01B0\u1EDDi
+    ta \u0111ang nh\xECn ch\xFAng ta qua m\u1ED9t chi\u1EBFc m\xE0n h\xECnh tivi
+    kh\xF4ng, ki\u1EC3u gi\u1ED1ng trong m\u1ED9t b\u1ED9 phim vi\u1EC5n t\u01B0\u1EDFng
+    \u1EA5y. "
   <Choices>k__BackingField:
-  - <ChoiceID>k__BackingField: d34ccafc-30eb-45a7-8f16-1caa682f29bd
+  - <ChoiceID>k__BackingField: 7bfdf2e1-8886-4324-a809-373966c7d69a
     <Text>k__BackingField: New Choice
-    <NodeID>k__BackingField: 49c5459b-1b14-41d4-8692-ebefcc1485ce
+    <NodeID>k__BackingField: 215a0792-59af-42a3-a6bc-ad89fe509929
     <ConnectedNodeIDs>k__BackingField:
-    - 3b90bcca-a707-44ac-9b46-8d2f444f909e
+    - a3be7171-d7e3-4fe3-bdf0-3bd28f354b09
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
   <ActiveKey>k__BackingField: []
-  <IsStartingDialogue>k__BackingField: 0
+  <IsStartingDialogue>k__BackingField: 1
   <HasConditions>k__BackingField: 0
   <HasTalked>k__BackingField: 0

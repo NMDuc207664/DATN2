@@ -46,3 +46,23 @@ MonoBehaviour:
     dialogues: {fileID: 11400000, guid: fd93acccd7559f24bab1f12915391b64, type: 2}
     HasDefaultDialogue: 0
     defaultDialogue: {fileID: 0}
+  - currentNPCPosition:
+      list:
+      - Key: TT
+        Value: {x: 309.3405, y: 5, z: 476}
+    targetPosition:
+      list: []
+    triggerType: 1
+    dialogues: {fileID: 11400000, guid: 90992ff60b87c7e40a730af6a81e3fe8, type: 2}
+    HasDefaultDialogue: 0
+    defaultDialogue: {fileID: 0}
+  - currentNPCPosition:
+      list:
+      - Key: TT
+        Value: {x: 309.3405, y: 5, z: 476}
+    targetPosition:
+      list: []
+    triggerType: 1
+    dialogues: {fileID: 11400000, guid: a710825e4b3d458408a50c242d8722a0, type: 2}
+    HasDefaultDialogue: 0
+    defaultDialogue: {fileID: 0}
