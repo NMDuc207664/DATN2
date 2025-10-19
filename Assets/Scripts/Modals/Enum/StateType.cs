@@ -4,10 +4,9 @@ namespace DATN2.Assets.Scripts.Modals.Enum
     {
         Ingame = 1,
         Pause = 2,
-        OnInteractDialogue = 3,
-        OnMovieDialogue = 4,
         OnMenu = 5,
         OnSave = 6,
         OnLoad = 7,
+
     }
 }

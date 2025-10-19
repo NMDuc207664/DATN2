@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Data;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace DATN2.Assets.Scripts.Logics.Controllers
@@ -14,6 +15,15 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [SerializeField] public List<string> passedKeysUnactive = new List<string>();
 
         public SerializableDictionary<string, QuestDataSO> allRegisterKeys = new SerializableDictionary<string, QuestDataSO>();
+
+        [Header("GameState")]
+        public SerializableDictionary<string, InGameActionType> gameState = new SerializableDictionary<string, InGameActionType>();
+        public bool Camera_1 = true;
+        public bool Camera_2 = false;
+        public bool LockMouseInput = false;
+        public bool LimitMouseInput = false;
+        public bool LookAtTieuThu = false;
+        public bool LookAtGaGiangHo = false;
         void Awake()
         {
             if (Instance == null)
@@ -27,15 +37,18 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
                 Destroy(gameObject);
             }
         }
+        void Update()
+        {
+
+        }
         public void RegisterAllKeysForScene(string sceneName)
         {
             // Đường dẫn Resources/Data/SceneName/
             string path = $"Data/{sceneName}";
-            Debug.Log($"[KeyGameStateManager] Loading QuestDataSO from path: Resources/{path}");
 
             QuestDataSO[] quests = Resources.LoadAll<QuestDataSO>(path);
 
-            Debug.Log($"[KeyGameStateManager] Found {quests.Length} QuestDataSO in {path}");
+
 
             foreach (var quest in quests)
             {
@@ -73,7 +86,6 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
             {
                 currentKeysActive.Remove(key);
                 passedKeysUnactive.Add(key);
-                Debug.Log($"Passed key: {key}");
             }
         }
 
@@ -88,6 +100,49 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             RegisterAllKeysForScene(scene.name);
+        }
+
+
+        public void AddOrChangeGameState(InGameActionType newState)
+        {
+            string key = newState.ToString();
+
+            if (gameState.Count > 0)
+            {
+                gameState.Clear();
+            }
+
+            gameState.Add(key, newState);
+        }
+        public void SetCamera1Active(bool active)
+        {
+            Camera_1 = active;
+            if (active)
+                Camera_2 = false;
+        }
+
+        public void SetCamera2Active(bool active)
+        {
+            Camera_2 = active;
+            if (active)
+                Camera_1 = false;
+        }
+
+        public bool IsInState(InGameActionType state)
+        {
+            return gameState.ContainsKey(state.ToString()) && gameState[state.ToString()] == state;
+        }
+        public void SetLockMouseInput(bool lockInput)
+        {
+            LockMouseInput = lockInput;
+            if (lockInput)
+                LimitMouseInput = false;
+        }
+        public void SetLimitMouseInput(bool limitInput)
+        {
+            LimitMouseInput = limitInput;
+            if (limitInput)
+                LockMouseInput = false;
         }
     }
 }

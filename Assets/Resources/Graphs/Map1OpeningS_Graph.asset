@@ -231,7 +231,8 @@ MonoBehaviour:
     - <ChoiceID>k__BackingField: 2702f83e-2023-446a-9a62-7858091d2595
       <Text>k__BackingField: New Choice
       <NodeID>k__BackingField: eef735a5-2715-44f8-a43f-7ed2e23a2dab
-      <ConnectedNodeIDs>k__BackingField: []
+      <ConnectedNodeIDs>k__BackingField:
+      - cecd6cb4-f3b8-4ca0-8d8d-35fa781b71f8
     <Conditions>k__BackingField: []
     <GroupID>k__BackingField: 
     <Group>k__BackingField:
@@ -288,7 +289,7 @@ MonoBehaviour:
     <ActiveKey>k__BackingField: []
     <HasConditions>k__BackingField: 0
     <Position>k__BackingField: {x: -446.4, y: 1000.8}
-    <IsStartingNode>k__BackingField: 1
+    <IsStartingNode>k__BackingField: 0
     <HasTalked>k__BackingField: 0
   - <NodeID>k__BackingField: ef9d92c6-b6c6-4bcb-9954-507c69d1db20
     <Name>k__BackingField: Map1_OS_Main_D3_1

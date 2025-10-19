@@ -23,6 +23,6 @@ MonoBehaviour:
   <Conditions>k__BackingField: []
   <DialogueType>k__BackingField: 0
   <ActiveKey>k__BackingField: []
-  <IsStartingDialogue>k__BackingField: 1
+  <IsStartingDialogue>k__BackingField: 0
   <HasConditions>k__BackingField: 0
   <HasTalked>k__BackingField: 0

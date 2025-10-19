@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Data;
 using DATN2.Assets.Scripts.Logics.Controllers;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
 using UnityEngine.AI;
 using VContainer;
@@ -80,13 +81,13 @@ namespace CMF
 		[SerializeField] private float navMeshSampleRadius = 1.0f;
 
 		[Header("Auto Move Settings")]
-		private bool isAutoMoving = false;
+		public bool isAutoMoving = false;
 		private Vector3 autoMoveDirection = Vector3.zero;
 		private float autoMoveSpeed = 0f;
 		private Coroutine autoMoveWithKeysRoutine;
 		public System.Action<string> OnReachMoveKey;
 
-
+		public bool allowJumpWithMovement = true;
 
 
 
@@ -175,7 +176,9 @@ namespace CMF
 			//Calculate movement velocity;
 			Vector3 _velocity = Vector3.zero;
 			if (currentControllerState == ControllerState.Grounded)
+			{
 				_velocity = CalculateMovementVelocity();
+			}
 			// if (cameraTransform != null)
 			// {
 			// 	Vector3 camForward = cameraTransform.forward;
@@ -222,8 +225,8 @@ namespace CMF
 				return autoMoveDirection; // Return hướng tự động
 			}
 			//If no character input script is attached to this object, return;
-			if (characterInput == null)
-				return Vector3.zero;
+			// if (characterInput == null || InGameControlStateManager.Instance.CurrentState != InGameActionType.None)
+			// 	return Vector3.zero;
 
 			Vector3 _velocity = Vector3.zero;
 
@@ -786,7 +789,7 @@ namespace CMF
 		//hàm dùng cho auto run
 
 
-		public void StartAutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex = 0, float speed = 3f)
+		public void StartAutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex = 0, float speed = 3f, bool needMovable = false)
 		{
 			// Dừng nếu đang chạy
 			if (autoMoveWithKeysRoutine != null)
@@ -795,18 +798,16 @@ namespace CMF
 			autoMoveWithKeysRoutine = StartCoroutine(AutoMoveWithKeys(questKey, moveKeys, questIndex, speed));
 		}
 
-		private IEnumerator AutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex, float speed)
+		private IEnumerator AutoMoveWithKeys(string questKey, string[] moveKeys, int questIndex, float speed, bool needMovable = false)
 		{
 			if (moveKeys == null || moveKeys.Length == 0)
 			{
-				Debug.LogWarning($"{name}: moveKeys rỗng!");
 				yield break;
 			}
 
 			QuestDataSO questData = KeyGameStateManager.Instance.GetQuestData(questKey);
 			if (questData == null)
 			{
-				Debug.LogError($"{name}: QuestData không tồn tại cho key {questKey}");
 				yield break;
 			}
 
@@ -839,7 +840,8 @@ namespace CMF
 
 			// ========== BẬT CHẾ ĐỘ AUTO MOVE ==========
 			isAutoMoving = true;
-			autoMoveSpeed = speed;
+			float oldSpeed = movementSpeed;
+			movementSpeed = speed;
 			// ==========================================
 
 			foreach (var (moveKey, targetPos) in targetPositions)
@@ -861,17 +863,22 @@ namespace CMF
 					// =============================================
 
 					// Update hướng nhìn
-					if (dir.sqrMagnitude > 0.001f)
-						tr.forward = Vector3.Lerp(tr.forward, dir, Time.deltaTime * 10f);
+					// if (dir.sqrMagnitude > 0.001f)
+					// 	tr.forward = Vector3.Lerp(tr.forward, dir, Time.deltaTime * 10f);
 
 					yield return new WaitForFixedUpdate();
 				}
 
-				Debug.Log($"[AutoMoveWithKeys] Đến {moveKey}");
 				OnReachMoveKey?.Invoke(moveKey);
 
 				yield return new WaitForSeconds(0.3f); // Delay nhỏ giữa các điểm
 			}
+			// if (SimpleCinemachineLook.Instance != null)
+			// {
+			// 	SimpleCinemachineLook.Instance.ResetYawOffset();
+			// 	// Đợi 1 frame để camera sync
+			// 	yield return null;
+			// }
 			// ========== TẮT CHẾ ĐỘ AUTO MOVE ==========
 			isAutoMoving = false;
 			autoMoveDirection = Vector3.zero;
@@ -879,7 +886,10 @@ namespace CMF
 			_animator.SetBool("isWalking", false);
 			// ==========================================
 
+			KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None); // Clear state after auto-movement completes
 			autoMoveWithKeysRoutine = null;
 		}
+
+
 	}
 }

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b36b7fb4e1b37649a67e4b4d3d798bf, type: 3}
+  m_Name: Map_1_OpeningS_Q2
+  m_EditorClassIdentifier: 
+  Key: Map_1_OpeningS_Q2
+  quests:
+  - currentNPCPosition:
+      list: []
+    targetPosition:
+      list: []
+    triggerType: 0
+    dialogues: {fileID: 11400000, guid: a710825e4b3d458408a50c242d8722a0, type: 2}
+    HasDefaultDialogue: 1
+    defaultDialogue: {fileID: 11400000, guid: 14fc4f496a52f2943a1ef4915c23515e, type: 2}
+  - currentNPCPosition:
+      list: []
+    targetPosition:
+      list: []
+    triggerType: 0
+    dialogues: {fileID: 0}
+    HasDefaultDialogue: 1
+    defaultDialogue: {fileID: 11400000, guid: 63a96da015c345a4493f6e6456e07b7b, type: 2}

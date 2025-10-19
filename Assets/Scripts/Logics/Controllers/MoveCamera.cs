@@ -1,43 +1,84 @@
+// using Cinemachine;
+// using UnityEngine;
+
+// public class MoveCamera : MonoBehaviour
+// {
+//     public Transform cameraPosition;
+//     public Transform playerTransform;
+//     public Camera playerCamera;
+//     public Vector3 cameraOffset;
+
+//     // Smooth follow parameters
+//     [SerializeField] private float followSmoothness = 10f;
+//     [SerializeField] private bool useSmoothing = true;
+
+//     [Header("Virtual Camera")]
+//     // [SerializeField] private CinemachineVirtualCamera virtualCamera;
+//     // [SerializeField] private bool useVirtualCamera = true;
+//     private Vector3 velocity = Vector3.zero;
+//     void Start()
+//     {
+//         if (cameraOffset == Vector3.zero)
+//         {
+//             cameraOffset = new Vector3(0f, 0f, -1f);
+//         }
+//         if (playerCamera != null)
+//         {
+//             playerCamera.transform.position = new Vector3(0f, 0f, 0f);
+//         }
+//     }
+
+
+
+
+//     void Update()
+//     {
+//         if (cameraPosition == null) return;
+
+//         Vector3 desiredPosition = cameraPosition.position + playerTransform.TransformDirection(cameraOffset);
+//         float smoothTime = 1f / followSmoothness; // followSmoothness = độ nhạy (càng cao càng nhanh)
+
+//         if (useSmoothing)
+//         {
+//             transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
+
+//             // if (!useVirtualCamera && playerCamera != null)
+//             // {
+//             //     transform.rotation = Quaternion.Slerp(transform.rotation, playerCamera.transform.rotation, followSmoothness * Time.deltaTime);
+//             // }
+//         }
+//         else
+//         {
+//             transform.position = desiredPosition;
+//             // if (!useVirtualCamera && playerCamera != null)
+//             //     transform.rotation = playerCamera.transform.rotation;
+//         }
+//     }
+// }
+
+
 using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
 {
     public Transform cameraPosition;
     public Transform playerTransform;
-    public Camera playerCamera;
-    public Vector3 cameraOffset;
-
-    // Smooth follow parameters
+    public Vector3 cameraOffset = new Vector3(0f, 0f, -1f);
     [SerializeField] private float followSmoothness = 10f;
     [SerializeField] private bool useSmoothing = true;
 
-    void Start()
-    {
-        if (cameraOffset == Vector3.zero)
-        {
-            cameraOffset = new Vector3(0f, 0f, -1f);
-        }
-    }
+    private Vector3 velocity;
 
-    // Sử dụng LateUpdate để đảm bảo camera được cập nhật sau tất cả movement
-    void Update()
+    private void LateUpdate()
     {
-        // Tính toán vị trí mong muốn
-        Vector3 desiredPosition = cameraPosition.position + playerTransform.TransformDirection(cameraOffset);
+        if (cameraPosition == null) return;
+
+        Vector3 desiredPos = cameraPosition.position + playerTransform.TransformDirection(cameraOffset);
+        float smoothTime = 1f / followSmoothness;
 
         if (useSmoothing)
-        {
-            // Smooth camera movement
-            transform.position = Vector3.Lerp(transform.position, desiredPosition, followSmoothness * Time.deltaTime);
-
-            // Smooth rotation sync
-            transform.rotation = Quaternion.Slerp(transform.rotation, playerCamera.transform.rotation, followSmoothness * Time.deltaTime);
-        }
+            transform.position = Vector3.SmoothDamp(transform.position, desiredPos, ref velocity, smoothTime);
         else
-        {
-            // Direct positioning (có thể gây giật)
-            transform.position = desiredPosition;
-            transform.rotation = playerCamera.transform.rotation;
-        }
+            transform.position = desiredPos;
     }
 }

@@ -1,45 +1,5 @@
-// using System.Collections.Generic;
-// using DATN2.Assets.Scripts.Logics.Interface;
-// using UnityEngine;
-
-// public class CameraService : ICameraService
-// {
-//     private float _xRotation = 0f;
-//     public Transform _playerTransform;   // thân nhân vật (để xoay ngang)
-//     public Camera _playerCamera;    // mắt (để xoay dọc)
-//     private readonly GameObject _player;
-//     public CameraService(Transform playerTransform, Camera playerCamera, Dictionary<string, GameObject> objects)
-//     {
-//         _playerTransform = playerTransform;
-//         _playerCamera = playerCamera;
-//         _player = objects["Player"];
-
-//     }
-//     public void LockCursor(bool isLocked)
-//     {
-//         Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
-//         Cursor.visible = !isLocked;
-//     }
-
-
-//     public void RotateCamera(float mouseX, float mouseY, float sensitivity)
-//     {
-//         // xử lý pitch (xoay dọc)
-//         _xRotation -= mouseY * sensitivity * Time.deltaTime;
-//         _xRotation = Mathf.Clamp(_xRotation, -45f, 60f);
-//         _playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-
-//         // xử lý yaw (xoay ngang)
-//         _playerTransform.Rotate(Vector3.up * mouseX * sensitivity * Time.deltaTime);
-//         //Transform head = _player.transform.Find("root/torso/head");
-//         // xử lý yaw (xoay ngang) cho player body
-//         //head.Rotate(Vector3.up * mouseX * sensitivity * Time.deltaTime);
-//         //xử lý pitch (xoay dọc) cho player head
-//         //head.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-//     }
-// }
-
 using System.Collections.Generic;
+using Cinemachine;
 using DATN2.Assets.Scripts.Logics.Interface;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -50,6 +10,7 @@ public class CameraService : ICameraService
     private float _yRotation = 0f;
     public Transform _playerTransform; // Root (xoay yaw)
     public Camera _playerCamera; // Camera (xoay pitch)
+    private readonly CinemachineVirtualCamera _vcam;
     private readonly GameObject _player;
     private readonly Rigidbody _rigidbody; // Inject thêm Rigidbody từ container
 
@@ -58,12 +19,13 @@ public class CameraService : ICameraService
     private float _targetXRotation = 0f;
     private float _targetYRotation = 0f;
 
-    public CameraService(Dictionary<string, Transform> transforms, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody)
+    public CameraService(Dictionary<string, Transform> transforms, Camera playerCamera, Dictionary<string, GameObject> objects, Rigidbody rigidbody, Dictionary<string, CinemachineVirtualCamera> cam)
     {
         _playerTransform = transforms["PlayerTransform"];
         _playerCamera = playerCamera;
         _player = objects["Player"];
         _rigidbody = rigidbody;
+        _vcam = cam["Player_camera#1"];
         //RegisterCollisionEvents();
         Vector3 currentRotation = _playerCamera.transform.eulerAngles;
         _xRotation = _targetXRotation = currentRotation.x;
@@ -120,6 +82,7 @@ public class CameraService : ICameraService
         Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !isLocked;
     }
+
 }
 public class CollisionDetector : MonoBehaviour
 {

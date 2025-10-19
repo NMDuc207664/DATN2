@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,8 @@ public class NPCMover : MonoBehaviour
 
     public bool IsMoving => isMoving;
 
+    public event Action OnMoveKeysComplete;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -47,12 +50,6 @@ public class NPCMover : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Nhận mảng keys và questKey, tự load destinations từ QuestData rồi bắt đầu di chuyển
-    /// </summary>
-    /// <param name="questKey">Key của QuestDataSO (vd: "Map_1_OpeningS_Q1")</param>
-    /// <param name="moveKeys">Mảng các key để lấy vị trí (vd: ["NPC(s)_Move_Point_1", "NPC(s)_Move_Point_2"])</param>
-    /// <param name="questIndex">Index của quest trong QuestDataSO (mặc định = 0)</param>
     public void StartMovementWithKeys(string questKey, string[] moveKeys, int questIndex = 0)
     {
         if (string.IsNullOrEmpty(questKey) || moveKeys == null || moveKeys.Length == 0)
@@ -227,6 +224,7 @@ public class NPCMover : MonoBehaviour
         agent.isStopped = true;
         currentMovementCoroutine = null;
         Debug.Log($"{name}: ★ Completed all destinations ★");
+        OnMoveKeysComplete?.Invoke();
     }
 
     private IEnumerator MoveThroughPoints_Debug_Mode()

@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _raycastDetector: {fileID: 0}
+  _arm: {fileID: 0}
   groundCheck: {fileID: 2679748038566056063}
   groundDistance: 0.2
   groundMask:
@@ -133,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5e44db14072ea4c964da3b192181c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 8.4
+  movementSpeed: 7
   airControlRate: 2
   jumpSpeed: 7
   jumpDuration: 0.2
@@ -145,6 +146,8 @@ MonoBehaviour:
   useLocalMomentum: 0
   slideSpeedMultiplier: 4
   slopeResistance: 11
+  navMeshOnly: 1
+  navMeshSampleRadius: 1.5
   cameraTransform: {fileID: 0}
 --- !u!114 &817380492902034051
 MonoBehaviour:
@@ -158,8 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98ace8715c2a184ca85247b18eb0853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stepHeightRatio: 0.3
-  colliderHeight: 2.85
+  stepHeightRatio: 0.403
+  colliderHeight: 2.16
   colliderThickness: 1
   colliderOffset: {x: 0, y: 0.5, z: 0}
   sensorType: 0
@@ -188,9 +191,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.9949999
+  m_Height: 1.28952
   m_Direction: 1
-  m_Center: {x: 0, y: 1.8525, z: 0}
+  m_Center: {x: 0, y: 1.5152401, z: 0}
 --- !u!114 &4176727466682242127
 MonoBehaviour:
   m_ObjectHideFlags: 0

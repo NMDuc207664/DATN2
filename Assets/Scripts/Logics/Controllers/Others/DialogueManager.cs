@@ -16,6 +16,13 @@ public class DialogueManager : MonoBehaviour
     private bool isDialogueActive = false;
     private QuestDataSO currentQuestData; // Lưu để reuse khi next
     private Action onDialogueComplete; // Callback khi hết
+    private Coroutine autoAdvanceCoroutine; // To manage auto-advance
+    private Coroutine typingCoroutine;
+    public bool isTyping { get; private set; } = false;
+    [Header("Dialogue Settings")]
+    public float delayBetweenSentences = 1f;
+    public float typingSpeed = 0.05f; // thời gian giữa mỗi ký tự
+    public bool skipTypingOnKey = true; // bấm E để skip typing
 
     [Inject]
     private readonly IQdialogueService _questDialogueService;
@@ -41,7 +48,14 @@ public class DialogueManager : MonoBehaviour
     {
         if (isDialogueActive && Input.GetKeyDown(KeyCode.E))
         {
-            ProceedNextDialogue();
+            if (isTyping)
+            {
+                SkipTyping();
+            }
+            else
+            {
+                ProceedNextDialogue();
+            }
         }
     }
 
@@ -49,11 +63,12 @@ public class DialogueManager : MonoBehaviour
     {
         currentQuestData = questData;
         onDialogueComplete = onComplete;
-        UpdateDialogue(initialText);
-        UpdateNextNodeID(initialNextIds);
+
         isDialogueActive = true;
         dialogueText.gameObject.SetActive(true); // Show UI
-        dialogueText.text = dialogue; // Display text
+        UpdateDialogue(initialText);
+        UpdateNextNodeID(initialNextIds);
+
     }
 
     public void UpdateNextNodeID(List<string> nodeIDs)
@@ -66,36 +81,121 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
     public void UpdateDialogue(string text)
     {
         dialogue = text;
-        dialogueText.text = text; // Update UI text
-        Debug.Log($"[DialogueManager] Dialogue set: {text}");
+
+        // Dừng tất cả coroutines cũ
+        if (typingCoroutine != null)
+            StopCoroutine(typingCoroutine);
+        if (autoAdvanceCoroutine != null)
+            StopCoroutine(autoAdvanceCoroutine);
+
+        // Bắt đầu hiệu ứng gõ mới
+        typingCoroutine = StartCoroutine(TypeSentence(dialogue));
+    }
+    private void SkipTyping()
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+
+        isTyping = false;
+        dialogueText.text = dialogue; // Show full text immediately
+
+        // Bắt đầu đếm auto-advance sau khi skip
+        StartAutoAdvance();
     }
 
     private void ProceedNextDialogue()
     {
+        // Dừng auto-advance nếu đang chạy
+        if (autoAdvanceCoroutine != null)
+        {
+            StopCoroutine(autoAdvanceCoroutine);
+            autoAdvanceCoroutine = null;
+        }
+
         if (nextNodeID.Count == 0)
         {
             // Hết dialogue -> đóng
-            isDialogueActive = false;
-            dialogueText.gameObject.SetActive(false); // Hide UI
-            dialogue = null;
-            onDialogueComplete?.Invoke(); // Call PassKey hoặc callback
-            currentQuestData = null;
-            onDialogueComplete = null;
+            EndDialogue();
             return;
         }
 
-        // Lấy nextId (giả sử single, nếu multi cần chọn)
+        // Lấy nextId
         string nextId = nextNodeID[0];
         nextNodeID.RemoveAt(0);
 
-        // Gọi next với currentQuestData và nextId
+        // Load dialogue tiếp theo
         _questDialogueService.NextDialogueAsync(currentQuestData, nextId, () =>
         {
             Debug.Log("[DialogueManager] Next dialogue loaded.");
-            dialogueText.text = dialogue; // Ensure update UI
+            // Không gọi AutoAdvance ở đây, để TypeSentence tự gọi khi xong
         });
+    }
+
+    private void EndDialogue()
+    {
+        isDialogueActive = false;
+        isTyping = false;
+        dialogueText.gameObject.SetActive(false);
+        dialogue = null;
+
+        // Dừng tất cả coroutines
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+        if (autoAdvanceCoroutine != null)
+        {
+            StopCoroutine(autoAdvanceCoroutine);
+            autoAdvanceCoroutine = null;
+        }
+
+        onDialogueComplete?.Invoke();
+        currentQuestData = null;
+        onDialogueComplete = null;
+    }
+
+    private void StartAutoAdvance()
+    {
+        if (autoAdvanceCoroutine != null)
+            StopCoroutine(autoAdvanceCoroutine);
+
+        autoAdvanceCoroutine = StartCoroutine(AutoAdvanceDialogue());
+    }
+
+    private IEnumerator AutoAdvanceDialogue()
+    {
+        yield return new WaitForSeconds(delayBetweenSentences);
+
+        if (isDialogueActive && !isTyping) // Chỉ advance nếu không đang typing
+        {
+            ProceedNextDialogue();
+        }
+    }
+
+    private IEnumerator TypeSentence(string sentence)
+    {
+        isTyping = true;
+        dialogueText.text = "";
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            dialogueText.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        // Typing xong
+        isTyping = false;
+        typingCoroutine = null;
+
+        // Bắt đầu đếm auto-advance
+        StartAutoAdvance();
     }
 }

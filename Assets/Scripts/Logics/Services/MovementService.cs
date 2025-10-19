@@ -1,7 +1,10 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using DATN2.Assets.Scripts.Logics.Controllers;
 using DATN2.Assets.Scripts.Logics.Interface;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
 
 namespace DATN2.Assets.Scripts.Logics.Services
@@ -10,6 +13,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
     {
         private readonly Transform _playerTransform;
         private readonly Rigidbody _rigidbody;
+        private readonly GameObject _arm;
         private readonly Animator _animator;
         private readonly float _groundDrag = 4f;
         private float _maxStepHeight;
@@ -17,12 +21,12 @@ namespace DATN2.Assets.Scripts.Logics.Services
         private LayerMask _stepLayerMask;
         // private readonly float _jumpForce = 12f;
 
-        public MovementService(Dictionary<string, Transform> transforms, Rigidbody rigidbody, Animator animator)
+        public MovementService(Dictionary<string, Transform> transforms, Rigidbody rigidbody, Animator animator, Dictionary<string, GameObject> arm)
         {
             _playerTransform = transforms["PlayerTransform"];
             _rigidbody = rigidbody;
             _animator = animator;
-
+            _arm = arm["Player_arm"];
             // Configure Rigidbody for better physics-based movement
             _rigidbody.drag = _groundDrag;
             _rigidbody.freezeRotation = true; // Prevent physics from rotating the player
@@ -79,8 +83,11 @@ namespace DATN2.Assets.Scripts.Logics.Services
             }
         }
 
-        public void PickUp()
+        public async void PickUp()
         {
+            KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.Interact);
+            SimpleCinemachineLook.Instance.DisableMouseInput();
+            _arm.SetActive(true);
             // Dừng di chuyển ngang (giữ y velocity cho gravity)
             Vector3 velocity = _rigidbody.velocity;
             velocity.x = 0f;
@@ -90,9 +97,55 @@ namespace DATN2.Assets.Scripts.Logics.Services
             // Tắt walking state để vào Idle
             _animator.SetBool("isWalking", false);
 
-            // Kích hoạt animation Interact
-            _animator.SetTrigger("isPickUp");
 
+            // Kích hoạt animation Interact
+            await SwingArmAsync(_arm);
+
+            _arm.SetActive(false);
+            SimpleCinemachineLook.Instance.EnableMouseInput();
+            KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None);
+
+        }
+        private async Task SwingArmAsync(GameObject arm)
+        {
+            Quaternion startRot = arm.transform.localRotation;
+            Quaternion upRot = Quaternion.Euler(-90f, 0f, -30f);   // tay vung lên
+            Quaternion downRot = Quaternion.Euler(40f, 0f, 0f);   // tay vung xuống
+
+            float duration = 0.30f; // thời gian cho mỗi pha
+            float elapsed;
+
+            // Vung lên
+            elapsed = 0f;
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                arm.transform.localRotation = Quaternion.Slerp(startRot, upRot, t);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+
+            await Task.Delay(100); // giữ 0.1s
+
+            // Vung xuống
+            elapsed = 0f;
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                arm.transform.localRotation = Quaternion.Slerp(upRot, downRot, t);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
+
+            // Trả lại vị trí ban đầu
+            elapsed = 0f;
+            while (elapsed < duration)
+            {
+                float t = elapsed / duration;
+                arm.transform.localRotation = Quaternion.Slerp(downRot, startRot, t);
+                elapsed += Time.deltaTime;
+                await Task.Yield();
+            }
         }
 
         private bool CanStepDown(Vector3 moveDirection)

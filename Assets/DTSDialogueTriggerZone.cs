@@ -1,37 +1,35 @@
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Logics.Controllers;
+using DATN2.Assets.Scripts.Logics.Interface.NPC;
 using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
-using TMPro;
+using VContainer;
 
 namespace DATN2.GraphviewEditor.Runtime
 {
-    [RequireComponent(typeof(Collider))]
     public class DTSDialogueTriggerZone : MonoBehaviour
     {
         [Header("Trigger Settings")]
         [SerializeField] private string keyToTrigger = "Map_1_OpeningS_Q1";
         [SerializeField] private string mapKey = "Map1";
         [SerializeField] private float interactDistance = 5f;
-
-        [Header("Prompt Settings")]
-        [SerializeField] private Transform promptCanvas; // assign the World Space Canvas here
-        [SerializeField] private TextMeshProUGUI promptText; // assign TMP text from Canvas
-        [SerializeField] private string interactPrompt = "E: Interact";
-        [SerializeField] private Vector3 promptOffset = new Vector3(0f, 2f, 0f);
-        [Header("Screen-style Settings")]
-        [Tooltip("When true the prompt will scale with distance so it appears a constant size on the screen")]
-        [SerializeField] private bool scaleWithDistance = true;
-        [Tooltip("Multiplier used when scaling the prompt with distance. Tweak for desired screen size.")]
-        [SerializeField] private float scaleFactor = 0.12f;
-        [SerializeField] private float minScale = 0.05f;
-        [SerializeField] private float maxScale = 2f;
-        [Tooltip("If true, the prompt will only rotate around Y so it stays upright (good for pitched cameras)")]
-        [SerializeField] private bool billboardYOnly = true;
+        [SerializeField] public string interactPrompt = "E: Interact";
 
         private Dictionary<string, IQuestService> _questControllers;
+        private IQdialogueService _dialogueService;
         private Transform _player;
         private bool _inRange;
+        public bool autoActivate = false;
+        private bool _hasActivated = false;
+        private DefaultDialogue _defaultDialogue;
+        private BoxCollider _col;
+        private bool _isDialogueRunning = false;
+
+        void Awake()
+        {
+            _col = GetComponent<BoxCollider>();
+            _defaultDialogue = GetComponent<DefaultDialogue>();
+        }
 
         public void SetQuestControllers(Dictionary<string, IQuestService> questControllers)
         {
@@ -39,84 +37,55 @@ namespace DATN2.GraphviewEditor.Runtime
             Debug.Log($"[DTSTriggerZone:{gameObject.name}] QuestControllers injected successfully");
         }
 
-        void Start()
+        public void SetDialogueService(IQdialogueService dialogueService)
         {
-            if (promptText != null)
-            {
-                // center the prompt text on the canvas and enable auto-sizing so it looks like UI
-                promptText.alignment = TextAlignmentOptions.Center;
-                promptText.enableAutoSizing = true;
-                promptText.text = interactPrompt;
-            }
-
-            if (promptCanvas != null)
-            {
-                // ensure canvas is world-space so it can be positioned in the scene like a screen
-                var canvas = promptCanvas.GetComponentInParent<UnityEngine.Canvas>();
-                if (canvas != null)
-                {
-                    canvas.renderMode = UnityEngine.RenderMode.WorldSpace;
-                }
-
-                // hide initially and place above the NPC
-                promptCanvas.gameObject.SetActive(false);
-                promptCanvas.position = transform.position + promptOffset;
-
-                // initial scale so the prompt looks like a ui element
-                if (scaleWithDistance && Camera.main != null)
-                {
-                    var dist = Vector3.Distance(Camera.main.transform.position, promptCanvas.position);
-                    var s = Mathf.Clamp(dist * scaleFactor, minScale, maxScale);
-                    promptCanvas.localScale = Vector3.one * s;
-                }
-            }
+            _dialogueService = dialogueService;
+            //_dialogueService.OnDialogueComplete += OnDialogueComplete;
+            // Debug.Log($"[DTSTriggerZone:{gameObject.name}] DialogueService injected successfully");
         }
 
-        void Update()
+        private void OnTriggerEnter(Collider other)
         {
-            if (_player == null)
+            if (!other.CompareTag("Player")) return;
+
+            if (autoActivate && !_hasActivated)
             {
-                var pgo = GameObject.FindWithTag("Player");
-                if (pgo != null) _player = pgo.transform;
-            }
-
-            if (_player == null) return;
-
-            var dist = Vector3.Distance(_player.position, transform.position);
-            _inRange = dist <= interactDistance;
-
-            if (promptCanvas != null)
-            {
-                // keep the prompt positioned above the NPC so it overlaps the NPC
-                promptCanvas.position = transform.position + promptOffset;
-
-                // scale with distance so it appears as a flat UI element on the screen
-                if (scaleWithDistance && Camera.main != null)
-                {
-                    var dist_2 = Vector3.Distance(Camera.main.transform.position, promptCanvas.position);
-                    var s = Mathf.Clamp(dist_2 * scaleFactor, minScale, maxScale);
-                    promptCanvas.localScale = Vector3.one * s;
-                }
-
-                promptCanvas.gameObject.SetActive(_inRange && !KeyGameStateManager.Instance.currentKeysActive.Contains(keyToTrigger));
-            }
-
-            if (_inRange && Input.GetKeyDown(KeyCode.E))
                 TryActivate();
+                _hasActivated = true;
+            }
+
         }
 
-        void LateUpdate()
+        private void OnTriggerStay(Collider other)
         {
-            // Make prompt face camera
-            if (promptCanvas != null && Camera.main != null)
+            if (!other.CompareTag("Player")) return;
+
+            if (!autoActivate && Input.GetKeyDown(KeyCode.E))
             {
-                promptCanvas.LookAt(Camera.main.transform);
-                promptCanvas.Rotate(0, 180f, 0); // flip text
+                TryActivate();
+                _hasActivated = true;
             }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Player")) return;
+
+            _hasActivated = false;
+
         }
 
         private void TryActivate()
         {
+            // Kiểm tra nếu có DefaultDialogue đã được setup
+            if (_defaultDialogue != null && _defaultDialogue._questData != null)
+            {
+                Debug.Log($"[DTSTriggerZone:{gameObject.name}] Triggering default dialogue");
+                TriggerDefaultDialogue();
+                return;
+            }
+
+            // Nếu không có default dialogue, chạy quest bình thường
             if (_questControllers == null)
             {
                 Debug.LogError("_questControllers is null! DTSTriggerZone was not injected properly.");
@@ -137,5 +106,47 @@ namespace DATN2.GraphviewEditor.Runtime
                 }
             }
         }
+
+        private void TriggerDefaultDialogue()
+        {
+            if (_dialogueService == null)
+            {
+                Debug.LogError($"[DTSTriggerZone:{gameObject.name}] DialogueService is null!");
+                return;
+            }
+
+            if (_defaultDialogue == null || _defaultDialogue._questData == null)
+            {
+                Debug.LogWarning($"[DTSTriggerZone:{gameObject.name}] No default dialogue setup");
+                return;
+            }
+            if (_isDialogueRunning)
+            {
+                return;
+            }
+            // InGameControlStateManager.Instance.SetState(InGameActionType.OnDialogue);
+            _isDialogueRunning = true;
+
+            if (_isDialogueRunning == true)
+            {
+                _dialogueService.StartDefaultDialogue(_defaultDialogue._questData, _defaultDialogue._questIndex);
+            }
+            _dialogueService.OnDialogueComplete += () =>
+            {
+                Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                // OnDialogueComplete();
+            };
+        }
+
+        private void OnDialogueComplete()
+        {
+            _isDialogueRunning = false;
+            Debug.Log($"[DTSTriggerZone:{gameObject.name}] Dialogue complete → can trigger again");
+        }
+
+        // public void SetKey(string key)
+        // {
+        //     keyToTrigger = key;
+        // }
     }
 }

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueGraph: {fileID: 11400000, guid: ed8509e71a727c94484bf1ddff5da1b8, type: 2}
   dialogueGroup: {fileID: 0}
-  dialogue: {fileID: 11400000, guid: 46c230b60a362374eaa3158bd5e0bd74, type: 2}
+  dialogue: {fileID: 11400000, guid: 9a75d142c9bb13c409873568a3cb76bb, type: 2}
   condition: []
   groupedDialogues: 0
   startingDialoguesOnly: 1
   selectedDialogueGroupIndex: 0
-  selectedDialogueIndex: 5
+  selectedDialogueIndex: 0
