@@ -58,6 +58,11 @@ namespace DATN2.Assets.Scripts.VContainerRegister
             builder.RegisterComponentInHierarchy<AdvancedWalkerController>();
 
             builder.RegisterEntryPoint<DoorEntryPoint>();
+
+            builder.RegisterBuildCallback(container =>
+            {
+                VContainerResolver.Initialize(container);
+            });
         }
     }
 }

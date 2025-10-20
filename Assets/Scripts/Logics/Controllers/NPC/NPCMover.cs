@@ -33,6 +33,12 @@ public class NPCMover : MonoBehaviour
 
     public event Action OnMoveKeysComplete;
 
+    [Header("Follow Player Settings")]
+    [SerializeField] private bool FollowPlayer = false; // 🔥 NEW
+    [SerializeField] private Transform playerTransform;  // 🔥 NEW
+    [SerializeField] private float followUpdateRate = 0.2f; // 🔥 NEW: Tần suất cập nhật vị trí (giảm lag)
+    [SerializeField] private float followDistance = 2.5f; // 🔥 NEW: Khoảng cách dừng khi gần player
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -48,10 +54,45 @@ public class NPCMover : MonoBehaviour
         {
             StartCoroutine(MoveThroughPoints_Debug_Mode());
         }
+
+        if (FollowPlayer)
+        {
+            StartCoroutine(FollowPlayerCoroutine());
+        }
+    }
+
+    private IEnumerator FollowPlayerCoroutine()
+    {
+        isMoving = true;
+        while (FollowPlayer && playerTransform != null)
+        {
+            float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+            // Nếu quá xa thì di chuyển tới
+            if (distance > followDistance)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(playerTransform.position, out hit, sampleRadius, NavMesh.AllAreas))
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(hit.position);
+                }
+            }
+            else
+            {
+                // Nếu gần thì dừng lại
+                agent.isStopped = true;
+            }
+
+            yield return new WaitForSeconds(followUpdateRate);
+        }
+
+        isMoving = false;
     }
 
     public void StartMovementWithKeys(string questKey, string[] moveKeys, int questIndex = 0)
     {
+        if (FollowPlayer) return;
         if (string.IsNullOrEmpty(questKey) || moveKeys == null || moveKeys.Length == 0)
         {
             Debug.LogWarning($"{name}: Invalid questKey or moveKeys!");
@@ -100,24 +141,10 @@ public class NPCMover : MonoBehaviour
         StartMovement(loadedDestinations, moveKeys.ToList());
     }
 
-    /// <summary>
-    /// Bắt đầu di chuyển với list Vector3 đã có sẵn
-    /// </summary>
-    // private void StartMovement(List<Vector3> newDestinations)
-    // {
-    //     // Dừng movement hiện tại nếu có
-    //     StopMovement();
 
-    //     // Set destinations mới
-    //     destinations = new List<Vector3>(newDestinations);
-    //     currentIndex = 0;
-
-    //     // Bắt đầu di chuyển
-    //     currentMovementCoroutine = StartCoroutine(MoveThroughPoints());
-    //     Debug.Log($"{name}: Started movement with {destinations.Count} destinations");
-    // }
     private void StartMovement(List<Vector3> newDestinations, List<string> newMoveKeys = null)
     {
+        if (FollowPlayer) return;
         StopMovement();
 
         destinations = new List<Vector3>(newDestinations);

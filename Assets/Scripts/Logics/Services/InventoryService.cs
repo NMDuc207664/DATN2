@@ -9,6 +9,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
     public class InventoryService : IInventoryService
     {
         private List<ItemRuntimeSerialized> items = new List<ItemRuntimeSerialized>();
+        public event System.Action<ItemModel> OnItemAdded;
 
         public ItemRuntimeSerialized AddItem(ItemModel item, int amount = 1)
         {
@@ -22,6 +23,8 @@ namespace DATN2.Assets.Scripts.Logics.Services
             }
             var newItem = new ItemRuntimeSerialized(item, amount);
             items.Add(newItem);
+
+            OnItemAdded?.Invoke(item);
             return newItem;
         }
 

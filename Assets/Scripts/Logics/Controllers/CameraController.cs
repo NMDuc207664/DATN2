@@ -1,54 +1,5 @@
-// using System.Collections;
-// using System.Collections.Generic;
-// using Cinemachine;
-// using DATN2.Assets.Scripts.Logics.Interface;
-// using DATN2.Assets.Scripts.Modals.Enum;
-// using UnityEngine;
-// using VContainer;
-// namespace DATN2.Assets.Scripts.Logics.Controllers
-// {
-//     public class CameraController : MonoBehaviour
-//     {
-//         [Inject]
-//         public ICameraService _cameraService;
-
-//         public float senX;
-//         public float senY;
-//         public float rotationSmoothness = 15f;
-//         [SerializeField] private bool smoothCamera = false;
-//         public CinemachineVirtualCamera vcam;
-//         // [SerializeField] private float sensitivity = 100f;
-
-//         // Update is called once per frame
-//         void Update()
-//         {
-//             if (KeyGameStateManager.Instance.IsInState(InGameActionType.None) || KeyGameStateManager.Instance.IsInState(InGameActionType.Interact))
-
-//                 HandleCameraInput();
-
-//         }
-//         private void HandleCameraInput()
-//         {
-//             // if (!InGameControlStateManager.Instance.IsInState(InGameActionType.None))
-//             // {
-//             //     return;
-//             // }
-//             if (SimpleCinemachineLook.Instance != null &&
-//             !SimpleCinemachineLook.Instance.IsMouseInputEnabled())
-//             {
-//                 return; // Không xử lý input nếu đã tắt
-//             }
-//             float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * senX;
-//             float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * senY;
-
-//             // GameStateInvoker.TryInvoke(_cameraService, nameof(_cameraService.RotateCamera), mouseX, mouseY, senX, smoothCamera, rotationSmoothness);
-//             _cameraService.RotateCamera(mouseX, mouseY, 1f, smoothCamera, rotationSmoothness);
-//         }
-
-//     }
-// }
-
-
+using Cinemachine;
+using DATN2.Assets.Scripts.Modals.Enum;
 using UnityEngine;
 namespace DATN2.Assets.Scripts.Logics.Controllers
 {
@@ -57,6 +8,12 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         [Header("References")]
         public Transform playerTransform; // Transform của player
         public Transform cameraPosition;  // Vị trí camera (có thể là một điểm trên đầu player)
+
+        private CinemachineVirtualCamera virtualCamera;
+
+        [Header("Look Targets")]
+        public Transform tieuThuTarget;
+        public Transform gaGiangHoTarget;
 
         [Header("Camera Settings")]
         [SerializeField] private Vector3 cameraOffset = new Vector3(0f, 0.5f, -1f); // Offset so với player
@@ -68,6 +25,11 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         private float yaw = 0f;   // Góc quay ngang (yaw)
         private float pitch = 0f; // Góc quay dọc (pitch)
         private Vector3 velocity; // Vận tốc cho SmoothDamp
+
+        private void Awake()
+        {
+            virtualCamera = GetComponent<CinemachineVirtualCamera>();
+        }
 
         private void Start()
         {
@@ -86,10 +48,14 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         {
             if (playerTransform == null || cameraPosition == null) return;
 
-            // Xử lý input chuột để quay camera
-            HandleRotation();
 
-            // Tính vị trí mong muốn của camera
+
+            if (KeyGameStateManager.Instance.LockMouseInput == false)
+            {
+                // Xử lý input chuột để quay camera
+                HandleRotation();
+
+            }
             Vector3 desiredPos = cameraPosition.position + playerTransform.TransformDirection(cameraOffset);
 
             // Cập nhật vị trí camera
@@ -105,6 +71,7 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
 
             // Cập nhật góc quay của camera
             transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
+            UpdateVirtualCameraTarget();
         }
 
         private void HandleRotation()
@@ -126,12 +93,29 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
                 playerTransform.rotation = Quaternion.Euler(0f, yaw, 0f);
             }
         }
+        private void UpdateVirtualCameraTarget()
+        {
+            if (virtualCamera == null) return;
 
-        // private void OnDestroy()
-        // {
-        //     // Mở khóa con trỏ chuột khi thoát
-        //     Cursor.lockState = CursorLockMode.None;
-        //     Cursor.visible = true;
-        // }
+            var gsm = KeyGameStateManager.Instance;
+
+            // 🔄 Chọn LookAt dựa theo trạng thái
+            if (gsm.LookAtTieuThu && tieuThuTarget != null)
+            {
+                virtualCamera.LookAt = tieuThuTarget;
+                KeyGameStateManager.Instance.SetLockMouseInput(true);
+            }
+            else if (gsm.LookAtGaGiangHo && gaGiangHoTarget != null)
+            {
+                virtualCamera.LookAt = gaGiangHoTarget;
+                KeyGameStateManager.Instance.SetLockMouseInput(true);
+            }
+            else
+            {
+                // Mặc định nhìn theo player
+                virtualCamera.LookAt = null;
+                KeyGameStateManager.Instance.SetLockMouseInput(false);
+            }
+        }
     }
 }

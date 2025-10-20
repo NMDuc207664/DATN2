@@ -4,6 +4,7 @@ using System.Linq;
 using CMF;
 using DATN2.Assets.Scripts.Data;
 using DATN2.Assets.Scripts.Logics.Controllers;
+using DATN2.Assets.Scripts.Logics.Interface;
 using DATN2.Assets.Scripts.Logics.Interface.NPC;
 using DATN2.Assets.Scripts.Modals.Enum;
 using DATN2.GraphviewEditor.Runtime;
@@ -21,6 +22,8 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
         [Inject] private Dictionary<string, GameObject> _npc;
         private GameObject npc1;
         private GameObject npc2;
+        private IInventoryService inventoryService;
+        private DefaultDialogue defaultDialogue;
 
         [SerializeField] private AdvancedWalkerController playerController;
         public string MapKey => mapKey;
@@ -31,7 +34,46 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
             npc2 = _npc["NPCB_GO"];
 
             InjectDialogueServiceToTriggers();
+            SetupNPCTypes();
             KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None);
+            inventoryService = VContainerResolver.Resolve<IInventoryService>();
+
+            if (inventoryService is IInventoryService invService)
+            {
+                invService.OnItemAdded += (ItemModel item) =>
+               {
+                   OnMainDoorKeyHandler(item);
+                   defaultDialogue = npc1.GetComponent<DefaultDialogue>();
+                   defaultDialogue.Clear();
+               };
+            }
+        }
+        private void SetupNPCTypes()
+        {
+            // Giả sử NPCA_GO là Tiểu Thư, NPCB_GO là Ga Giang Hồ
+            // Bạn có thể thay đổi theo logic game của bạn
+
+            if (npc1 != null)
+            {
+                var trigger1 = npc1.GetComponent<DTSDialogueTriggerZone>();
+                if (trigger1 != null)
+                {
+                    // Set NPC1 là Tiểu Thư (hoặc tùy theo thiết kế của bạn)
+                    trigger1.SetNPCType(DTSDialogueTriggerZone.NPCType.TieuThu);
+                    //Debug.Log($"[Map1OpeningS] Set NPC1 ({npc1.name}) as TieuThu");
+                }
+            }
+
+            if (npc2 != null)
+            {
+                var trigger2 = npc2.GetComponent<DTSDialogueTriggerZone>();
+                if (trigger2 != null)
+                {
+                    // Set NPC2 là Ga Giang Hồ
+                    trigger2.SetNPCType(DTSDialogueTriggerZone.NPCType.GaGiangHo);
+                    //Debug.Log($"[Map1OpeningS] Set NPC2 ({npc2.name}) as GaGiangHo");
+                }
+            }
         }
         private void InjectDialogueServiceToTriggers()
         {
@@ -60,7 +102,16 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
         void Update()
         {
 
+            // if (inventoryService != null)
+            // {
+            //     inventoryService.DebugPrintInventory();
+            // }
+            // else
+            // {
+            //     Debug.LogWarning("[Map1OpeningS] InventoryService chưa được khởi tạo!");
+            // }
         }
+
         public void ActivateQuest(string key)
         {
             // Quest 1: Dialogue -> NPC1 di chuyển
@@ -70,6 +121,11 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
                 KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.OnMovieDialogue);
 
                 // SimpleCinemachineLook.Instance.SetFollowHeadRotation(true);
+                string[] goToStartPoint_1 = new[] {
+                    "StartPoint_Main_Char"
+                };
+                playerController.StartAutoMoveWithKeys(key, goToStartPoint_1, 0, 3f, true);
+
                 // Bước 1: Chạy dialogue
                 dialogueService.StartDialogueAsync(questData, () =>
                 {
@@ -108,65 +164,123 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
                         };
 
                         playerController.StartAutoMoveWithKeys(key, playerMoveKeys, 0, 3f, true);
-                        StartCoroutine(WaitForPlayerMoveEnd());
+                        StartCoroutine(WaitForPlayerMoveEnd(true));
                         npc2_Mover.OnMoveKeysComplete += () =>
                         {
                             OnNPCMoveCompleteHandler("Map_1_OpeningS_Q1", "Map_1_OpeningS_Q2");
                             ActivateQuest("Map_1_OpeningS_Q2");
                         };
+                        // npc2_Mover.OnMoveKeysComplete -= () =>
+                        // {
+                        //     OnNPCMoveCompleteHandler("Map_1_OpeningS_Q1", "Map_1_OpeningS_Q2");
+                        //     ActivateQuest("Map_1_OpeningS_Q2");
+                        // };
                     }
                 }, 0);
                 //InGameControlStateManager.Instance.ClearState();
 
             }
+
+
             if (key == "Map_1_OpeningS_Q2")
             {
                 QuestDataSO questData = KeyGameStateManager.Instance.GetQuestData(key);
-                // var npc1Trigger = npc1.GetComponent<DTSDialogueTriggerZone>();
-                // var npc2Trigger = npc2.GetComponent<DTSDialogueTriggerZone>();
 
                 npc1.GetComponent<BoxCollider>().enabled = true;
                 npc2.GetComponent<BoxCollider>().enabled = true;
+
                 dialogueService.StartDialogueAsync(questData, () =>
                 {
-
-                    // SetupDefaultDialogues(questData, npcMapping);
                     dialogueService.OnDialogueComplete += () =>
                     {
                         var npcMapping = new Dictionary<GameObject, int>
-                    {
-                        { npc1, 1 },
-                        { npc2, 0 }
-                    };
+                        {
+                { npc1, 1 },
+                { npc2, 0 }
+                        };
+
                         foreach (var entry in npcMapping)
                         {
                             var npc = entry.Key;
                             var questIndex = entry.Value;
-                            var defaultDialogue = npc.GetComponent<DefaultDialogue>();
+                            defaultDialogue = npc.GetComponent<DefaultDialogue>();
 
                             if (defaultDialogue != null)
                             {
                                 defaultDialogue.Setup(questData, questIndex);
                             }
                         }
-                        //OnDialogueCompleteHandler("Map_1_OpeningS_Q2", "Map_1_OpeningS_Q3");
+
+                        // 🔥 THÊM PHẦN NÀY: kiểm tra nếu người chơi có MainDoorKey thì NPC1 di chuyển thêm
+                        // if (inventoryService != null)
+                        // {
+                        //     var allItems = inventoryService.GetAllItems();
+                        //     bool hasMainDoorKey = allItems.Any(item =>
+                        //         item._itemData != null &&
+                        //         item._itemData.itemName == "Main Door Key");
+
+                        //     if (hasMainDoorKey)
+                        //     {
+                        //         Debug.Log("[Map1OpeningS] Người chơi có MainDoorKey → NPC1 tiếp tục di chuyển tới điểm 12, 13, 14");
+
+                        //         string[] extraMoveKeys = new[]
+                        //         {
+                        // "NPC(s)_Move_Point_1",
+                        //         };
+
+                        //         if (npc1_Mover != null)
+                        //         {
+                        //             npc1_Mover.StartMovementWithKeys(key, extraMoveKeys, 1);
+                        //         }
+                        //     }
+                        //     else
+                        //     {
+                        //         Debug.Log("[Map1OpeningS] Người chơi chưa có MainDoorKey → NPC1 không di chuyển tiếp");
+                        //     }
+                        // }
+                        // else
+                        // {
+                        //     Debug.LogWarning("[Map1OpeningS] InventoryService chưa được khởi tạo!");
+                        // }
+
+                        // Có thể gọi PassKey hay ActivateKey kế tiếp ở đây nếu cần
+                        // OnDialogueCompleteHandler("Map_1_OpeningS_Q2", "Map_1_OpeningS_Q3");
                     };
                 }, 0);
+
             }
         }
+        private void OnMainDoorKeyHandler(ItemModel item)
+        {
+            if (item.itemName == "Main Door Key")
+            {
+                string[] moveKeys = new[]
+                {
+            "NPC(s)_Move_Point_1",
+        };
 
-        private IEnumerator WaitForPlayerMoveEnd(string passKey = null, string activeKey = null)
+                if (npc1_Mover != null)
+                {
+                    npc1_Mover.StartMovementWithKeys("Map_1_OpeningS_Q2", moveKeys, 1);
+                }
+            }
+        }
+        private IEnumerator WaitForPlayerMoveEnd(bool moveAgain, string passKey = null, string activeKey = null)
         {
             // Đợi cho đến khi playerController dừng auto move
             while (playerController != null && playerController.isAutoMoving)
                 yield return null;
 
             yield return new WaitForSeconds(0.3f); // Đợi thêm 1 chút để chắc chắn dừng hẳn
-            SimpleCinemachineLook.Instance.SetFollowHeadRotation(false);
+            // SimpleCinemachineLook.Instance.SetFollowHeadRotation(false);
             if (passKey != null)
                 KeyGameStateManager.Instance.PassKey(passKey);
             if (activeKey != null)
                 KeyGameStateManager.Instance.ActivateKey(activeKey);
+            if (moveAgain)
+            {
+                KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None);
+            }
         }
 
         private void OnDialogueCompleteHandler(string passKey = null, string activeKey = null)
@@ -183,5 +297,14 @@ namespace DATN2.Assets.Scripts.Logics.Quest_Manager
             if (activeKey != null)
                 KeyGameStateManager.Instance.ActivateKey(activeKey);
         }
+        private IEnumerator WaitForSecondsCustom(float seconds, System.Action onComplete = null)
+        {
+            if (seconds > 0)
+                yield return new WaitForSeconds(seconds);
+
+            onComplete?.Invoke();
+        }
+
     }
 }
+

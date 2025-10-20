@@ -86,7 +86,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
         public async void PickUp()
         {
             KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.Interact);
-            SimpleCinemachineLook.Instance.DisableMouseInput();
+            KeyGameStateManager.Instance.SetLockMouseInput(true);
             _arm.SetActive(true);
             // Dừng di chuyển ngang (giữ y velocity cho gravity)
             Vector3 velocity = _rigidbody.velocity;
@@ -102,7 +102,7 @@ namespace DATN2.Assets.Scripts.Logics.Services
             await SwingArmAsync(_arm);
 
             _arm.SetActive(false);
-            SimpleCinemachineLook.Instance.EnableMouseInput();
+            KeyGameStateManager.Instance.SetLockMouseInput(false);
             KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None);
 
         }

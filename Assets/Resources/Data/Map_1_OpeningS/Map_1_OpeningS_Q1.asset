@@ -42,6 +42,8 @@ MonoBehaviour:
         Value: {x: 221, y: 4.831724, z: 271}
       - Key: NPC(s)_Move_Point_11
         Value: {x: 221, y: 4.831724, z: 257}
+      - Key: StartPoint_Main_Char
+        Value: {x: 344, y: 3.07, z: 466}
     triggerType: 1
     dialogues: {fileID: 11400000, guid: fd93acccd7559f24bab1f12915391b64, type: 2}
     HasDefaultDialogue: 0
@@ -54,15 +56,5 @@ MonoBehaviour:
       list: []
     triggerType: 1
     dialogues: {fileID: 11400000, guid: 90992ff60b87c7e40a730af6a81e3fe8, type: 2}
-    HasDefaultDialogue: 0
-    defaultDialogue: {fileID: 0}
-  - currentNPCPosition:
-      list:
-      - Key: TT
-        Value: {x: 309.3405, y: 5, z: 476}
-    targetPosition:
-      list: []
-    triggerType: 1
-    dialogues: {fileID: 11400000, guid: a710825e4b3d458408a50c242d8722a0, type: 2}
     HasDefaultDialogue: 0
     defaultDialogue: {fileID: 0}

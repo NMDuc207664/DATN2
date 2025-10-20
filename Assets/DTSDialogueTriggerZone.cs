@@ -14,27 +14,39 @@ namespace DATN2.GraphviewEditor.Runtime
         [SerializeField] private string mapKey = "Map1";
         [SerializeField] private float interactDistance = 5f;
         [SerializeField] public string interactPrompt = "E: Interact";
-
+        [Header("NPC Look At Settings")]
+        [SerializeField] private NPCType npcType = NPCType.None;
         private Dictionary<string, IQuestService> _questControllers;
         private IQdialogueService _dialogueService;
         private Transform _player;
-        private bool _inRange;
         public bool autoActivate = false;
         private bool _hasActivated = false;
         private DefaultDialogue _defaultDialogue;
-        private BoxCollider _col;
-        private bool _isDialogueRunning = false;
+
+        [Header("Visual Mark")]
+        [SerializeField] public GameObject objectMark;
+        //private bool _isDialogueRunning = false;
+        public enum NPCType
+        {
+            None,
+            TieuThu,
+            GaGiangHo
+        }
+        void Start()
+        {
+            if (objectMark != null)
+                objectMark.SetActive(false); // Ẩn mark ban đầu
+        }
 
         void Awake()
         {
-            _col = GetComponent<BoxCollider>();
             _defaultDialogue = GetComponent<DefaultDialogue>();
         }
 
         public void SetQuestControllers(Dictionary<string, IQuestService> questControllers)
         {
             _questControllers = questControllers;
-            Debug.Log($"[DTSTriggerZone:{gameObject.name}] QuestControllers injected successfully");
+            // Debug.Log($"[DTSTriggerZone:{gameObject.name}] QuestControllers injected successfully");
         }
 
         public void SetDialogueService(IQdialogueService dialogueService)
@@ -60,10 +72,9 @@ namespace DATN2.GraphviewEditor.Runtime
         {
             if (!other.CompareTag("Player")) return;
 
-            if (!autoActivate && Input.GetKeyDown(KeyCode.E))
+            if (!autoActivate && Input.GetKeyDown(KeyCode.E) && !DialogueManager.Instance.isDialogueActive)
             {
                 TryActivate();
-                _hasActivated = true;
             }
         }
 
@@ -72,6 +83,7 @@ namespace DATN2.GraphviewEditor.Runtime
             if (!other.CompareTag("Player")) return;
 
             _hasActivated = false;
+            ResetLookAt();
 
         }
 
@@ -109,44 +121,64 @@ namespace DATN2.GraphviewEditor.Runtime
 
         private void TriggerDefaultDialogue()
         {
-            if (_dialogueService == null)
-            {
-                Debug.LogError($"[DTSTriggerZone:{gameObject.name}] DialogueService is null!");
-                return;
-            }
 
             if (_defaultDialogue == null || _defaultDialogue._questData == null)
             {
-                Debug.LogWarning($"[DTSTriggerZone:{gameObject.name}] No default dialogue setup");
+                //Debug.LogWarning($"[DTSTriggerZone:{gameObject.name}] No default dialogue setup");
                 return;
             }
-            if (_isDialogueRunning)
+            if (DialogueManager.Instance.isDialogueActive)
             {
                 return;
             }
             // InGameControlStateManager.Instance.SetState(InGameActionType.OnDialogue);
-            _isDialogueRunning = true;
+            SetLookAtNPC();
 
-            if (_isDialogueRunning == true)
+
+            if (DialogueManager.Instance.isDialogueActive == false)
             {
                 _dialogueService.StartDefaultDialogue(_defaultDialogue._questData, _defaultDialogue._questIndex);
             }
-            _dialogueService.OnDialogueComplete += () =>
-            {
-                Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                // OnDialogueComplete();
-            };
+
         }
 
-        private void OnDialogueComplete()
+        private void SetLookAtNPC()
         {
-            _isDialogueRunning = false;
-            Debug.Log($"[DTSTriggerZone:{gameObject.name}] Dialogue complete → can trigger again");
+            switch (npcType)
+            {
+                case NPCType.TieuThu:
+                    KeyGameStateManager.Instance.LookAtTieuThu = true;
+                    KeyGameStateManager.Instance.LookAtGaGiangHo = false;
+                    //Debug.Log($"[DTSTriggerZone:{gameObject.name}] Looking at Tiểu Thư");
+                    break;
+
+                case NPCType.GaGiangHo:
+                    KeyGameStateManager.Instance.LookAtTieuThu = false;
+                    KeyGameStateManager.Instance.LookAtGaGiangHo = true;
+                    //Debug.Log($"[DTSTriggerZone:{gameObject.name}] Looking at Ga Giang Hồ");
+                    break;
+
+                case NPCType.None:
+                default:
+                    // Không set look at
+                    break;
+            }
         }
 
-        // public void SetKey(string key)
-        // {
-        //     keyToTrigger = key;
-        // }
+        private void ResetLookAt()
+        {
+            if (npcType != NPCType.None)
+            {
+                KeyGameStateManager.Instance.LookAtTieuThu = false;
+                KeyGameStateManager.Instance.LookAtGaGiangHo = false;
+                //Debug.Log($"[DTSTriggerZone:{gameObject.name}] Reset look at");
+            }
+        }
+
+        // Optional: Public method để set NPC type từ code
+        public void SetNPCType(NPCType type)
+        {
+            npcType = type;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace DATN2.Assets.Scripts.Logics.Interface
 {
     public interface IInventoryService
     {
+        event System.Action<ItemModel> OnItemAdded;
         ItemRuntimeSerialized AddItem(ItemModel item, int amount = 1);
         bool HasItem(ItemModel item, int requiredAmount = 1);
         bool RemoveItem(ItemModel item, int amount = 1);

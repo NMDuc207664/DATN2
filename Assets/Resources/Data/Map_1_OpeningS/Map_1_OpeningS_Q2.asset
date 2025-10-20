@@ -25,7 +25,9 @@ MonoBehaviour:
   - currentNPCPosition:
       list: []
     targetPosition:
-      list: []
+      list:
+      - Key: NPC(s)_Move_Point_1
+        Value: {x: 213, y: 3.8, z: 269}
     triggerType: 0
     dialogues: {fileID: 0}
     HasDefaultDialogue: 1

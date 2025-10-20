@@ -39,7 +39,13 @@ namespace DATN2.Assets.Scripts.Logics.Controllers
         }
         void Update()
         {
-
+            if (gameState.Count > 0)
+            {
+                foreach (var kvp in gameState)
+                {
+                    Debug.Log($"[GameState] Key: {kvp.Key}, Value: {kvp.Value}");
+                }
+            }
         }
         public void RegisterAllKeysForScene(string sceneName)
         {

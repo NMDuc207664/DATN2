@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DATN2.Assets.Scripts.Data;
 using DATN2.Assets.Scripts.Logics.Controllers;
@@ -88,7 +89,7 @@ namespace CMF
 		public System.Action<string> OnReachMoveKey;
 
 		public bool allowJumpWithMovement = true;
-
+		public event Action OnAutoMoveComplete;
 
 
 
@@ -886,7 +887,8 @@ namespace CMF
 			_animator.SetBool("isWalking", false);
 			// ==========================================
 
-			KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None); // Clear state after auto-movement completes
+			//KeyGameStateManager.Instance.AddOrChangeGameState(InGameActionType.None); // Clear state after auto-movement completes
+			OnAutoMoveComplete?.Invoke();
 			autoMoveWithKeysRoutine = null;
 		}
 

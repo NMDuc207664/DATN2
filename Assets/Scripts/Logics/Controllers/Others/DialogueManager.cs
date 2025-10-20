@@ -5,7 +5,8 @@ using UnityEngine;
 using VContainer;
 using DATN2.Assets.Scripts.Data;
 using System;
-using DATN2.Assets.Scripts.Logics.Interface.NPC; // Add this for QuestDataSO
+using DATN2.Assets.Scripts.Logics.Interface.NPC;
+using DATN2.Assets.Scripts.Logics.Controllers; // Add this for QuestDataSO
 
 public class DialogueManager : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class DialogueManager : MonoBehaviour
     public List<string> nextNodeID = new List<string>();
     public string dialogue;
     public TextMeshProUGUI dialogueText;
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private QuestDataSO currentQuestData; // Lưu để reuse khi next
     private Action onDialogueComplete; // Callback khi hết
     private Coroutine autoAdvanceCoroutine; // To manage auto-advance
@@ -57,6 +58,15 @@ public class DialogueManager : MonoBehaviour
                 ProceedNextDialogue();
             }
         }
+
+        // if (isDialogueActive)
+        // {
+        //     KeyGameStateManager.Instance.SetLockMouseInput(true);
+        // }
+        // else if (!isDialogueActive)
+        // {
+        //     KeyGameStateManager.Instance.SetLockMouseInput(false);
+        // }
     }
 
     public void StartDialogue(string initialText, List<string> initialNextIds, QuestDataSO questData, Action onComplete)

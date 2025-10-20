@@ -21,4 +21,9 @@ public class DefaultDialogue : MonoBehaviour
             Debug.Log($"   ▶ DialogueGraph: {q.dialogues?.dialogueGraph}");
         }
     }
+    public void Clear()
+    {
+        _questData = null;
+        _questIndex = -1;
+    }
 }

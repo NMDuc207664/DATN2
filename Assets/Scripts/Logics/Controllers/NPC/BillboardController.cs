@@ -24,12 +24,4 @@ public class BillboardController : MonoBehaviour
             transform.rotation = targetRotation;
     }
 
-    //[SerializeField] bool freeXAxis = true;
-
-    //private void Update()
-    //{
-    //if(freeXAxis)
-    //{transform.rotation = Quaternion.Euler(0f, Camera.main.transform.rotation.eulerAngles.y, 0f);}
-    //else{transform.rotation = Camera.main.transform.rotation;}
-    //}
 }
